@@ -1,0 +1,28 @@
+﻿
+@font-face {
+    font-family: Alphabeta;
+    src: local('Alphabeta'),url('font/Alphabeta.ttf') format('truetype');
+}
+
+
+@font-face {
+    font-family: Alphabeta2;
+    src: local('Alphabeta2'),url('font/Alphabeta2.ttf') format('truetype');
+}
+
+
+
+@font-face {
+    font-family: Alphabeta3;
+    src: local('Alphabeta3'),url('font/Alphabeta3.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: Alphabeta4;
+    src: local('Alphabeta4'),url('font/Alphabeta4.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: Alphabeta5;
+    src: local('Alphabeta5'),url('font/Alphabeta5.ttf') format('truetype');
+}

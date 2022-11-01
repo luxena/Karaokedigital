@@ -1,0 +1,34 @@
+﻿@model Karaokedigital.Models.ReservationStateModel
+
+@{
+    ViewData["Title"] = "DeleteReservationStates";
+}
+
+<h1>DeleteReservationStates</h1>
+
+<h3>Are you sure you want to delete all Reservation States?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "All Reservation States have been deleted")
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+
+
+    <form asp-action="DeleteReservationStates">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-action="ReservationStates">Back to List</a>
+    </form>
+</div>

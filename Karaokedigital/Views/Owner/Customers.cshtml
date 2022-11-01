@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Karaokedigital.Models.CustomerModel>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateCustomer"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>Photo</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Boss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Society)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PIvaFiscalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditCustomer?id=@item.CustomerID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerID)
+            </td>
+            <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Society)" width="60" height="60" src="~/Images/Customers/@item.Society/@Html.DisplayFor(modelItem => item.Logo)"></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Boss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Society)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PIvaFiscalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditCustomer?id=@item.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsCustomer?id=@item.CustomerID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateCustomer?id=@item.CustomerID"><i class="bg-warning fas fa-ban"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteCustomer?id=@item.CustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

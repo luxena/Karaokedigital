@@ -1,0 +1,33 @@
+﻿@model Karaokedigital.Models.CupModel
+
+@{
+    ViewData["Title"] = "DeleteCups";
+}
+
+<h1>Delete All Cups</h1>
+
+<h3>Are you sure you want to delete all cups?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "The cups have been deleted")
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+
+    <form asp-action="DeleteCups">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-action="Cups">Back to List</a>
+    </form>
+</div>

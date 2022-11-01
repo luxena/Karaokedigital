@@ -1,0 +1,45 @@
+﻿@model Karaokedigital.Models.CustomerTypeModel
+
+@{
+    ViewData["Title"] = "CreateCustomerType";
+}
+
+<h1>CreateCustomerType</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "Customer Types already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCustomerType">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="CustomerTypes">Back to List</a>
+</div>
+

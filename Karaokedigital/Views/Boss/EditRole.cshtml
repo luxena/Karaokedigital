@@ -1,0 +1,50 @@
+﻿@model Karaokedigital.Models.RoleModel
+
+@{
+    ViewData["Title"] = "EditRole";
+}
+
+<h1>Edit Role</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "Role already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoleID" class="control-label"></label>
+                <input asp-for="RoleID" class="form-control" readonly />
+                <span asp-validation-for="RoleID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <input asp-for="Role" class="form-control" />
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Roles">Back to List</a>
+</div>
+

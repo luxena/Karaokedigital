@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Karaokedigital.Models.RoleModel>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Roles</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "All Roles are been deleted")
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateRole"><i class="fas fa-plus"></i></a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditRole?id=@item.RoleID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditRole?id=@item.RoleID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsRole?id=@item.RoleID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteRole?id=@item.RoleID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

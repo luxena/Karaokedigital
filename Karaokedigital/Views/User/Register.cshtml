@@ -1,0 +1,152 @@
+﻿@model Karaokedigital.Models.UserModel
+@{
+    ViewData["Title"] = "Register";
+}
+<link href="~/css/register.css" rel="stylesheet" />
+
+<style>
+
+    .footer {
+        position: relative !important;
+        margin-bottom: 0px;
+        width: 100%;
+        white-space: nowrap;
+        /*line-height: 60px;*/ /* Vertically center the text there */
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+
+<section class="showcase">
+
+    <div class="background-container">
+        <img>
+    </div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "User already exists" || @ViewBag.Response == "Missing fields")
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <div class="animated zoomInDown slow">
+        <h1 class="display-1 text-center p-0">Are u ready 4 fun?</h1>
+    </div>
+    <!--start register form modal-->
+    <div id="form-register" class="animated bounceIn slow container-fluid rounded bg-light col-sm-6 col-md-6 col-lg-6 col-xl-5">
+        <form class="p-4" method="post" asp-controller="User" asp-action="Register" enctype="multipart/form-data">
+            <h2 class="mb-1 h5 text-black-50">Karaokedigital Registration <i class="fas fa-pencil-alt"></i></h2>
+
+            <div class="mt-0">
+                <label asp-for="Name" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-user-circle"></i></div>
+                    </div>
+                    <input asp-for="Name" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Name" required>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Surname" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-user-tie"></i></div>
+                    </div>
+                    <input asp-for="Surname" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Surname" required>
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Gender" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-venus-mars"></i></div>
+                    </div>
+                    <input asp-for="Gender" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Gender" required>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Username" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-user"></i></div>
+                    </div>
+                    <input id="Username" asp-for="Username" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Username" required>
+                </div>
+                <span id="usernameValidation" asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Password" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-unlock-alt"></i></div>
+                    </div>
+                    <input asp-for="Password" type="password" class="form-control cursor-arrow input-register rounded" placeholder="Password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Phone" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-mobile-alt"></i></div>
+                    </div>
+                    <input id="Phone" asp-for="Phone" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Phone" required>
+                </div>
+                <span id="phoneValidation" asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="mt-0">
+                <label asp-for="Email" class="control-label mt-0"></label>
+                <div class="input-group mb-0">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-envelope"></i></div>
+                    </div>
+                    <input id="Email" asp-for="Email" type="text" class="form-control cursor-arrow input-register rounded" placeholder="Email" required>
+                </div>
+                <span id="emailValidation" asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="">
+                <label asp-for="ImgFile" class="control-label">Foto</label>
+            </div>
+            <div class="input-group mb-0">
+                <input type="file" name="ImgFile" class="form-control d-none" id="ImgFile">
+                <label class="input-group-text" for="ImgFile"><i class="fas fa-paperclip"></i></label>
+            </div>
+
+            <!-- submit-->
+
+            <div class="wrap-btn-form-register mt-4">
+                <div class="btn-register-container"></div>
+                <button type="submit" class="btn btn-form-register bg-none cursor-pointer text-capitalize">Register</button>
+            </div>
+
+            <!-- submit-->
+        </form>
+    </div>
+</section>
+
+

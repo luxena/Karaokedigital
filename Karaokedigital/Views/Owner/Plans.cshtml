@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Karaokedigital.Models.PlanModel>
+
+@{
+    ViewData["Title"] = "Plans";
+}
+
+<h1>Plans</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreatePlan"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PlanID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Properties)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditPlan?id=@item.PlanID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.PlanID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Properties)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditPlan?id=@item.PlanID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsPlan?id=@item.PlanID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeletePlan?id=@item.PlanID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

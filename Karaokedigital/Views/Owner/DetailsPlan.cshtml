@@ -1,0 +1,47 @@
+﻿@model Karaokedigital.Models.PlanModel
+
+@{
+    ViewData["Title"] = "DetailsPlan";
+}
+
+<h1>Details Plan</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PlanID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PlanID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Plan)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Plan)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Properties)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Properties)
+        </dd>
+    </dl>
+</div>
+<div  class="mb-4">
+    <a class="btn btn-glow" href="EditPlan/@Model.PlanID" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+    <a class="btn btn-glow ml-2" asp-action="Plans" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+</div>

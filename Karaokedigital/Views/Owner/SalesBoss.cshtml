@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Karaokedigital.Models.SaleModel>
+
+@{
+    ViewData["Title"] = "SalesBoss";
+}
+<div class="mt-3"></div>
+<h1>Sales Boss</h1>
+<button type="button" class="float-right btn btn-orange">
+    $ <span class="badge badge-light text-dark">@Html.DisplayFor(modelItem => @Model.First().TOT)</span>
+    <span class="sr-only">sells</span>
+</button>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateCustomer"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Boss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Multiple)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Boss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Multiple)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

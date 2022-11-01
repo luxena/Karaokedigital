@@ -1,0 +1,29 @@
+﻿@model Karaokedigital.Models.CustomerTypeModel
+
+@{
+    ViewData["Title"] = "DetailsCustomerType";
+}
+
+<h1>Details CustomerType</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerTypeID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CustomerTypeID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "EditCustomerType", new {  id = Model.CustomerTypeID  }, new { @class = "btn btn-info" }) 
+    <a class="btn btn-primary" asp-action="CustomerTypes">Back to List</a>
+</div>

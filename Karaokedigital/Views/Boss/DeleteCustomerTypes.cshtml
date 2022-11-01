@@ -1,0 +1,34 @@
+﻿@model Karaokedigital.Models.CustomerTypeModel
+
+@{
+    ViewData["Title"] = "DeleteCustomerTypes";
+}
+
+<h1>DeleteCustomerTypes</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "All Customer Types has been deleted")
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+
+
+    <form asp-action="DeleteCustomerTypes">
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a class="btn btn-primary" asp-action="CustomerTypes">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Karaokedigital.Models.CustomerTypeModel>
+
+@{
+    ViewData["Title"] = "CustomerTypes";
+}
+
+<h1>CustomerTypes</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateCustomerType">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerTypeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerTypeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCustomerType", new { id = item.CustomerTypeID }, new { @class = "btn btn-info" })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "DetailsCustomerType", new { id = item.CustomerTypeID }, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteCustomerType", new { id = item.CustomerTypeID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

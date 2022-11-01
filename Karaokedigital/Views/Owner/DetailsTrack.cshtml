@@ -1,0 +1,72 @@
+﻿@model Karaokedigital.Models.TrackModel
+
+@{
+    ViewData["Title"] = "DetailsTrack";
+}
+
+<h1>Details Track</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrackID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrackID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.File)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.File)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsFeaturing)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsFeaturing)
+        </dd>
+        <dt class="col-sm-2">
+            <br />
+            <video width="150" height="100" controls>
+                <source src="~/Tracks/@Html.DisplayFor(modelItem => modelItem.File)" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </dt>
+    </dl>
+</div>
+<div class="mb-4">
+    <a class="btn btn-glow" href="EditTrack/@Model.TrackID" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+    <a class="btn btn-glow ml-2" asp-action="Tracks" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+</div>

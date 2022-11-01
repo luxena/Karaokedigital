@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Karaokedigital.Models.ReservationStateModel>
+
+@{
+    ViewData["Title"] = "ReservationStates";
+}
+
+<h1>ReservationStates</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateReservationState"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationStateID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditReservationState?id=@item.ReservationStateID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationStateID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditReservationState?id=@item.ReservationStateID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsReservationState?id=@item.ReservationStateID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteReservationState?id=@item.ReservationStateID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

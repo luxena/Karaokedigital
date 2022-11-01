@@ -1,0 +1,44 @@
+﻿@model Karaokedigital.Models.CupModel
+
+@{
+    ViewData["Title"] = "CreateCup";
+}
+
+<h1>Create Cup</h1>
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "Cup already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cup" class="control-label"></label>
+                <input asp-for="Cup" class="form-control" />
+                <span asp-validation-for="Cup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Cups">Back to List</a>
+</div>
+

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Karaokedigital.Models.CupModel>
+
+@{
+    ViewData["Title"] = "Cups";
+}
+
+<h1>Cups</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateCup"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CupID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cup)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditCup?id=@item.CupID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.CupID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cup)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditCup?id=@item.CupID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsCup?id=@item.CupID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteCup?id=@item.CupID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

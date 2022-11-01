@@ -1,0 +1,64 @@
+﻿@model Karaokedigital.Models.PlanModel
+
+@{
+    ViewData["Title"] = "DeletePlan";
+}
+
+<h1>DeletePlan</h1>
+
+<h3>Are you sure you want to delete this Plan?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "The plan not exists")
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PlanID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PlanID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Plan)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Plan)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Properties)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Properties)
+        </dd>
+    </dl>
+    <form class="mb-4" asp-action="DeletePlan">
+        <button type="submit" class="btn btn-glow" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-trash-alt"></i></button>
+        <a class="btn btn-glow ml-2" asp-action="Plans" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+    </form>
+</div>

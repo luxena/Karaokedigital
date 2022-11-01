@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Karaokedigital.Models.ReservationStateModel>
+
+@{
+    ViewData["Title"] = "ReservationStates";
+}
+
+<h1>ReservationStates</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateReservationState">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationStateID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationStateID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditReservationState", new { id = item.ReservationStateID }, new { @class = "btn btn-info" })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "DetailsReservationState", new { id = item.ReservationStateID }, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteReservationState", new { id = item.ReservationStateID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

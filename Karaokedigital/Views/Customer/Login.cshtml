@@ -1,0 +1,91 @@
+﻿@model Karaokedigital.Models.CustomerUserModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+
+    .footer {
+        position: relative !important;
+        margin-bottom: 0px;
+        width: 100%;
+        white-space: nowrap;
+        /*line-height: 60px;*/ /* Vertically center the text there */
+    }
+
+    .container-fluid {
+        width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+
+<section class="showcase">
+
+    <div class="background-container">
+        <img>
+    </div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "Login Denied")
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <div class="content">
+        <h1 id="intestazione">Karaoke Digital</h1>
+    </div>
+    <!--start login form -->
+
+    <div id="form-login" class="rounded  col-xs-4 col-sm-5 col-md-6 col-lg-6 col-xl-5">
+        <form class="m-2 p-4" asp-action="Login">
+            <h2 id="form-title" class="mt-4 text-link" style="font-family: Orbitron;">Member Login</h2>
+            <div class="form-row align-items-center">
+                <div class="col-sm-12 my-1 mt-4 border-bottom">
+                    <label class="sr-only" for="username">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-none border-0"><i class="fas fa-user text-white"></i></div>
+                        </div>
+                        <input asp-for="Username" type="text" class="form-control bg-none border-0 text-white" id="username" placeholder="Username" required>
+                    </div>
+                </div>
+                <div class="col-sm-12 my-1 mt-4 border-bottom">
+                    <label class="sr-only" for="password">Password</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-none border-0"><i class="fas fa-unlock-alt text-white"></i></div>
+                        </div>
+                        <input asp-for="Password" type="password" class="form-control bg-none border-0 text-white" id="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-4">
+                    <div class="fcol-xs-12 orm-check float-right mt-4">
+                        <a id="forgot-password" class="text-capitalize text-link cursor-pointer" style="line-height:22px;">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="col-sm-12 my-1">
+                    <button type="submit" id="btn-login" class="float-right outline-none cursor-pointer btn-login">
+                    <div><a>Sign In</a></div>
+                    </button>
+                    <p id="info-login" class="text-orange"></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--end login form -->
+</section>
+
+

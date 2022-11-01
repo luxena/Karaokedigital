@@ -1,0 +1,29 @@
+﻿@model Karaokedigital.Models.CupModel
+
+@{
+    ViewData["Title"] = "DetailsCup";
+}
+
+<h1>Details Cup</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CupID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CupID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cup)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cup)
+        </dd>
+    </dl>
+</div>
+<div  class="mb-4">
+    <a class="btn btn-glow" href="EditCup/@Model.CupID" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+    <a class="btn btn-glow ml-2" asp-action="Cups" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+</div>

@@ -1,0 +1,32 @@
+﻿@model Karaokedigital.Models.RoleModel
+
+@{
+    ViewData["Title"] = "DeleteRoles";
+}
+
+<h1>DeleteRoles</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "All Roles are been deleted")
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-alert" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+    <form class="mb-4" asp-action="DeleteRoles">
+        <button type="submit" class="btn btn-glow" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-trash-alt"></i></button>
+        <a class="btn btn-glow ml-2" asp-action="Roles" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+    </form>
+</div>

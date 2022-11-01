@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Karaokedigital.Models.RoleModel>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Roles</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "All Roles are been deleted")
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateRole">Create New</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditRole", new { id = item.RoleID }, new { @class = "btn btn-info" })
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "DetailsRole", new { id = item.RoleID }, new { @class = "btn btn-success" })
+                </td>
+                <td onclick="location.href = 'Boss/DeleteRole?id=@item.RoleID'">
+                    @Html.ActionLink("Delete", "DeleteRole", new { id = item.RoleID }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

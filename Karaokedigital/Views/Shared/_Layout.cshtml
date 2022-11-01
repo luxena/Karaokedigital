@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Karaokedigital</title>
+    <link rel="icon" href="~/Img/Logo/mic.jpg" type="image/icon" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!--  Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!--  Bootstrap 5 CSS -->
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/index.css" rel="stylesheet" />
+    <link href="~/css/font.css" rel="stylesheet" type="text/css">
+    <link href="~/css/button-light.css" rel="stylesheet" />
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+    <link href="~/css/mystyle.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/cf0a95105e.js" crossorigin="anonymous"></script>
+    <script src="~/js/index.js"></script>
+    <script src="~/js/userValidation.js"></script>
+
+    <!-- Bootstrap 5  JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <!-- Bootstrap 5  JS -->
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="sunset fas fa-microphone-alt"></i></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex">
+                    @*flex-sm-row-reverse**@
+
+
+                    @*<ul class="navbar-nav flex-grow-1 navbar-left">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+
+                            @if (@ViewBag.Role == "Boss")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Users">Users</a>
+                                </li>
+                            }
+                        </ul>*@
+
+                    @if (@ViewBag.Role == null)
+                    {
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                            </li>
+                        </ul>
+
+
+                    }
+                    @if (@ViewBag.Role == "Owner")
+                    {
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Plans">Plans</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Plans">Plans</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreatePlan">Create Plan</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeletePlans">Delete All Plans</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Roles">Roles</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Roles">Roles</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateRole">Create Role</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteRoles">Delete All Roles</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Cups">Cups</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Cups">Cups</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateCup">Create Cup</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteCups">Delete All Cups</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="CustomerTypes">Customer Types</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CustomerTypes">Customer Types</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateCustomerType">Create Customer Type</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteCustomerTypes">Delete All Customer Types</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="ReservationStates">ReservationStates</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="ReservationStates">ReservationStates</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateReservationState">Create ReservationState</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteReservationStates">Delete All ReservationStates</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Tracks">Tracks</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Tracks">Tracks</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateTrack">Create Track</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteTracks">Delete All Tracks</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Bosses">Bosses</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Bosses">Bosses</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateBoss">Create Boss</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteBosses">Delete All Boss</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Customers">Customers</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Customers">Customers</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateCustomer">Create Customer</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteCustomers">Delete All Customers</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Users">Users</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="Users">Users</a>
+                            <a class="text-dark dropdown-item" asp-area="" asp-controller="Owner" asp-action="CreateUser">Create User</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Owner" asp-action="DeleteUsers">Delete All Users</a>
+                        </div>
+                    </li>
+                </ul>
+
+
+
+                    }
+
+                    @if (@ViewBag.Role == "Boss")
+                    {
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Bosses">Bosses</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Boss" asp-action="Plans">Plans</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="Plans">Plans</a>
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CreatePlan">Create Plan</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Boss" asp-action="DeletePlans">Delete All Plans</a>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Customers">Customers</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Boss" asp-action="CustomerTypes">Customer Types</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CustomerTypes">Customer Types</a>
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CreateCustomerType">Create Customer Type</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Boss" asp-action="DeleteCustomerTypes">Delete All Customer Types</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Boss" asp-action="Roles">Roles</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="Roles">Roles</a>
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CreateRole">Create Role</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Boss" asp-action="DeleteRoles">Delete All Roles</a>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="CustomerUsers">CustomerUsers</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Users">Users</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Boss" asp-action="Cups">Cups</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="Cups">Cups</a>
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CreateCup">Create Cup</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Boss" asp-action="DeleteCups">Delete All Cups</a>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Awards">Awards</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Trophies">Trophies</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Boss" asp-action="ReservationStates">ReservationStates</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="ReservationStates">ReservationStates</a>
+                                    <a class="text-dark dropdown-item" asp-area="" asp-controller="Boss" asp-action="CreateReservationState">Create ReservationState</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Boss" asp-action="DeleteReservationStates">Delete All ReservationStates</a>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Reservations">Reservations</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Chart">Chart</a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-0">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if (@ViewBag.Role == null)
+    {
+
+        <sidebar>
+            <div id="sidebar">
+                <i id="arrowDown" class="arrowDown fas fa-chevron-down  mb-4 cursor-pointer rounded-circle"></i>
+                <p id="nScroll" hidden></p>
+                <ul class="scroll">
+                    <li><a asp-controller="User" asp-action="Register" class="link-register text-light">Register</a></li>
+                    <li><a asp-controller="User" asp-action="Login" class="link-login text-light">Login</a></li>
+                    <li><a asp-controller="Customer" asp-action="Login" class="link-customers text-light">Area Clienti</a></li>
+                    <li><a asp-controller="Boss" asp-action="Login" class="link-customers text-light">Area Boss</a></li>
+                    <li><a asp-controller="Home" asp-action="Work" class="link-work text-light">Lavora con noi</a></li>
+                    <li><a asp-controller="Home" asp-action="Plans" class="link-plans text-light">Piani Abbonamento</a></li>
+                </ul>
+                <i id="arrowUp" class="arrowUp fas fa-chevron-up  mt-4 cursor-pointer rounded-circle"></i>
+            </div>
+
+        </sidebar>
+
+
+    }
+
+
+    <footer class="border-top footer text-muted">
+
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="p-4 col-md-3 ">
+
+                        <div class="logo-container">
+                            <h2 class="mb-4">Karaokedigital</h2>
+                            <p>Services for karaokist</p>
+                            <img class="cursor-pointer logo" src="~/Img/Logo/mic.jpg" alt="microphone" width="100" height="100">
+                        </div>
+                    </div>
+
+                    <div class="p-4 col-md-3">
+                        <h2 class="mb-4">Mapsite</h2>
+                        <ul class="list-unstyled">
+                            <li><a asp-controller="Home" asp-action="Index" class="home text-lightblack">Home</a></li>
+                            <li><a href="" class="link-register text-lightblack">Register</a></li>
+                            <li><a href="" class="link-customers text-lightblack">Area Clienti</a></li>
+                            <li><a href="" class="link-verify text-lightblack">Verifica Dominio</a></li>
+                            <li><a href="" class="link-work text-lightblack">Lavora con noi</a></li>
+                            <li><a href="" class="link-plans text-lightblack">Piani Abbonamento</a></li>
+                        </ul>
+                    </div>
+                    <div class="p-4 col-md-3">
+                        <h2 class="mb-4">Contact</h2>
+                        <p>
+                            <a href="tel:3427239909">
+                                <i class="fa d-inline mr-3 color-sky fa-phone"></i><span class="sunset">3427239909</span>
+                            </a>
+                        </p>
+                        <p>
+                            <a href="mailto:luxena@live.it">
+                                <i class="fa d-inline mr-3 color-sky fa-envelope-o"></i><span class="sunset">@@luxena</span>
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#">
+                                <i class="fa d-inline mr-3 fa-map-marker color-sky"></i><span class="sunset">Via Angioy, Portoscuso</span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="p-4 col-md-3">
+                        <h2 class="mb-4">Subscribe</h2>
+                        <form>
+                            <fieldset class="form-group">
+                                <label for="exampleInputEmail1">Get our newsletter</label>
+                                <input type="email" class=" txt-outline-info" placeholder="Enter email">
+                            </fieldset>
+                            <button type="submit" class="float-right outline-none btn-gradient w-100 cursor-pointer"><div><a>Submit</a></div></button>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        <p class="text-center text-info">&copy; Copyright 2022 Luxena - All rights reserved. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

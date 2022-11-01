@@ -1,0 +1,145 @@
+﻿@model Karaokedigital.Models.CustomerModel
+
+@{
+    ViewData["Title"] = "EditCustomer";
+}
+
+<h1>Edit Customer</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "Customer already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Owner" asp-action="EditCustomer" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <input asp-for="CustomerID" class="form-control" readonly />
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Boss" class="control-label"></label>
+                <input asp-for="Boss" class="form-control" />
+                <span asp-validation-for="Boss" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerType" class="control-label"></label>
+                <input asp-for="CustomerType" class="form-control" />
+                <span asp-validation-for="CustomerType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Society" class="control-label"></label>
+                <input asp-for="Society" class="form-control" />
+                <span asp-validation-for="Society" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PIvaFiscalCode" class="control-label"></label>
+                <input asp-for="PIvaFiscalCode" class="form-control" />
+                <span asp-validation-for="PIvaFiscalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="URL" class="control-label"></label>
+                <input asp-for="URL" class="form-control" />
+                <span asp-validation-for="URL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Province" class="control-label"></label>
+                <input asp-for="Province" class="form-control" />
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ZipCode" class="control-label"></label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Plan" class="control-label"></label>
+                <input asp-for="Plan" class="form-control" />
+                <span asp-validation-for="Plan" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.StartDate, new { @type = "date", @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.DueDate, new { @type = "date", @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => Model.Society)" width="60" height="60" src="~/Images/Customers/@Model.Society/@Html.DisplayFor(modelItem => Model.Logo)">
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="LogoFile" class="control-label">Logo</label>
+            </div>*@
+            <div class="input-group mb-3">
+                <input type="file" name="LogoFile" class="form-control d-none" id="LogoFile">
+                <label class="input-group-text" for="LogoFile">Sfoglia</label>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
+                <a class="btn btn-glow ml-2" href="DeactivateCustomer/@Model.CustomerID" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-warning fas fa-ban"></i></a>
+                <a class="btn btn-glow ml-2" asp-action="Customers" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

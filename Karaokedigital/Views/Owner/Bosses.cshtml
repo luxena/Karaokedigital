@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Karaokedigital.Models.BossModel>
+
+@{
+    ViewData["Title"] = "Boss List";
+}
+
+
+
+<h1>Bosses</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateBoss"><i class="fas fa-plus"></i></a> 
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BossID)
+            </th>
+            <th>Photo</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FiscalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditBoss?id=@item.BossID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.BossID)
+            </td>
+            <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Username)" width="60" height="60" src="~/Images/Bosses/@item.Username/@Html.DisplayFor(modelItem => item.Img)"></td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FiscalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <a class="btn btn-glow-circle mr-4" title="Customer" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerBoss?id=@item.BossID"><i class="fas fa-people-arrows"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Sales" data-bs-toggle="tooltip" data-bs-placement="top" href="SalesBoss?id=@item.BossID"><i class="bg-lilla fas fa-file-signature"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditBoss?id=@item.BossID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsBoss?id=@item.BossID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateBoss?id=@item.BossID"><i class="bg-warning fas fa-ban"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteBoss?id=@item.BossID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+
+
+    }
+        </tbody>
+    </table>
+
+
+

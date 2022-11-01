@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Karaokedigital.Models.CupModel>
+
+@{
+    ViewData["Title"] = "Cups";
+}
+
+<h1>Cups</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateCup">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CupID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cup)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CupID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cup)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCup", new { id = item.CupID }, new { @class = "btn btn-info" })
+            </td>
+            <td>
+                @Html.ActionLink("Details", "DetailsCup", new { id = item.CupID }, new { @class = "btn btn-success" })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "DeleteCup", new { id = item.CupID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
