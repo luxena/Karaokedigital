@@ -950,7 +950,6 @@ namespace Karaokedigital.Controllers
                 bossesModelList.Add(bossModel);
             }
 
-            return View("Bosses",bossesModelList);
         }
 
         public ActionResult Users()
