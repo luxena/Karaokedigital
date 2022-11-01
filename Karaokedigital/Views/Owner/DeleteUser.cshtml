@@ -98,6 +98,7 @@
         </dd>
     </dl>
     <form class="mb-4" asp-action="DeleteUser">
+        <input asp-for="UserID" class="form-control" hidden />
         <button type="submit" class="btn btn-glow" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-trash-alt"></i></button>
         <a class="btn btn-glow ml-2" asp-action="Users" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
     </form>
