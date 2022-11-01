@@ -149,6 +149,11 @@ a {
     color: #d05b25;
 }
 
+#up .fas {
+    line-height: 2 !important;
+}
+
+
 header {
     display: none !important;
     position: absolute;
