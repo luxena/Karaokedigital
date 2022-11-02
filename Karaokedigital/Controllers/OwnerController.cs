@@ -939,7 +939,6 @@ namespace Karaokedigital.Controllers
         }
 
         
-        
         public ActionResult DeactivateBoss(int id)
         {
             ViewBag.Role = "Owner";
