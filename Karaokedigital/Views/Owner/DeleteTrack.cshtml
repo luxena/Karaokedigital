@@ -10,7 +10,7 @@
 <div>
     @if (!string.IsNullOrEmpty(@ViewBag.Response))
     {
-        @if (@ViewBag.Response == "Track not exists")
+        if (@ViewBag.Response == "Track not exists")
         {
             <div class="alert alert-danger" role="alert">
                 @ViewBag.Response

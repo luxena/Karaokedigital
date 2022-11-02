@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Karaokedigital.Controllers
 {
+   
     public class OwnerController : Controller
     {
         public BusinessLogic bl = new BusinessLogic();
@@ -937,18 +938,15 @@ namespace Karaokedigital.Controllers
             }
         }
 
+        
+        
         public ActionResult DeactivateBoss(int id)
         {
             ViewBag.Role = "Owner";
             bl.DeactivateBoss(new Boss { BossID = id, IsActive = false });
-            List<Boss> bossList = bl.GetBosses(new Boss());
-            List<BossModel> bossesModelList = new List<BossModel>();
-            foreach (var boss in bossList)
-            {
-                BossModel bossModel = new BossModel();
-                bossModel.MapFromBoss(boss);
-                bossesModelList.Add(bossModel);
-            }
+            
+
+           return RedirectToAction("Bosses");
 
         }
 
