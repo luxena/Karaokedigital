@@ -147,7 +147,8 @@ namespace Karaokedigital.Controllers
 
             var model = new CustomerModel();
             model.MapFromCustomer(bl.GetCustomers(new Customer { CustomerID = CustomerID }).Single());
-            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+            model.StartDate = Convert.ToDateTime(model.StartDate).ToString("yyyy-MM-dd");
+            model.DueDate = Convert.ToDateTime(model.DueDate).ToString("yyyy-MM-dd");
 
             
             return RedirectToAction("EditCustomer", new { id = CustomerID, message = ViewBag.Response });
