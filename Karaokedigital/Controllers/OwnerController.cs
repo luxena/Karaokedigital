@@ -142,7 +142,6 @@ namespace Karaokedigital.Controllers
                 customerModelList.Add(customertModel);
             }
 
-            return View("Customers",customerModelList);
         }
 
         public ActionResult DeleteCustomer(int id)
