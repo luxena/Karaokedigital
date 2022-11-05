@@ -1070,8 +1070,6 @@ namespace Karaokedigital.Controllers
             var model = new UserModel();
             model.MapFromUser(bl.GetUsers(new User { UserID = UserID }).Single());
             
-
-            
             return RedirectToAction("EditUser", new { id = UserID, message = ViewBag.Response });
 
         }
