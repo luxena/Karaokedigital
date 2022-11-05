@@ -83,9 +83,14 @@
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                 </label>
             </div>
-            <div class="form-group mt-2">
+            <div class="form-group mt-2 float-left d-block">
                 <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
-                <a class="btn btn-glow ml-2" href="DeactivateUser/@Model.UserID" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-warning fas fa-ban"></i></a>
+            </div>
+        </form>
+        <form method="post" asp-controller="Owner" asp-action="DeactivateUser">
+            <div class="form-group mt-2 float-left d-block" style="float:left; display:block;">
+                <input asp-for="UserID" class="form-control" hidden />
+                <button type="submit" class="btn btn-glow ml-2" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-warning fas fa-ban"></i></button>
                 <a class="btn btn-glow ml-2" asp-action="Users" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
             </div>
         </form>

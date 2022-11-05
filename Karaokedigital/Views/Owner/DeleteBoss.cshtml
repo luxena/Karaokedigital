@@ -10,7 +10,7 @@
 <div>
     @if (!string.IsNullOrEmpty(@ViewBag.Response))
     {
-        @if (@ViewBag.Response == "Boss has been deleted")
+        if (@ViewBag.Response == "Boss has been deleted")
         {
             <div class="alert alert-info" role="alert">
                 @ViewBag.Response

@@ -4,9 +4,11 @@ using Karaokedigital.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Karaokedigital.Controllers
@@ -132,15 +134,23 @@ namespace Karaokedigital.Controllers
             ViewBag.Role = "Owner";
             bl.DeactivateCustomer(new Customer { CustomerID = id, IsActive = false });
 
-            List<Customer> customers = bl.GetCustomers(new Customer());
-            List<CustomerModel> customerModelList = new List<CustomerModel>();
-            foreach (var customer in customers)
-            {
-                CustomerModel customertModel = new CustomerModel();
-                customertModel.MapFromCustomer(customer);
- 
-                customerModelList.Add(customertModel);
-            }
+            return RedirectToAction("Customers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateCustomer(int CustomerID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            ViewBag.Response = bl.DeactivateCustomer(new Customer { CustomerID = CustomerID, IsActive = false });
+
+            var model = new CustomerModel();
+            model.MapFromCustomer(bl.GetCustomers(new Customer { CustomerID = CustomerID }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            
+            return RedirectToAction("EditCustomer", new { id = CustomerID, message = ViewBag.Response });
 
         }
 
@@ -858,9 +868,10 @@ namespace Karaokedigital.Controllers
             return View(model);
         }
 
-        public ActionResult EditBoss(int id)
+        public ActionResult EditBoss(int id,string message)
         {
             ViewBag.Role = "Owner";
+            ViewBag.Response = message;
             var model = new BossModel();
             model.MapFromBoss(bl.GetBosses(new Boss { BossID = id }).Single());
             model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
@@ -937,16 +948,36 @@ namespace Karaokedigital.Controllers
             }
         }
 
-        
+
         public ActionResult DeactivateBoss(int id)
         {
             ViewBag.Role = "Owner";
-            bl.DeactivateBoss(new Boss { BossID = id, IsActive = false });
-            
 
-           return RedirectToAction("Bosses");
+            bl.DeactivateBoss(new Boss { BossID = id, IsActive = false });
+
+
+            return RedirectToAction("Bosses");
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateBoss(int BossID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            ViewBag.Response = bl.DeactivateBoss(new Boss { BossID = BossID, IsActive = false });
+
+            var model = new BossModel();
+            model.MapFromBoss(bl.GetBosses(new Boss { BossID = BossID }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            //return RedirectToRoute("Default", new { controller = "Owner", action = "EditBoss", id = BossID });
+            return RedirectToAction("EditBoss", new { id = BossID, message = ViewBag.Response });
+
+        }
+
+        
 
         public ActionResult Users()
         {
@@ -1016,21 +1047,33 @@ namespace Karaokedigital.Controllers
             model.Img = bl.GetUsers(new User { UserID = model.UserID }).Single().Img;
             return View(model);
         }
+
+
+
         public ActionResult DeactivateUser(int id)
         {
             ViewBag.Role = "Owner";
 
             bl.DeactivateUser(new User { UserID = id, IsActive = false });
+            
+            return RedirectToAction("Users");
+        }
 
-            List<User> users = bl.GetUsers(new User());
-            List<UserModel> userModelList = new List<UserModel>();
-            foreach (var user in users)
-            {
-                UserModel userModel = new UserModel();
-                userModel.MapFromUser(user);
-                userModelList.Add(userModel);
-            }
-            return View("Users", userModelList);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateUser(int UserID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            ViewBag.Response = bl.DeactivateUser(new User { UserID = UserID, IsActive = false });
+
+            var model = new UserModel();
+            model.MapFromUser(bl.GetUsers(new User { UserID = UserID }).Single());
+            
+
+            
+            return RedirectToAction("EditUser", new { id = UserID, message = ViewBag.Response });
+
         }
 
         public ActionResult DeleteUser(int id)
