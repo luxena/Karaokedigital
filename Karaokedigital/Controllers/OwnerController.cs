@@ -4,12 +4,9 @@ using Karaokedigital.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Karaokedigital.Controllers
 {
@@ -60,7 +57,6 @@ namespace Karaokedigital.Controllers
 
             return View(customerModelList);
         }
-
         public ActionResult CreateCustomer()
         {
             ViewBag.Role = "Owner";
@@ -162,7 +158,6 @@ namespace Karaokedigital.Controllers
             model.MapFromCustomer(bl.GetCustomers(new Customer { CustomerID = id }).Single());
             return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
