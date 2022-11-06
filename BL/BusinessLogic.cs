@@ -483,6 +483,8 @@ namespace BL
             return response;
         }
 
+        //fare metodo che alla disattivazione del customer disattiva anche tutti gli utenti del customer
+
         public string DeleteCustomer(Customer customer)
         {
             string response = "";
@@ -517,6 +519,187 @@ namespace BL
         public List<CustomerUser> GetCustomerUsers(CustomerUser customerUser)
         {
             return dal.GetCustomerUsers(customerUser);
+        }
+
+        public async void InsertCustomerUser(CustomerUser customerUser)
+        {
+            string tmpFilePath = Path.Combine(customerUser.ImgPath, @"Images\CustomerUsers\", customerUser.Username.ToCapitalize(), customerUser.ImgFile.FileName);
+
+            customerUser.Img = (customerUser.ImgFile.FileName);
+
+
+            if (Directory.Exists(customerUser.ImgPath))
+            {
+                if (!Directory.Exists(customerUser.ImgPath + @"\Images"))
+                {
+                    Directory.CreateDirectory(customerUser.ImgPath + @"\Images");
+                    Directory.CreateDirectory(customerUser.ImgPath + @"Images\CustomerUsers\" + customerUser.Username.ToCapitalize());
+                }
+                else
+                {
+                    Directory.CreateDirectory(customerUser.ImgPath + @"\Images\CustomerUsers\" + customerUser.Username.ToCapitalize());
+                }
+            }
+
+
+            if (dal.InsertCustomerUser(customerUser))
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(tmpFilePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(tmpFilePath));
+                }
+
+                var stream = new FileStream(tmpFilePath, FileMode.Create);
+                await customerUser.ImgFile.CopyToAsync(stream);
+                stream.Close();
+            }
+        }
+
+        public string CreateCustomerUser(CustomerUser customerUser)
+        {
+            string response = "";
+            customerUser.DateOfBirth = Convert.ToDateTime(customerUser.DateOfBirth).ToShortDateString();
+            
+            bool customerExists = GetCustomerUsers(new CustomerUser { Username = customerUser.Username, FiscalCode = customerUser.FiscalCode, Email = customerUser.Email }).Any();
+
+            if (!customerExists)
+            {
+                InsertCustomerUser(customerUser);
+                customerExists = GetCustomerUsers(new CustomerUser { Username = customerUser.Username, FiscalCode = customerUser.FiscalCode, Email = customerUser.Email }).Any();
+                if (customerExists)
+                {
+                    response = "CustomerUser has been created";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "CustomerUser already exists";
+            }
+
+            return response;
+        }
+
+        public string EditCustomerUser(CustomerUser customerUser)
+        {
+            customerUser.DateOfBirth = Convert.ToDateTime(customerUser.DateOfBirth).ToShortDateString();
+        
+            string response = "";
+            bool customerExists = GetCustomerUsers(new CustomerUser()).Where(c => c.Username == customerUser.Username
+            && c.CustomerUserID != customerUser.CustomerUserID || c.Email == customerUser.Email && c.CustomerUserID != customerUser.CustomerUserID).Any();
+            if (!customerExists)
+            {
+                UpdateCustomerUser(customerUser);
+                if (GetCustomerUsers(customerUser).Any())
+                {
+                    response = "CustomerUser updated correctly";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "CustomerUser already exists";
+            }
+
+
+            return response;
+
+        }
+
+        private async void UpdateCustomerUser(CustomerUser customerUser)
+        {
+            if (customerUser.ImgFile != null)
+            {
+                string tmpFilePath = Path.Combine(customerUser.ImgPath, @"Images\CustomerUsers\", customerUser.Username, customerUser.ImgFile.FileName);
+
+                customerUser.Img = customerUser.ImgFile.FileName;
+
+                if (Directory.Exists(customerUser.ImgPath))
+                {
+                    if (!Directory.Exists(customerUser.ImgPath + @"\Images"))
+                    {
+                        Directory.CreateDirectory(customerUser.ImgPath + @"\Images");
+                        Directory.CreateDirectory(customerUser.ImgPath + @"Images\CustomerUsers\");
+                    }
+                }
+
+                if (dal.UpdateCustomerUser(customerUser))
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(tmpFilePath)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(tmpFilePath));
+                    }
+
+                    var stream = new FileStream(tmpFilePath, FileMode.Create);
+                    await customerUser.ImgFile.CopyToAsync(stream);
+                    stream.Close();
+
+                }
+
+            }
+            else
+            {
+                customerUser.Img = GetCustomerUsers(new CustomerUser { CustomerUserID = customerUser.CustomerUserID }).Single().Img;
+                dal.UpdateCustomerUser(customerUser);
+            }
+
+        }
+
+        public string DeactivateCustomerUser(CustomerUser customerUser)
+        {
+
+            string response = "";
+            bool customerUserExists = GetCustomerUsers(new CustomerUser()).Where(c => c.CustomerUserID == customerUser.CustomerUserID).Any();
+            if (customerUserExists)
+            {
+                if (dal.DeactivateCustomerUser(customerUser))
+                {
+                    response = "CustomerUser has been deactivated";
+                }
+            }
+            else
+            {
+                response = "CustomerUser not exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteCustomerUser(CustomerUser customerUser)
+        {
+            string response = "";
+            var ImgPath = customerUser.ImgPath;
+            customerUser = GetCustomerUsers(new CustomerUser { CustomerUserID = customerUser.CustomerUserID }).Single();
+            customerUser.ImgPath = ImgPath;
+            bool customerUserExists = GetCustomerUsers(new CustomerUser { CustomerUserID = customerUser.CustomerUserID }).Any();
+            if (customerUserExists)
+            {
+                var result = dal.DeleteCustomerUser(customerUser);
+                if (result)
+                {
+                    string customerUserFolderImgPath = Path.Combine(customerUser.ImgPath, @"Images\CustomerUsers\", customerUser.Username);
+
+                    if (Directory.Exists(customerUserFolderImgPath))
+                    {
+                        DeleteDirectory(customerUserFolderImgPath);
+
+                    }
+
+                    response = "CustomerUser has been deleted";
+                }
+            }
+            else
+            {
+                response = "CustomerUser not exists";
+            }
+
+            return response;
         }
 
         public string LoginCustomerUser(CustomerUser customerUser)

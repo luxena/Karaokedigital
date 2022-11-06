@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Karaokedigital.Controllers
 {
-   
+
     public class OwnerController : Controller
     {
         public BusinessLogic bl = new BusinessLogic();
@@ -94,9 +94,10 @@ namespace Karaokedigital.Controllers
             model.MapFromCustomer(bl.GetCustomers(new Customer { CustomerID = id }).Single());
             return View(model);
         }
-        public ActionResult EditCustomer(int id)
+        public ActionResult EditCustomer(int id,string message)
         {
             ViewBag.Role = "Owner";
+            ViewBag.Response = message;
             var model = new CustomerModel();
             model.MapFromCustomer(bl.GetCustomers(new Customer { CustomerID = id }).Single());
             model.StartDate = Convert.ToDateTime(model.StartDate).ToString("yyyy-MM-dd");
@@ -176,7 +177,155 @@ namespace Karaokedigital.Controllers
             }
         }
 
+        public ActionResult CustomersUsers()
+        {
+            ViewBag.Role = "Owner";
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser());
+            List<CustomerUserModel> modelList = new List<CustomerUserModel>();
+            foreach (var customerUser in customerUsers)
+            {
+                CustomerUserModel model = new CustomerUserModel();
+                model.MapFromCustomerUser(customerUser);
+                modelList.Add(model);
+            }
 
+            return View(modelList);
+        }
+
+        public ActionResult CustomerUsers(int id)
+        {
+            ViewBag.Role = "Owner";
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = id }).Single().Society });
+            List<CustomerUserModel> modelList = new List<CustomerUserModel>();
+            foreach (var customerUser in customerUsers)
+            {
+                CustomerUserModel model = new CustomerUserModel();
+                model.MapFromCustomerUser(customerUser);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
+        public ActionResult CreateCustomerUser()
+        {
+            ViewBag.Role = "Owner";
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCustomerUser(CustomerUserModel model)
+        {
+            ViewBag.Role = "Owner";
+            model.ImgPath = _iweb.WebRootPath;
+            model.IsActive = true;
+
+            try
+            {
+                ViewBag.Response = bl.CreateCustomerUser(model.MapIntoCustomerUser());
+                
+                return View(model);
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult DetailsCustomerUser(int id)
+        {
+            ViewBag.Role = "Owner";
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            return View(model);
+        }
+
+        public ActionResult EditCustomerUser(int id,string message)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Response = message;
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCustomerUser(CustomerUserModel model)
+        {
+            ViewBag.Role = "Owner";
+
+            if (model.ImgFile != null)
+            {
+                model.ImgPath = _iweb.WebRootPath;
+            }
+            else
+            {
+                model.Img = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = model.CustomerUserID }).Single().Img;
+            }
+
+            ViewBag.Response = bl.EditCustomerUser(model.MapIntoCustomerUser());
+            model.Img = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = model.CustomerUserID }).Single().Img;
+
+            return View(model);
+        }
+
+        public ActionResult DeactivateCustomerUser(int id)
+        {
+            ViewBag.Role = "Owner";
+            bl.DeactivateCustomerUser(new CustomerUser { CustomerUserID = id, IsActive = false });
+
+            return RedirectToAction("CustomersUsers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateCustomerUser(int CustomerUserID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            ViewBag.Response = bl.DeactivateCustomerUser(new CustomerUser { CustomerUserID = CustomerUserID, IsActive = false });
+
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = CustomerUserID }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+        
+
+
+            return RedirectToAction("EditCustomerUser", new { id = CustomerUserID, message = ViewBag.Response });
+
+        }
+
+        public ActionResult DeleteCustomerUser(int id)
+        {
+            ViewBag.Role = "Owner";
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCustomerUser(int CustomerUserID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            try
+            {
+                ViewBag.Response = bl.DeleteCustomerUser(new CustomerUser { CustomerUserID = CustomerUserID, ImgPath = _iweb.WebRootPath });
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
         public ActionResult SalesBoss(int id)
         {
             ViewBag.Role = "Owner";

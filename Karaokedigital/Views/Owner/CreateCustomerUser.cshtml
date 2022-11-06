@@ -1,0 +1,138 @@
+﻿@model Karaokedigital.Models.CustomerUserModel
+
+@{
+    ViewData["Title"] = "CreateCustomerUser";
+}
+
+<h1>Create CustomerUser</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "CustomerUser already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form 
+            method="post" asp-controller="Owner" asp-action="CreateCustomerUser" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Customer" class="control-label"></label>
+                <input asp-for="Customer" class="form-control" />
+                <span asp-validation-for="Customer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+              <div class="form-group">
+                @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    @Html.TextBoxFor(model => model.DateOfBirth, new { @type = "date", @class = "form-control datepicker", @Value = DateTime.Today.ToString("dd-MM-yyyy") })
+                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="BornCountry" class="control-label"></label>
+                <input asp-for="BornCountry" class="form-control" />
+                <span asp-validation-for="BornCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BornProvince" class="control-label"></label>
+                <input asp-for="BornProvince" class="form-control" />
+                <span asp-validation-for="BornProvince" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BornCity" class="control-label"></label>
+                <input asp-for="BornCity" class="form-control" />
+                <span asp-validation-for="BornCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FiscalCode" class="control-label"></label>
+                <input asp-for="FiscalCode" class="form-control" />
+                <span asp-validation-for="FiscalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Province" class="control-label"></label>
+                <input asp-for="Province" class="form-control" />
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ZipCode" class="control-label"></label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImgFile" class="control-label">Foto</label>
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" name="ImgFile" class="form-control d-none" id="ImgFile">
+                <label class="input-group-text" for="ImgFile">Sfoglia</label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="mt-3 form-group">
+                <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
+                <a class="btn btn-glow ml-2" asp-action="CustomersUsers" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

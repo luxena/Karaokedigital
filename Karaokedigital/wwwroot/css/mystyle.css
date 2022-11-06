@@ -378,6 +378,17 @@ footer {
         color: linear-gradient(to right, red, purple);
     }
 
+        .btn-gradient span {
+            background: linear-gradient(to right, #dc2430 20%, #7b4397 40%, #7b4397 60%, #dc2430 80%);
+            background-size: 200% auto;
+            background-clip: text;
+            text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 12s linear infinite;
+        }
+
+
     .btn-gradient a {
         background: linear-gradient(to right, #dc2430 20%, #7b4397 40%, #7b4397 60%, #dc2430 80%);
         background-size: 200% auto;
