@@ -28,9 +28,9 @@
         <form 
             method="post" asp-controller="Owner" asp-action="CreateCustomerUser" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Customer" class="control-label"></label>
-                <input asp-for="Customer" class="form-control" />
+            <div class="form-group d-none">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <input asp-for="CustomerID" class="form-control" value="@ViewBag.CustomerID" />
                 <span asp-validation-for="Customer" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -129,7 +129,7 @@
             </div>
             <div class="mt-3 form-group">
                 <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
-                <a class="btn btn-glow ml-2" asp-action="CustomersUsers" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+                <a class="btn btn-glow ml-2" href="CustomerUsers?id=@ViewBag.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
             </div>
         </form>
     </div>

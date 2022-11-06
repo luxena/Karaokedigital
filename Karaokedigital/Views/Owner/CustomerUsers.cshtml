@@ -8,7 +8,8 @@
 
 
 <p class="mt-4">
-    <a class="btn btn-glow" asp-action="CreateCustomerUser"><i class="fas fa-plus"></i></a>
+    @*<a class="btn btn-glow" asp-action="CreateCustomerUser"><i class="fas fa-plus"></i></a>*@
+    <a class="btn btn-glow" href="CreateCustomerUser?id=@ViewBag.CustomerID"><i class="fas fa-plus"></i></a>
 </p>
 <table class="table">
     <thead>

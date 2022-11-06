@@ -472,6 +472,7 @@ namespace BL
             {
                 if (dal.DeactivateCustomer(customer))
                 {
+                    DeactivateCustomerUsers(customer);
                     response = "Customer has been deactivated";
                 }
             }
@@ -481,6 +482,16 @@ namespace BL
             }
 
             return response;
+        }
+
+
+        public void DeactivateCustomerUsers(Customer customer)
+        {
+            foreach (var customerUser in GetCustomerUsers(new CustomerUser { CustomerID = customer.CustomerID }))
+            {
+                customerUser.IsActive = false;
+                DeactivateCustomerUser(customerUser);
+            }
         }
 
         //fare metodo che alla disattivazione del customer disattiva anche tutti gli utenti del customer
@@ -557,6 +568,22 @@ namespace BL
 
         public string CreateCustomerUser(CustomerUser customerUser)
         {
+            if (!string.IsNullOrEmpty(customerUser.Customer) && customerUser.CustomerID == 0)
+            {
+                customerUser.CustomerID = GetCustomers(new Customer { Society = customerUser.Customer }).Single().CustomerID;
+            }
+
+            int nCustomerUser = GetCustomerUsers(new CustomerUser { CustomerID = customerUser.CustomerID }).Count;
+
+            if (nCustomerUser > 0)
+            {
+                customerUser.Role = "CustomerUser";
+            }
+            else
+            {
+                customerUser.Role = "Customer";
+            }
+
             string response = "";
             customerUser.DateOfBirth = Convert.ToDateTime(customerUser.DateOfBirth).ToShortDateString();
             

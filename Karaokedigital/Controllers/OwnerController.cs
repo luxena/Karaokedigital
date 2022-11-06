@@ -195,6 +195,7 @@ namespace Karaokedigital.Controllers
         public ActionResult CustomerUsers(int id)
         {
             ViewBag.Role = "Owner";
+            ViewBag.CustomerID = id;
             List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = id }).Single().Society });
             List<CustomerUserModel> modelList = new List<CustomerUserModel>();
             foreach (var customerUser in customerUsers)
@@ -207,10 +208,10 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
-        public ActionResult CreateCustomerUser()
+        public ActionResult CreateCustomerUser(int id)
         {
             ViewBag.Role = "Owner";
-
+            ViewBag.CustomerID = id;
             return View();
         }
 
@@ -221,7 +222,7 @@ namespace Karaokedigital.Controllers
             ViewBag.Role = "Owner";
             model.ImgPath = _iweb.WebRootPath;
             model.IsActive = true;
-
+            ViewBag.CustomerID = model.CustomerID;
             try
             {
                 ViewBag.Response = bl.CreateCustomerUser(model.MapIntoCustomerUser());
@@ -279,9 +280,21 @@ namespace Karaokedigital.Controllers
         public ActionResult DeactivateCustomerUser(int id)
         {
             ViewBag.Role = "Owner";
+            int customerID = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single().CustomerID;
             bl.DeactivateCustomerUser(new CustomerUser { CustomerUserID = id, IsActive = false });
 
-            return RedirectToAction("CustomersUsers");
+            ViewBag.CustomerID = customerID;
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = customerID }).Single().Society });
+            List<CustomerUserModel> modelList = new List<CustomerUserModel>();
+            foreach (var customerUser in customerUsers)
+            {
+                CustomerUserModel model = new CustomerUserModel();
+                model.MapFromCustomerUser(customerUser);
+                modelList.Add(model);
+            }
+
+            return View("CustomerUsers", modelList);
+
         }
 
         [HttpPost]
@@ -315,6 +328,9 @@ namespace Karaokedigital.Controllers
         public ActionResult DeleteCustomerUser(int CustomerUserID, IFormCollection collection)
         {
             ViewBag.Role = "Owner";
+            int customerID = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = CustomerUserID }).Single().CustomerID;
+           
+            ViewBag.CustomerID = customerID;
 
             try
             {

@@ -1174,6 +1174,7 @@ namespace DAL
 
                     string query = @"SELECT 
                                   c.[CustomerUserID]
+                                  ,c.[CustomerID]
                                   ,cm.[Society] Customer
                                   ,c.[Name]
                                   ,c.[Surname]
@@ -1198,6 +1199,7 @@ namespace DAL
                               INNER JOIN Roles r on r.RoleID = c.RoleID
                               INNER JOIN Customers cm on cm.CustomerID = c.CustomerID
                               WHERE (CustomerUserID = @CustomerUserID or @CustomerUserID = 0) AND 
+                                    (c.CustomerID = @CustomerID or @CustomerID  = 0 ) AND 
                                     (Society = @Customer or @Customer  is null ) AND 
                                     (Name = @Name or @Name  is null ) AND 
                                     (Surname = @Surname or @Surname is null) AND 
@@ -1222,6 +1224,7 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"CustomerUserID",customerUser.CustomerUserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID",customerUser.CustomerID);
 
                     if (!string.IsNullOrEmpty(customerUser.Customer))
                     {
@@ -1405,6 +1408,7 @@ namespace DAL
                     {
                         CustomerUser _customerUser = new CustomerUser();
                         _customerUser.CustomerUserID = Convert.ToInt32(reader["CustomerUserID"].ToString());
+                        _customerUser.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         _customerUser.Customer = reader["Customer"].ToString();
                         _customerUser.Name = reader["Name"].ToString();
                         _customerUser.Surname = reader["Surname"].ToString();
@@ -1478,7 +1482,8 @@ namespace DAL
                                 ,@RoleID          
                                 ,@IsActive)";
                     SqlCommand cmd = new SqlCommand(query, con);
-                    _ = !string.IsNullOrEmpty(customerUser.Customer) ? cmd.Parameters.AddWithValue(@"CustomerID", customerUser.Customer) : cmd.Parameters.AddWithValue(@"CustomerID", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"CustomerID", customerUser.CustomerID);
+               
                     _ = !string.IsNullOrEmpty(customerUser.Name) ? cmd.Parameters.AddWithValue(@"Name", customerUser.Name.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Name", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Surname) ? cmd.Parameters.AddWithValue(@"Surname", customerUser.Surname.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Surname", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Username) ? cmd.Parameters.AddWithValue(@"Username", customerUser.Username.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Username", DBNull.Value);
@@ -1557,7 +1562,7 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"CustomerUserID", customerUser.CustomerUserID);
-                    _ = !string.IsNullOrEmpty(customerUser.Customer) ? cmd.Parameters.AddWithValue(@"CustomerID", customerUser.Customer) : cmd.Parameters.AddWithValue(@"CustomerID", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Customer) ? cmd.Parameters.AddWithValue(@"CustomerID", GetCustomers(new Customer { Society = customerUser.Customer }).Single().CustomerID) : cmd.Parameters.AddWithValue(@"CustomerID", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Name) ? cmd.Parameters.AddWithValue(@"Name", customerUser.Name.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Name", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Surname) ? cmd.Parameters.AddWithValue(@"Surname", customerUser.Surname.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Surname", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Username) ? cmd.Parameters.AddWithValue(@"Username", customerUser.Username.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Username", DBNull.Value);
@@ -1657,7 +1662,7 @@ namespace DAL
                     string query = @"DELETE CustomerUsers WHERE CustomerUserID = @CustomerUserID";
                     SqlCommand cmd = new SqlCommand(query, con);
 
-                    cmd.Parameters.AddWithValue(@"CustomerID", customerUser.CustomerUserID);
+                    cmd.Parameters.AddWithValue(@"CustomerUserID", customerUser.CustomerUserID);
 
                     result = cmd.ExecuteNonQuery();
                     bool customerUserExists = GetCustomerUsers(customerUser).Any();

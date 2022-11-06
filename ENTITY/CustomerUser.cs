@@ -8,6 +8,7 @@ namespace ENTITY
     public class CustomerUser
     {
         public int CustomerUserID { get; set; }
+        public int CustomerID { get; set; }
         public string Customer { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

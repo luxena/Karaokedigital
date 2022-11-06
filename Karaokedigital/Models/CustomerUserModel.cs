@@ -10,6 +10,7 @@ namespace Karaokedigital.Models
     public class CustomerUserModel
     {
         public int CustomerUserID { get; set; }
+        public int CustomerID { get; set; }
         public string Customer { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -36,6 +37,7 @@ namespace Karaokedigital.Models
         public void MapFromCustomerUser(CustomerUser customerUser)
         {
             CustomerUserID = customerUser.CustomerUserID;
+            CustomerID = customerUser.CustomerID;
             Customer = customerUser.Customer;
             Name = customerUser.Name;
             Surname = customerUser.Surname;
@@ -64,6 +66,7 @@ namespace Karaokedigital.Models
             return new CustomerUser
             {
                 CustomerUserID = CustomerUserID,
+                CustomerID = CustomerID,
                 Customer = Customer,
                 Name = Name,
                 Surname = Surname,
