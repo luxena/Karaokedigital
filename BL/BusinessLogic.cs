@@ -34,6 +34,75 @@ namespace BL
             Directory.Delete(path, false);
         }
 
+        public string GetDueDate(string startDate, int planID)
+        {
+            string duration = GetPlans(new Plans { PlanID = planID }).Single().Duration;
+            DateTime today = Convert.ToDateTime(startDate);
+            DateTime endDate = today;
+
+
+            var index = duration.IndexOf(" ");
+
+            var n = duration.Substring(0, index);
+            var p = duration.Substring((index + 1), duration.Length - (index + 1));
+
+            switch (p)
+            {
+                case "day":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "days":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "Day":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "Days":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "week":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "weeks":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "Week":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "Weeks":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "month":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "months":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "Month":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "Months":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "year":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "years":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "Year":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "Years":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                default:
+                    break;
+            }
+
+            return endDate.ToShortDateString();
+        }
+
         /* BOSS */
         public List<Boss> GetBosses(Boss boss)
         {
@@ -370,28 +439,74 @@ namespace BL
         public string CreateCustomer(Customer customer)
         {
             string response = "";
-            customer.StartDate = Convert.ToDateTime(customer.StartDate).ToShortDateString();
-            customer.DueDate = GetDueDate(customer.StartDate,Convert.ToInt32(customer.Plan));
-            bool customerExists = GetCustomers(new Customer { Society = customer.Society,PIvaFiscalCode = customer.PIvaFiscalCode,Email = customer.Email }).Any();
 
-            if (!customerExists)
+            customer.StartDate = Convert.ToDateTime(customer.StartDate).ToShortDateString();
+            customer.DueDate = GetDueDate(customer.StartDate, Convert.ToInt32(customer.Plan));
+            bool customerExists = GetCustomers(new Customer { Society = customer.Society, PIvaFiscalCode = customer.PIvaFiscalCode, Email = customer.Email }).Any();
+
+
+            if (string.IsNullOrEmpty(customer.MainCustomer))
             {
-                InsertCustomer(customer);
-                customerExists = GetCustomers(new Customer { Society = customer.Society, PIvaFiscalCode = customer.PIvaFiscalCode, Email = customer.Email }).Any();
-                if (customerExists)
+                
+                if (!customerExists)
                 {
-                    response = "Customer has been created";
+                    InsertCustomer(customer);
+                    customerExists = GetCustomers(new Customer { Society = customer.Society, PIvaFiscalCode = customer.PIvaFiscalCode, Email = customer.Email }).Any();
+                    if (customerExists)
+                    {
+                        response = "Customer has been created";
+                    }
+                    else
+                    {
+                        response = "Error";
+                    }
                 }
                 else
                 {
-                    response = "Error";
+                    response = "Customer already exists";
                 }
             }
             else
             {
-                response = "Customer already exists";
-            }
+                if (GetCustomers(new Customer { Society = customer.MainCustomer.ToCapitalize() }).Single().IsActive)
+                {
+                    if (!customerExists)
+                    {
+                        InsertCustomer(customer);
+                        customerExists = GetCustomers(new Customer { Society = customer.Society, PIvaFiscalCode = customer.PIvaFiscalCode, Email = customer.Email }).Any();
+                        if (customerExists)
+                        {
+                            if (!string.IsNullOrEmpty(customer.MainCustomer))
+                            {
+                                SubCustomers subCustomer = new SubCustomers();
+                                subCustomer.CustomerID = GetCustomers(new Customer { Society = customer.MainCustomer.ToCapitalize() }).Single().CustomerID;
+                                subCustomer.SubCustomerID = GetCustomers(new Customer { Society = customer.Society }).Single().CustomerID;
+                                subCustomer.IsActive = true;
 
+                                response = InsertSubCustomer(subCustomer);
+
+                            }
+                        }
+                        else
+                        {
+                            response = "Error sub";
+                        }
+
+
+                    }
+                    else
+                    {
+                        response = "Customer already exists";
+                    }
+                }
+                else
+                {
+                    response = "The Main Customer is not Active, Reactivate it before insert a SubCustomer";
+                }
+
+                
+            }
+           
             return response;
         }
 
@@ -484,7 +599,7 @@ namespace BL
             return response;
         }
 
-
+        //disattivazione di tutti gli utenti del customer
         public void DeactivateCustomerUsers(Customer customer)
         {
             foreach (var customerUser in GetCustomerUsers(new CustomerUser { CustomerID = customer.CustomerID }))
@@ -524,7 +639,8 @@ namespace BL
 
             return response;
         }
-
+        /* CUSTOMER */
+        /* CUSTOMER USER */
         public List<CustomerUser> GetCustomerUsers(CustomerUser customerUser)
         {
             return dal.GetCustomerUsers(customerUser);
@@ -743,7 +859,116 @@ namespace BL
             return response;
 
         }
-        /* CUSTOMER */
+        /* CUSTOMER USER */
+
+        /* SUB CUSTOMER */
+        public List<SubCustomers> GetSubCustomers(SubCustomers subCustomer)
+        {
+            return dal.GetSubCustomers(subCustomer);
+        }
+
+        public string InsertSubCustomer(SubCustomers subCustomer)
+        {
+            string response = "";
+            if (GetCustomers(new Customer { CustomerID = subCustomer.CustomerID }).Single().IsActive)
+            {
+                bool subCustomerExists = GetSubCustomers(new SubCustomers { CustomerID = subCustomer.CustomerID, SubCustomerID = subCustomer.SubCustomerID }).Any();
+
+                if (!subCustomerExists)
+                {
+                    dal.InsertSubCustomer(subCustomer);
+                    subCustomerExists = GetSubCustomers(new SubCustomers { CustomerID = subCustomer.CustomerID, SubCustomerID = subCustomer.SubCustomerID }).Any();
+
+                    if (subCustomerExists)
+                    {
+                        response = "SubCustomer has been created";
+                    }
+                    else
+                    {
+                        response = "Error subcustomer";
+                    }
+                }
+                else
+                {
+                    response = "SubCustomer already exists";
+                }
+            }
+            else
+            {
+                response = "The Main Customer is not Active, Reactivate it before insert a SubCustomer";
+            }
+
+            return response;
+        }
+
+        public string UpdateSubCustomer(SubCustomers subCustomer)
+        {
+            string response = "";
+            bool subCustomerExists = GetSubCustomers(new SubCustomers()).Where(c => c.SubCustomerID != subCustomer.SubCustomerID && c.SubCustID != subCustomer.SubCustID).Any();
+            if (!subCustomerExists)
+            {
+                UpdateSubCustomer(subCustomer);
+                if (GetSubCustomers(subCustomer).Any())
+                {
+                    response = "SubCustomer updated correctly";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "SubCustomer already exists";
+            }
+
+            return response;
+        }
+
+        public string DeactivateSubCustomer(SubCustomers subCustomer)
+        {
+            string response = "";
+            bool subCustomerExists = GetSubCustomers(new SubCustomers()).Where(c => c.SubCustID == subCustomer.SubCustID).Any();
+            if (subCustomerExists)
+            {
+                if (dal.DeactivateSubCustomer(subCustomer))
+                {
+                    response = "SubCustomer has been deactivated";
+                }
+            }
+            else
+            {
+                response = "SubCustomer not exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteSubCustomer(SubCustomers subCustomer)
+        {
+            string response = "";
+            bool subCustomerExists = GetSubCustomers(new SubCustomers()).Where(c => c.SubCustID == subCustomer.SubCustID).Any();
+            if (subCustomerExists)
+            {
+                if (dal.DeleteSubCustomer(subCustomer))
+                {
+                    response = "SubCustomer has been deleted";
+                }
+            }
+            else
+            {
+                response = "SubCustomer not exists";
+            }
+
+            return response;
+        }
+
+        public bool IsSubCustomer(Customer customer)
+        {
+            return GetSubCustomers(new SubCustomers()).Where(c => c.SubCustomerID == customer.CustomerID).Any();
+        }
+
+        /* SUB CUSTOMER */
         /* USER */
         public List<User> GetUsers(User user)
         {
@@ -1284,15 +1509,19 @@ namespace BL
             return response;
         }
         /* CUP */
+        /* AWARD */
         public List<Awards> GetAwards(Awards award)
         {
             return dal.GetAwards(award);
         }
+        /* AWARD */
+        /* TROPHY */
 
         public List<Trophy> GetTrophies(Trophy trophy)
         {
             return dal.GetTrophies(trophy);
         }
+        /* TROPHY */
 
         /* RESERVATION STATE*/
         public List<ReservationState> GetReservationStates(ReservationState reservationState)
@@ -1367,16 +1596,18 @@ namespace BL
             return response;
         }
         /* RESERVATION STATE*/
+        /* RESERVATION */
         public List<Reservation> GetReservations(Reservation reservation)
         {
             return dal.GetReservations(reservation);
         }
-
+        /* RESERVATION */
+        /* CHART */
         public List<Chart> GetChart(Customer customer)
         {
             return dal.GetChart(customer);
         }
-
+        /* CHART */
         /* TRACK */
         public List<Track> GetTracks(Track track)
         {
@@ -1521,6 +1752,6 @@ namespace BL
 
         /* TRACK */
 
-
+         
     }
 }

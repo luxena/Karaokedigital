@@ -29,6 +29,7 @@ namespace Karaokedigital.Models
         public string LogoPath { get; set; }
         public IFormFile LogoFile { get; set; }
         public bool IsActive { get; set; }
+        public string MainCustomer { get; set; }
 
         public void MapFromCustomer(Customer customer)
         {
@@ -52,6 +53,7 @@ namespace Karaokedigital.Models
             LogoFile = customer.LogoFile;
             LogoPath = customer.LogoPath;
             IsActive = customer.IsActive;
+            MainCustomer = customer.MainCustomer;
         }
         public Customer MapIntoCustomer()
         {
@@ -77,6 +79,7 @@ namespace Karaokedigital.Models
                 LogoFile = LogoFile,
                 LogoPath = LogoPath,
                 IsActive = IsActive,
+                MainCustomer = MainCustomer
             };
         }
     }

@@ -1691,6 +1691,212 @@ namespace DAL
             return response;
         }
         /* CUSTOMER USER*/
+        /* SUBCUSTOMER */
+        public List<SubCustomers> GetSubCustomers(SubCustomers subCustomer)
+        {
+            List<SubCustomers> subcustomers = new List<SubCustomers>();
+
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"SELECT sub.SubCustID,sub.CustomerID,sub.SubCustomerID,c.Society Customer,subc.Society SubCustomer,sub.IsActive
+                                    FROM SubCustomers sub
+                                    INNER JOIN Customers c on c.CustomerID = sub.CustomerID
+                                    INNER JOIN Customers subc on subc.CustomerID = sub.SubCustomerID
+                                    WHERE (SubCustID = @SubCustID OR @SubCustID = 0) AND
+                                    (sub.CustomerID = @CustomerID OR @CustomerID = 0) AND
+                                    (sub.SubCustomerID = @SubCustomerID OR @SubCustomerID = 0) AND
+                                    (c.Society = @Customer OR @Customer IS NULL) AND
+                                    (subc.Society = @SubCustomer OR @SubCustomer IS NULL) AND
+                                    (sub.IsActive = @IsActive OR @IsActive = 0)";
+
+                    SqlCommand cmd = new SqlCommand(query,con);
+                    cmd.Parameters.AddWithValue(@"SubCustID",subCustomer.SubCustID);
+                    cmd.Parameters.AddWithValue(@"CustomerID",subCustomer.CustomerID);
+                    cmd.Parameters.AddWithValue(@"SubCustomerID",subCustomer.SubCustomerID);
+                    cmd.Parameters.AddWithValue(@"IsActive", subCustomer.IsActive);
+
+                    _ = !string.IsNullOrEmpty(subCustomer.Customer) ? cmd.Parameters.AddWithValue(@"Customer", subCustomer.Customer.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(subCustomer.SubCustomer) ? cmd.Parameters.AddWithValue(@"SubCustomer", subCustomer.SubCustomer.ToCapitalize()) : cmd.Parameters.AddWithValue(@"SubCustomer", DBNull.Value);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    { 
+                        SubCustomers sub = new SubCustomers();
+                        sub.SubCustID = Convert.ToInt32(reader["SubCustID"].ToString());
+                        sub.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        sub.SubCustomerID = Convert.ToInt32(reader["SubCustomerID"].ToString());
+                        sub.Customer = reader["Customer"].ToString();
+                        sub.SubCustomer = reader["SubCustomer"].ToString();
+                        sub.IsActive = Convert.ToBoolean(reader["IsActive"].ToString());
+
+                        subcustomers.Add(sub);
+                        
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+            }
+
+            return subcustomers;
+        }
+
+        public bool InsertSubCustomer(SubCustomers subCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO SubCustomers VALUES (@CustomerID,@SubCustomerID,@IsActive)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"CustomerID", subCustomer.CustomerID);
+                    cmd.Parameters.AddWithValue(@"SubCustomerID", subCustomer.SubCustomerID);
+                    cmd.Parameters.AddWithValue(@"IsActive", subCustomer.IsActive);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetSubCustomers(subCustomer).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool UpdateSubCustomer(SubCustomers subCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE SubCustomers SET CustomerID = @CustomerID,SubCustomerID = @SubCustomerID,IsActive = @IsActive
+                                     WHERE SubCustID = @SubCustID";
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"SubCustID", subCustomer.SubCustID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", subCustomer.CustomerID);
+                    cmd.Parameters.AddWithValue(@"SubCustomerID", subCustomer.SubCustomerID);
+                    cmd.Parameters.AddWithValue(@"IsActive", subCustomer.IsActive);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetSubCustomers(subCustomer).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeactivateSubCustomer(SubCustomers subCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE SubCustomers SET IsActive = @IsActive WHERE SubCustID = @SubCustID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"SubCustID", subCustomer.SubCustID);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetSubCustomers(subCustomer).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteSubCustomer(SubCustomers subCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE FROM SubCustomers WHERE SubCustID = @SubCustID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"SubCustID", subCustomer.SubCustID);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetSubCustomers(subCustomer).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+        /* SUBCUSTOMER */
+
 
         /* USER */
         public List<User> GetUsers(User user)

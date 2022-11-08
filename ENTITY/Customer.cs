@@ -27,5 +27,6 @@ namespace ENTITY
         public string LogoPath { get; set; }
         public IFormFile LogoFile { get; set; }
         public bool IsActive { get; set; }
+        public string MainCustomer { get; set; }
     }
 }

@@ -9,12 +9,12 @@ namespace GUI
     {
         static void Main(string[] args)
         {
-            //BusinessLogic bl = new BusinessLogic();
+            BusinessLogic bl = new BusinessLogic();
 
-            //Console.WriteLine(bl.GetTracks(new Track()).Count);
-            var data  = Convert.ToDateTime("11/03/1983").ToString("yyyy-MM-dd");
-          
-            Console.WriteLine(data);
+           bool subCustomerExists = bl.GetSubCustomers(new SubCustomers { CustomerID = 1, SubCustomerID = 18 }).Any();
+
+
+            Console.WriteLine(subCustomerExists);
 
             Console.ReadLine();
         }

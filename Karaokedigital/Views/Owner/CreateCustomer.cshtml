@@ -138,6 +138,11 @@
                 <input type="file" name="LogoFile" class="form-control d-none" id="LogoFile">
                 <label class="input-group-text" for="LogoFile">Sfoglia</label>
             </div>
+            <div class="form-group">
+                <label asp-for="MainCustomer" class="control-label"></label>
+                <input asp-for="MainCustomer" class="form-control" />
+                <span asp-validation-for="MainCustomer" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
