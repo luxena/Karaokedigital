@@ -494,8 +494,6 @@ namespace BL
             }
         }
 
-        //fare metodo che alla disattivazione del customer disattiva anche tutti gli utenti del customer
-
         public string DeleteCustomer(Customer customer)
         {
             string response = "";
@@ -1523,73 +1521,6 @@ namespace BL
 
         /* TRACK */
 
-        public string GetDueDate(string startDate,int planID)
-        {
-            string duration = GetPlans(new Plans { PlanID = planID }).Single().Duration;
-            DateTime today = Convert.ToDateTime(startDate);
-            DateTime endDate = today;
-           
 
-            var index = duration.IndexOf(" ");
-
-            var n = duration.Substring(0, index);
-            var p = duration.Substring((index + 1), duration.Length - (index + 1));
-
-            switch (p)
-            {
-                case "day":
-                    endDate = today.AddDays(Convert.ToInt32(n));
-                    break;
-                case "days":
-                    endDate = today.AddDays(Convert.ToInt32(n));
-                    break;
-                case "Day":
-                    endDate = today.AddDays(Convert.ToInt32(n));
-                    break;
-                case "Days":
-                    endDate = today.AddDays(Convert.ToInt32(n));
-                    break;
-                case "week":
-                    endDate = today.AddDays(7 * Convert.ToInt32(n));
-                    break;
-                case "weeks":
-                    endDate = today.AddDays(7 * Convert.ToInt32(n));
-                    break;
-                case "Week":
-                    endDate = today.AddDays(7 * Convert.ToInt32(n));
-                    break;
-                case "Weeks":
-                    endDate = today.AddDays(7 * Convert.ToInt32(n));
-                    break;
-                case "month":
-                    endDate = today.AddMonths(Convert.ToInt32(n));
-                    break;
-                case "months":
-                    endDate = today.AddMonths(Convert.ToInt32(n));
-                    break;
-                case "Month":
-                    endDate = today.AddMonths(Convert.ToInt32(n));
-                    break;
-                case "Months":
-                    endDate = today.AddMonths(Convert.ToInt32(n));
-                    break;
-                case "year":
-                    endDate = today.AddYears(Convert.ToInt32(n));
-                    break;
-                case "years":
-                    endDate = today.AddYears(Convert.ToInt32(n));
-                    break;
-                case "Year":
-                    endDate = today.AddYears(Convert.ToInt32(n));
-                    break;
-                case "Years":
-                    endDate = today.AddYears(Convert.ToInt32(n));
-                    break;
-                default:
-                    break;
-            }
-
-            return endDate.ToShortDateString();
-        }
     }
 }

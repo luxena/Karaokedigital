@@ -1117,8 +1117,6 @@ namespace DAL
             return response;
         }
 
-        //fare metodo che alla disattivazione del customer disattiva anche tutti gli utenti del customer
-
         public bool DeleteCustomer(Customer customer) 
         {
             bool response = false;
