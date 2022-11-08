@@ -57,9 +57,14 @@ namespace Karaokedigital.Controllers
 
             return View(customerModelList);
         }
-        public ActionResult CreateCustomer()
+        public ActionResult CreateCustomer(int CustomerID)
         {
             ViewBag.Role = "Owner";
+            if (CustomerID > 0)
+            {
+                ViewBag.MainCustomer = bl.GetCustomers(new Customer { CustomerID = CustomerID }).Single().Society;
+            }
+           
             ViewBag.PlanList = bl.GetPlans(new Plans());
             ViewBag.BossList = bl.GetBosses(new Boss());
             ViewBag.CustomerTypeList = bl.GetCustomerTypes(new CustomerType());

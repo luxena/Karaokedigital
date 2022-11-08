@@ -141,6 +141,12 @@
             <div class="form-group mt-2 float-left d-block" style="float:left; display:block;">
                 <input asp-for="CustomerID" class="form-control" hidden />
                 <button type="submit" class="btn btn-glow ml-2" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-warning fas fa-ban"></i></button>
+            </div>
+        </form>
+        <form method="get" asp-controller="Owner" asp-action="CreateCustomer">
+            <div class="form-group mt-2 float-left d-block" style="float:left; display:block;">
+                <input asp-for="CustomerID" class="form-control" hidden />
+                <button type="submit" class="btn btn-glow ml-2" title="CreateSubCustomer" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-user-plus"></i></button>
                 <a class="btn btn-glow ml-2" asp-action="Customers" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
             </div>
         </form>
