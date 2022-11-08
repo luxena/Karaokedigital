@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Karaokedigital.Models.SubCustomerModel>
+
+@{
+    ViewData["Title"] = "SubCustomers";
+}
+
+<h1>Sub Customers</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" asp-action="CreateCustomer"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubCustomer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditSubCustomer?id=@item.SubCustID'">
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCustomer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                    <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditSubCustomer?id=@item.SubCustID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                    <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsSubCustomer?id=@item.SubCustID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                    <a class="btn btn-glow-circle mr-4" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateSubCustomer?id=@item.SubCustID"><i class="bg-warning fas fa-ban"></i></a>
+                    <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteSubCustomer?id=@item.SubCustID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
