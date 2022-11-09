@@ -1159,8 +1159,6 @@ namespace Karaokedigital.Controllers
                 return View();
             }
         }
-
-
         public ActionResult DeactivateBoss(int id)
         {
             ViewBag.Role = "Owner";
@@ -1188,9 +1186,6 @@ namespace Karaokedigital.Controllers
             return RedirectToAction("EditBoss", new { id = BossID, message = ViewBag.Response });
 
         }
-
-        
-
         public ActionResult Users()
         {
             ViewBag.Role = "Owner";
