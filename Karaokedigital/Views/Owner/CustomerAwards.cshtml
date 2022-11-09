@@ -1,28 +1,20 @@
 ﻿@model IEnumerable<Karaokedigital.Models.AwardModel>
 
 @{
-    ViewData["Title"] = "Awards";
+    ViewData["Title"] = "CustomerAwards";
 }
 
-<h1>Awards</h1>
+<h1>Award</h1>
 
 <p class="mt-4">
-    <a class="btn btn-glow" asp-action="CreateAward"><i class="fas fa-plus"></i></a>
+    <a class="btn btn-glow" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="CreateAward?id=@ViewBag.CustomerID"><i class="fas fa-plus"></i></a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AwardID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Award)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cup)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cup)
@@ -41,20 +33,11 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditAward?id=@item.AwardID'">
-            <td>
-                @Html.DisplayFor(modelItem => item.AwardID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer)
-            </td>
+            <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditAward?id=@item.AwardID'">
             <td>
                 @Html.DisplayFor(modelItem => item.Award)
             </td>
-                <td><i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i></td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cup)
-            </td>
+            <td><i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i></td>
             <td>
                 @Html.DisplayFor(modelItem => item.Reward)
             </td>

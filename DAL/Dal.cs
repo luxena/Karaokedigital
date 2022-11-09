@@ -3051,7 +3051,7 @@ namespace DAL
         }
 
         /* CUP */
-
+        /* AWARD */
         public List<Awards> GetAwards(Awards award)
         {
             List<Awards> awards = new List<Awards>();
@@ -3065,8 +3065,10 @@ namespace DAL
                     string query = @"SELECT 
                                   a.[AwardID]
                                   ,c.[Society] Customer
+                                  ,c.[CustomerID]
                                   ,a.[Award]
                                   ,cp.[Cup] Cup
+                                  ,cp.[CupID]
                                   ,a.[Reward]
                                   ,a.[Duration]
                                   ,a.[IsActive]
@@ -3074,9 +3076,11 @@ namespace DAL
                                   INNER JOIN Customers c on c.CustomerID = a.CustomerID
                                   INNER JOIN Cups cp on cp.CupID = a.CupID
                                   WHERE (a.AwardID = @AwardID OR @AwardID = 0) AND
+                                  (a.[CustomerID] = @CustomerID OR @CustomerID = 0) AND
                                   (c.[Society] = @Customer OR @Customer is null) AND
                                   (a.[Award] = @Award OR @Award is null) AND
                                   (cp.[Cup] = @Cup OR @Cup is null) AND
+                                  (a.[CupID] = @CupID OR @CupID = 0) AND
                                   (a.[Reward] = @Reward OR @Reward is null) AND
                                   (a.[Duration] = @Duration OR @Duration is null) AND
                                   (a.[IsActive] = @IsActive OR @IsActive = 0)";
@@ -3084,42 +3088,13 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query,con);
 
                     cmd.Parameters.AddWithValue(@"AwardID",award.AwardID);
-
-                    if (!string.IsNullOrEmpty(award.Customer))
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", award.Customer);
-                    }
-
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
-                    }
-
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Cup", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(award.Reward))
-                    {
-                        cmd.Parameters.AddWithValue(@"Reward", award.Reward);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(award.Duration))
-                    {
-                        cmd.Parameters.AddWithValue(@"Duration", award.Duration);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Duration", DBNull.Value);
-                    }
-
+                    cmd.Parameters.AddWithValue(@"CustomerID", award.CustomerID);
+                    _ = !string.IsNullOrEmpty(award.Customer) ? cmd.Parameters.AddWithValue(@"Customer", award.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Award) ? cmd.Parameters.AddWithValue(@"Award", award.Award) : cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Cup) ? cmd.Parameters.AddWithValue(@"Cup", award.Cup) : cmd.Parameters.AddWithValue(@"Cup", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Reward) ? cmd.Parameters.AddWithValue(@"Reward", award.Reward) : cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Duration) ? cmd.Parameters.AddWithValue(@"Duration", award.Duration) : cmd.Parameters.AddWithValue(@"Duration", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"CupID", award.CupID);
                     cmd.Parameters.AddWithValue(@"IsActive", award.IsActive);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -3127,14 +3102,17 @@ namespace DAL
                     {
                         Awards _award = new Awards();
                         _award.AwardID = Convert.ToInt32(reader["AwardID"].ToString());
+                        _award.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         _award.Customer = reader["Customer"].ToString();
                         _award.Award = reader["Award"].ToString();
                         _award.Cup = reader["Cup"].ToString();
+                        _award.CupID = Convert.ToInt32(reader["CupID"].ToString());
                         _award.Reward = reader["Reward"].ToString();
                         _award.Duration = reader["Duration"].ToString();
                         _award.IsActive = Convert.ToBoolean(reader["IsActive"].ToString());
                         awards.Add(_award);
                     }
+
                 }
                 catch (SqlException ex)
                 {
@@ -3146,6 +3124,162 @@ namespace DAL
 
             return awards;
         }
+
+        public bool InsertAward(Awards award)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO Awards VALUES (@CustomerID,@Award,@CupID,@Reward,@Duration,@IsActive)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"CustomerID", award.CustomerID);
+                    _ = !string.IsNullOrEmpty(award.Award) ? cmd.Parameters.AddWithValue(@"Award", award.Award) : cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"CupID", award.CupID);
+                    _ = !string.IsNullOrEmpty(award.Reward) ? cmd.Parameters.AddWithValue(@"Reward", award.Reward) : cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Duration) ? cmd.Parameters.AddWithValue(@"Duration", award.Duration) : cmd.Parameters.AddWithValue(@"Duration", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"IsActive", award.IsActive);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetAwards(award).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool UpdateAward(Awards award)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE Awards SET CustomerID = @CustomerID,Award = @Award,CupID = @CupID,Reward = @Reward,Duration = @Duration,IsActive = @IsActive
+                                    WHERE AwardID = @AwardID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"AwardID", award.AwardID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", award.CustomerID);
+                    _ = !string.IsNullOrEmpty(award.Award) ? cmd.Parameters.AddWithValue(@"Award", award.Award) : cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"CupID", award.CupID);
+                    _ = !string.IsNullOrEmpty(award.Reward) ? cmd.Parameters.AddWithValue(@"Reward", award.Reward) : cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(award.Duration) ? cmd.Parameters.AddWithValue(@"Duration", award.Duration) : cmd.Parameters.AddWithValue(@"Duration", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"IsActive", award.IsActive);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetAwards(award).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeactivateAward(Awards award)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE Awards SET IsActive = @IsActive
+                                    WHERE AwardID = @AwardID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"AwardID", award.AwardID);
+                    cmd.Parameters.AddWithValue(@"IsActive", award.IsActive);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetAwards(award).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteAward(Awards award)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE FROM Awards
+                                    WHERE AwardID = @AwardID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"AwardID", award.AwardID);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetAwards(award).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+        /* AWARD */
         public List<Trophy> GetTrophies(Trophy trophy)
         {
             List<Trophy> trophies = new List<Trophy>();

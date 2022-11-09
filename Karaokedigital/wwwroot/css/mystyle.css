@@ -488,6 +488,10 @@ footer {
         color: #17a2b8 !important;
     }
 
+    .bg-gold {
+        background-color: #B29600;
+    }
+
     .bg-lightgrey {
         background: #e9ecef;
         border: 1px solid #ced4da;

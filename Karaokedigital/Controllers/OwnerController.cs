@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Karaokedigital.Controllers
 {
@@ -1412,6 +1413,96 @@ namespace Karaokedigital.Controllers
             }
 
             return View(awardModelList);
+        }
+
+        public ActionResult CustomerAwards(int id)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.CustomerID = id;
+            List<Awards> awards = bl.GetAwards(new Awards { CustomerID = id });
+            List<AwardModel> awardModelList = new List<AwardModel>();
+            foreach (var award in awards)
+            {
+                AwardModel awardModel = new AwardModel();
+                awardModel.MapFromAward(award);
+                awardModelList.Add(awardModel);
+            }
+
+            return View(awardModelList);
+        }
+
+        public ActionResult CreateAward(int id)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.CustomerID = id;
+            ViewBag.Cups = bl.GetCups(new Cups());
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAward(AwardModel model)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Cups = bl.GetCups(new Cups());
+            ViewBag.Response = bl.InsertAward(model.MapIntoAward());
+            ViewBag.CustomerID = model.CustomerID;
+            return View();
+        }
+
+        public ActionResult DetailsAward(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new AwardModel();
+            model.MapFromAward(bl.GetAwards (new Awards { AwardID = id }).Single());
+            return View(model);
+        }
+
+        public ActionResult EditAward(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new AwardModel();
+            model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAward(AwardModel model)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Response = bl.UpdateAward(model.MapIntoAward());
+            ViewBag.Cups = bl.GetCups(new Cups());
+            return View(model);
+
+        }
+
+        public ActionResult DeleteAward(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new AwardModel();
+            model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAward(int id,IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            try
+            {
+                ViewBag.Response = bl.DeleteAward(new Awards { AwardID = id });
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: BossController

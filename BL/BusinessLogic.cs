@@ -1514,6 +1514,86 @@ namespace BL
         {
             return dal.GetAwards(award);
         }
+
+        public string InsertAward(Awards award)
+        {
+            string response = "";
+            bool awardExists = GetAwards(new Awards { CustomerID = award.CustomerID,CupID = award.CupID,Award = award.Award,Reward = award.Reward,IsActive = award.IsActive }).Any();
+
+            if (!awardExists)
+            {
+                if (dal.InsertAward(award))
+                {
+                    response = "The Award has been inserted";
+                }
+            }
+            else
+            {
+                response = "The Award already exists";
+            }
+
+            return response;
+        }
+
+        public string UpdateAward(Awards award)
+        {
+            string response = "";
+            bool awardExists = GetAwards(new Awards { CustomerID = award.CustomerID, CupID = award.CupID, Award = award.Award, Reward = award.Reward, IsActive = award.IsActive }).Any();
+
+            if (!awardExists)
+            {
+                if (dal.UpdateAward(award))
+                {
+                    response = "The Award has been updated";
+                }
+            }
+            else
+            {
+                response = "The Award already exists";
+            }
+
+            return response;
+        }
+
+        public string DeactivateAward(Awards award)
+        {
+            string response = "";
+            bool awardExists = GetAwards(new Awards { AwardID = award.AwardID }).Any();
+
+            if (awardExists)
+            {
+                if (dal.DeactivateAward(award))
+                {
+                    response = "The Award has been deactivated";
+                }
+            }
+            else
+            {
+                response = "The Award not exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteAward(Awards award)
+        {
+            string response = "";
+            bool awardExists = GetAwards(new Awards { AwardID = award.AwardID }).Any();
+
+            if (awardExists)
+            {
+                if (dal.DeleteAward(award) && !GetAwards(new Awards { AwardID = award.AwardID }).Any())
+                {
+                    response = "The Award has been deactivated";
+                }
+            }
+            else
+            {
+                response = "The Award not exists";
+            }
+
+            return response;
+        }
         /* AWARD */
         /* TROPHY */
 
