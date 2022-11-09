@@ -1399,6 +1399,37 @@ namespace Karaokedigital.Controllers
             }
         }
 
+        public ActionResult Awards()
+        {
+            ViewBag.Role = "Owner";
+            List<Awards> awards = bl.GetAwards(new Awards());
+            List<AwardModel> awardModelList = new List<AwardModel>();
+            foreach (var award in awards)
+            {
+                AwardModel awardModel = new AwardModel();
+                awardModel.MapFromAward(award);
+                awardModelList.Add(awardModel);
+            }
+
+            return View(awardModelList);
+        }
+
+        // GET: BossController
+        public ActionResult Trophies()
+        {
+            ViewBag.Role = "Owner";
+            List<Trophy> trophies = bl.GetTrophies(new Trophy());
+            List<TrophyModel> trophyModelList = new List<TrophyModel>();
+            foreach (var trophy in trophies)
+            {
+                TrophyModel trophyModel = new TrophyModel();
+                trophyModel.MapFromTrophy(trophy);
+                trophyModelList.Add(trophyModel);
+            }
+
+            return View(trophyModelList);
+        }
+
     }
 
 }
