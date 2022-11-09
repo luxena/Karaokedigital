@@ -28,6 +28,22 @@ namespace Karaokedigital.Controllers
             return View();
         }
 
+        public ActionResult CustomersBoss()
+        {
+            ViewBag.Role = "Owner";
+            List<Customer> customers = bl.GetCustomers(new Customer());
+            List<CustomerModel> customerModelList = new List<CustomerModel>();
+            foreach (var customer in customers)
+            {
+                CustomerModel customertModel = new CustomerModel();
+                customertModel.MapFromCustomer(customer);
+                customerModelList.Add(customertModel);
+            }
+
+            return View(customerModelList);
+        }
+
+
         public ActionResult CustomerBoss(int id)
         {
             ViewBag.Role = "Owner";
@@ -346,6 +362,21 @@ namespace Karaokedigital.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult SubCustomersCustomers()
+        {
+            ViewBag.Role = "Owner";
+            List<SubCustomers> subCustomers = bl.GetSubCustomers(new SubCustomers());
+            List<SubCustomerModel> modelList = new List<SubCustomerModel>();
+            foreach (var subCustomer in subCustomers)
+            {
+                SubCustomerModel model = new SubCustomerModel();
+                model.MapFromSubCustomer(subCustomer);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
         }
 
         public ActionResult SubCustomers(int id)
