@@ -1479,6 +1479,30 @@ namespace Karaokedigital.Controllers
 
         }
 
+        public ActionResult DeactivateAward(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            bl.DeactivateAward(new Awards { AwardID = id, IsActive = false });
+
+            return RedirectToAction("CustomerAwards", new { CustomerID = bl.GetAwards( new Awards { AwardID = id } ).Single().CustomerID });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateAward(int AwardID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            ViewBag.Response = bl.DeactivateAward(new Awards { AwardID = AwardID, IsActive = false });
+
+            var model = new AwardModel();
+            model.MapFromAward(bl.GetAwards(new Awards { AwardID = AwardID }).Single());
+
+            return RedirectToAction("EditAward", new { id = AwardID });
+
+        }
+
         public ActionResult DeleteAward(int id)
         {
             ViewBag.Role = "Owner";
