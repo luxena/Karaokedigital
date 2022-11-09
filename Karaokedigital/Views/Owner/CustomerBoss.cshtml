@@ -12,13 +12,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerID)
-            </th>
             <th>Photo</th>
-            <th>
-                @Html.DisplayNameFor(model => model.Boss)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CustomerType)
             </th>
@@ -70,13 +64,7 @@
     <tbody>
 @foreach (var item in Model) {
             <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditCustomer?id=@item.CustomerID'">
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerID)
-            </td>
             <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Society)" width="60" height="60" src="~/Images/Customers/@item.Society/@Html.DisplayFor(modelItem => item.Logo)"></td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Boss)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerType)
             </td>
