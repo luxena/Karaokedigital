@@ -3089,23 +3089,13 @@ namespace DAL
                     {
                         cmd.Parameters.AddWithValue(@"Customer", award.Customer);
                     }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
-                    }
 
-                    if (!string.IsNullOrEmpty(award.Award))
-                    {
-                        cmd.Parameters.AddWithValue(@"Award", award.Award);
                     }
                     else
                     {
                         cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
                     }
 
-                    if (!string.IsNullOrEmpty(award.Cup))
-                    {
-                        cmd.Parameters.AddWithValue(@"Cup", award.Cup);
                     }
                     else
                     {
@@ -3145,7 +3135,6 @@ namespace DAL
                         _award.IsActive = Convert.ToBoolean(reader["IsActive"].ToString());
                         awards.Add(_award);
                     }
-
                 }
                 catch (SqlException ex)
                 {
