@@ -1514,13 +1514,13 @@ namespace Karaokedigital.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteAward(int id,IFormCollection collection)
+        public ActionResult DeleteAward(int AwardID, IFormCollection collection)
         {
             ViewBag.Role = "Owner";
-
+            ViewBag.CustomerID = bl.GetAwards(new Awards { AwardID = AwardID }).Single().CustomerID;
             try
             {
-                ViewBag.Response = bl.DeleteAward(new Awards { AwardID = id });
+                ViewBag.Response = bl.DeleteAward(new Awards { AwardID = AwardID });
                 return View();
             }
             catch

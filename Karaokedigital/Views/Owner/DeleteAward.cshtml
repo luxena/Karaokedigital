@@ -67,6 +67,14 @@
     <form asp-action="DeleteAward">
         <input asp-for="AwardID" class="form-control" hidden />
         <button type="submit" class="btn btn-glow" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-trash-alt"></i></button>
-        <a class="btn btn-glow ml-2" href="CustomerAwards?id=@Model.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+        @if (@Model == null)
+        {
+            <a class="btn btn-glow ml-2" href="CustomerAwards?id=@ViewBag.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+        }
+        else
+        {
+            <a class="btn btn-glow ml-2" href="CustomerAwards?id=@Model.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+        }
+        
     </form>
 </div>
