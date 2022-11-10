@@ -50,10 +50,17 @@
             <div class="form-group">
                 <label asp-for="Cup" class="control-label"></label>
                 <select name="CupID" class="form-select" aria-label="Default select example">
-                    <option selected>Cup</option>
+                    
                     @foreach (var item in @ViewBag.Cups)
                     {
-                        <option value="@item.CupID">@item.Cup</option>
+                        @if (@item.CupID == Model.CupID)
+                        {
+                            <option selected value="@item.CupID">@item.Cup</option>
+                        }else
+                        {
+                            <option value="@item.CupID">@item.Cup</option>
+                        }
+                        
                     }
                 </select>
             </div>
@@ -73,7 +80,7 @@
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                 </label>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2 float-left d-block">
                 <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
             </div>
         </form>

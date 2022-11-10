@@ -1544,12 +1544,12 @@ namespace BL
             {
                 if (dal.UpdateAward(award))
                 {
-                    response = "The Award has been updated";
+                    response = "Award has been updated";
                 }
             }
             else
             {
-                response = "The Award already exists";
+                response = "Award already exists";
             }
 
             return response;

@@ -1462,7 +1462,7 @@ namespace Karaokedigital.Controllers
         public ActionResult EditAward(int id)
         {
             ViewBag.Role = "Owner";
-
+            ViewBag.Cups = bl.GetCups(new Cups());
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
             return View(model);
