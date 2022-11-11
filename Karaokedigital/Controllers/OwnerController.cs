@@ -1479,18 +1479,18 @@ namespace Karaokedigital.Controllers
 
         }
 
-        public ActionResult DeactivateAward(int id)
+        public ActionResult DeactivateCustomerAward(int id)
         {
             ViewBag.Role = "Owner";
-
-            bl.DeactivateAward(new Awards { AwardID = id, IsActive = false });
-
-            return RedirectToAction("CustomerAwards", new { CustomerID = bl.GetAwards( new Awards { AwardID = id } ).Single().CustomerID });
+            ViewBag.Cups = bl.GetCups(new Cups());
+            var model = new AwardModel();
+            model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeactivateAward(int AwardID, IFormCollection collection)
+        public ActionResult DeactivateCustomerAward(int AwardID, IFormCollection collection)
         {
             ViewBag.Role = "Owner";
 
@@ -1499,7 +1499,7 @@ namespace Karaokedigital.Controllers
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = AwardID }).Single());
 
-            return RedirectToAction("EditAward", new { id = AwardID });
+            return View(model);
 
         }
 

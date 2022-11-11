@@ -1564,12 +1564,12 @@ namespace BL
             {
                 if (dal.DeactivateAward(award))
                 {
-                    response = "The Award has been deactivated";
+                    response = "Award has been deactivated";
                 }
             }
             else
             {
-                response = "The Award not exists";
+                response = "Award not exists";
             }
 
             return response;
