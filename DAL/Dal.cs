@@ -3609,19 +3609,20 @@ namespace DAL
                 {
                     con.Open();
                     string query = @"SELECT r.[ReservationID]
-                                  ,c.[Society] Customer
-                                  ,t.[Title] TrackTitle
-	                              ,t.[Author] TrackAuthor
-                                  ,STRING_AGG(u.[Username], ' - ') [User]
-                                  ,s.[State] [State]
-                                  ,r.[Date]
-                                  ,r.[Social]
-                              FROM [karaokedigital].[dbo].[Reservations] r
-                              INNER JOIN Customers c on c.CustomerID = r.CustomerID
-                              INNER JOIN Tracks t on t.TrackID = r.TrackID
-                              INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
-                              INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
-                              INNER JOIN Users u on u.UserID = ru.UserID
+                                    ,r.CustomerID
+                                    ,c.[Society] Customer
+                                    ,t.[Title] TrackTitle
+                                    ,t.[Author] TrackAuthor
+                                    ,STRING_AGG(u.[Username], ' - ') [User]
+                                    ,s.[State] [State]
+                                    ,r.[Date]
+                                    ,r.[Social]
+                                    FROM [karaokedigital].[dbo].[Reservations] r
+                                    INNER JOIN Customers c on c.CustomerID = r.CustomerID
+                                    INNER JOIN Tracks t on t.TrackID = r.TrackID
+                                    INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
+                                    INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
+                                    INNER JOIN Users u on u.UserID = ru.UserID
                               WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
                               (c.Society = @Customer or @Customer is null) AND  
                               (t.Title = @TrackTitle or @TrackTitle is null) AND  
@@ -3630,7 +3631,7 @@ namespace DAL
                               (r.Date = @Date or @Date is null) AND  
                               (u.Username = @User or @User is null) AND  
                               (r.Social = @Social or @Social = 0)
-                              GROUP BY r.[ReservationID],c.[Society],t.[Title],a.[Alias],s.[State],r.[Social],r.[Date]";
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],t.[Title],t.[Author],s.[State],r.[Social],r.[Date]";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);

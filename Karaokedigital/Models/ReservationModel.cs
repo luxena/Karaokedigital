@@ -9,6 +9,7 @@ namespace Karaokedigital.Models
     public class ReservationModel
     {
         public int ReservationID { get; set; }
+        public int CustomerID { get; set; }
         public string Customer { get; set; }
         public string TrackTitle { get; set; }
         public string TrackAuthor { get; set; }
@@ -20,6 +21,7 @@ namespace Karaokedigital.Models
         public void MapFromReservation(Reservation reservation)
         {
             ReservationID = reservation.ReservationID;
+            CustomerID = reservation.CustomerID;
             Customer = reservation.Customer;
             TrackTitle = reservation.TrackTitle;
             TrackAuthor = reservation.TrackAuthor;
@@ -34,6 +36,7 @@ namespace Karaokedigital.Models
             return new Reservation
             {
                 ReservationID = ReservationID,
+                CustomerID = CustomerID,
                 Customer = Customer,
                 TrackTitle = TrackTitle,
                 TrackAuthor = TrackAuthor,
