@@ -1529,6 +1529,38 @@ namespace Karaokedigital.Controllers
             }
         }
 
+
+        public ActionResult Reservations()
+        {
+            ViewBag.Role = "Owner";
+            List<Reservation> reservations = bl.GetReservations(new Reservation());
+            List<ReservationModel> modelList = new List<ReservationModel>();
+            foreach (var reservation in reservations)
+            {
+                ReservationModel model = new ReservationModel();
+                model.MapFromReservation(reservation);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
+        public ActionResult CustomerReservations(int id)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Time = bl.GetReservationTimeCode();
+            List<Reservation> reservations = bl.GetReservations(new Reservation { CustomerID = id });
+            List<ReservationModel> modelList = new List<ReservationModel>();
+            foreach (var reservation in reservations)
+            {
+                ReservationModel model = new ReservationModel();
+                model.MapFromReservation(reservation);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
         // GET: BossController
         public ActionResult Trophies()
         {

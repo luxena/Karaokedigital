@@ -3597,7 +3597,7 @@ namespace DAL
             return response;
         }
         /* RESERVATION STATE*/
-        public List<Reservation> GetReservations(Reservation reservation)
+        public List<Reservation> GetReservations(Reservation reservation) 
         {
             List<Reservation> reservations = new List<Reservation>();
 
@@ -3624,6 +3624,7 @@ namespace DAL
                                     INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
                                     INNER JOIN Users u on u.UserID = ru.UserID
                               WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
+                              (r.CustomerID = @CustomerID or @CustomerID = 0) AND  
                               (c.Society = @Customer or @Customer is null) AND  
                               (t.Title = @TrackTitle or @TrackTitle is null) AND  
                               (t.Author = @TrackAuthor or @TrackAuthor is null) AND  
@@ -3634,6 +3635,7 @@ namespace DAL
                               GROUP BY r.[ReservationID],r.CustomerID,c.[Society],t.[Title],t.[Author],s.[State],r.[Social],r.[Date]";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.TrackAuthor) ? cmd.Parameters.AddWithValue(@"TrackAuthor", reservation.TrackAuthor) : cmd.Parameters.AddWithValue(@"TrackAuthor", DBNull.Value);
@@ -3650,6 +3652,7 @@ namespace DAL
                     {
                         Reservation _reservation = new Reservation();
                         _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
+                        _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         _reservation.Customer = reader["Customer"].ToString();
                         _reservation.TrackTitle = reader["TrackTitle"].ToString();
                         _reservation.TrackAuthor = reader["TrackAuthor"].ToString();
@@ -3668,6 +3671,41 @@ namespace DAL
             }
 
             return reservations;
+        }
+
+        public string GetReservationTimeCode()
+        {
+            string timeCode = "";
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = @"SELECT CAST(DATEADD(MILLISECOND,SUM(DATEDIFF(MILLISECOND, 0,CAST(REPLACE(Time,'.',':')AS DATETIME))), 0)AS TIME(0))AS SumTime
+                                    FROM Tracks t
+                                    INNER JOIN Reservations r on r.TrackID = t.TrackID
+                                    WHERE r.ReservationStateID = 1";
+
+                    SqlCommand cmd = new SqlCommand(query,con);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        timeCode = reader["SumTime"].ToString();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+            }
+
+            return timeCode;
         }
 
         public List<Chart> GetChart(Customer customer)

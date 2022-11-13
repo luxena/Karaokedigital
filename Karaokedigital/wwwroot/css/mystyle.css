@@ -37,6 +37,10 @@ footer {
         font-size: 1.4rem;
 }
 
+.bg-sunset {
+    background: linear-gradient(to right, #7b4397 20%, #dc2430 40%, #dc2430 60%, #7b4397 80%)!important;
+}
+
 .bg-navy {
     background-color: #001c40!important;
 }

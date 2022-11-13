@@ -1681,6 +1681,11 @@ namespace BL
         {
             return dal.GetReservations(reservation);
         }
+
+        public string GetReservationTimeCode()
+        {
+            return dal.GetReservationTimeCode();
+        }
         /* RESERVATION */
         /* CHART */
         public List<Chart> GetChart(Customer customer)
