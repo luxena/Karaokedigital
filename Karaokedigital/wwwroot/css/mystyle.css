@@ -320,11 +320,134 @@ footer {
 }
 
 
+.btn-player {
+    width: 45px;
+    height: 45px;
+    border: #fff solid 2px;
+    <!-- border-top: #fff solid 2px; -->
+    <!-- border-left: #fff solid 2px; -->
+    outline: none;
+    background: linear-gradient(to right, red, purple);
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 90px;
+}
+
+    .btn-player i {
+        background: rgb(131,58,180);
+        background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(190,44,108,1) 16%, rgba(214,38,210,1) 34%, rgba(253,29,29,1) 51%, rgba(253,47,171,1) 67%, rgba(253,102,56,1) 84%, rgba(252,176,69,1) 100%);
+        background-size: 200% auto;
+        background-clip: text;
+        line-height: 1.8;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 12s linear infinite;
+    }
+
+    .btn-player:hover:before {
+        width: 55px;
+        height: 55px;
+        <!-- background: linear-gradient(45deg, rgba(131,58,180,1) 0%, rgba(190,44,108,1) 16%, rgba(214,38,210,1) 34%, rgba(253,29,29,1) 51%, rgba(253,47,171,1) 67%, rgba(253,102,56,1) 84%, rgba(252,176,69,1) 100%); -->
+
+        background: linear-gradient(to right, red, purple);
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 400%;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 1;
+        transition: opacity .3s ease-in-out;
+        border-radius: 90px;
+    }
+
+    .btn-player:hover > i {
+        background: #000;
+        line-height: 1.8;
+        -webkit-animation: glow 1s ease-in-out infinite alternate;
+        -moz-animation: glow 1s ease-in-out infinite alternate;
+        background-size: 400% auto;
+        background-clip: text;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 12s linear infinite;
+        /*animation: glow 1s ease-in-out infinite alternate;*/
+    }
+
+    .btn-player:before {
+        content: '';
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+        border-radius: 90px;
+    }
+
+    .btn-player:active {
+        color: #000;
+    }
+
+        .btn-player:active:after {
+            background: transparent;
+            background: linear-gradient(to right, red, purple);
+        }
+
+    .btn-player:before {
+        opacity: 1;
+    }
+
+<!-- modifica qui lo sfondo-- >
+.btn-player:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    <!-- background: #111; -->
+    background: linear-gradient(to right, red, purple);
+    left: 0;
+    top: 0;
+    border-radius: 90px;
+}
+
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
 
 
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    }
 
-
-/**/
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }
+}
+    /**/
 
 
     .btn-rainbow {
@@ -382,15 +505,15 @@ footer {
         color: linear-gradient(to right, red, purple);
     }
 
-        .btn-gradient span {
-            background: linear-gradient(to right, #dc2430 20%, #7b4397 40%, #7b4397 60%, #dc2430 80%);
-            background-size: 200% auto;
-            background-clip: text;
-            text-fill-color: transparent;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 12s linear infinite;
-        }
+    .btn-gradient span {
+        background: linear-gradient(to right, #dc2430 20%, #7b4397 40%, #7b4397 60%, #dc2430 80%);
+        background-size: 200% auto;
+        background-clip: text;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 12s linear infinite;
+    }
 
 
     .btn-gradient a {
@@ -506,7 +629,7 @@ footer {
     }
 
     .bg-sky {
-        background-color: #007BA7!important;
+        background-color: #007BA7 !important;
     }
 
     .bg-gradient-space-top-left {

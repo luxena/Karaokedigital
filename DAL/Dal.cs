@@ -3673,7 +3673,7 @@ namespace DAL
             return reservations;
         }
 
-        public string GetReservationTimeCode()
+        public string GetReservationTimeCode(Reservation reservation)
         {
             string timeCode = "";
             string connectionString = GetConfiguration().DBConnection;
@@ -3687,9 +3687,11 @@ namespace DAL
                     string query = @"SELECT CAST(DATEADD(MILLISECOND,SUM(DATEDIFF(MILLISECOND, 0,CAST(REPLACE(Time,'.',':')AS DATETIME))), 0)AS TIME(0))AS SumTime
                                     FROM Tracks t
                                     INNER JOIN Reservations r on r.TrackID = t.TrackID
-                                    WHERE r.ReservationStateID = 1";
+                                    WHERE r.ReservationStateID = 1 AND r.CustomerID = @CustomerID AND r.Date = @Date";
 
                     SqlCommand cmd = new SqlCommand(query,con);
+                    cmd.Parameters.AddWithValue(@"CustomerID",reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"Date", reservation.Date);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -3706,6 +3708,124 @@ namespace DAL
             }
 
             return timeCode;
+        }
+
+        public bool InsertReservation(Reservation reservation)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO Reservations VALUES (@CustomerID,@TrackID,@ReservationStateID,@Date,@Social)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"CustomerID",reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
+                    cmd.Parameters.AddWithValue(@"Date", reservation.Date);
+                    cmd.Parameters.AddWithValue(@"Social", reservation.Social);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservations(reservation).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool UpdateReservation(Reservation reservation)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE Reservations SET CustomerID =  @CustomerID,TrackID = @TrackID,ReservationStateID = @ReservationStateID,Date = @Date,Social = @Social
+                                     WHERE ReservationID = @ReservationID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservation.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
+                    cmd.Parameters.AddWithValue(@"Date", reservation.Date);
+                    cmd.Parameters.AddWithValue(@"Social", reservation.Social);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservations(reservation).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteReservation(Reservation reservation)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE Reservations 
+                                     WHERE ReservationID = @ReservationID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservation.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
+                    cmd.Parameters.AddWithValue(@"Date", reservation.Date);
+                    cmd.Parameters.AddWithValue(@"Social", reservation.Social);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservations(reservation).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
         }
 
         public List<Chart> GetChart(Customer customer)

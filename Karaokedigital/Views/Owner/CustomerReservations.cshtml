@@ -6,11 +6,22 @@
 
 <h1>Customer Reservations</h1>
 
+@if (@ViewBag.Count > 0)
+{
+    <button type="button" class="float-left btn btn-info">
+        <i class="text-dark fas fa-calendar-alt mr-2"></i> <span class="badge badge-light text-dark">@Html.DisplayFor(modelItem => @Model.First().Date)</span>
+        <span class="sr-only">Date</span>
+    </button>
 
-<button type="button" class="float-right btn btn-orange">
-    <i class="text-dark fas fa-stopwatch mr-2"></i> <span class="badge badge-light text-dark">@ViewBag.Time</span>
-    <span class="sr-only">Date</span>
-</button>
+    <button type="button" class="float-right btn btn-orange">
+        <i class="text-dark fas fa-stopwatch mr-2"></i> <span class="badge badge-light text-dark">@ViewBag.Time</span>
+        <span class="sr-only">Date</span>
+    </button>
+}
+
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -54,6 +65,13 @@
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerUsers?id=@item.CustomerID"><i class="fas fa-play"></i></a>
+                <form method="post" asp-action="UpdateReservation">
+                        <input asp-for="CustomerID" class="form-control" hidden />
+                        <input asp-for="ReservationID" class="form-control" hidden />
+                    <button class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top"><i class="fas fa-play"></i></button>
+                </form>
+                    
             </td>
         </tr>
 }

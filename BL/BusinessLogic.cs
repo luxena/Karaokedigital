@@ -1682,10 +1682,69 @@ namespace BL
             return dal.GetReservations(reservation);
         }
 
-        public string GetReservationTimeCode()
+        public string GetReservationTimeCode(Reservation reservation)
         {
-            return dal.GetReservationTimeCode();
+            reservation.Date = DateTime.Today.ToShortDateString();
+            return dal.GetReservationTimeCode(reservation);
         }
+
+        public string InsertReservation(Reservation reservation)
+        {
+            string response = "";
+            bool reservationExists = GetReservations(reservation).Any();
+            if (!reservationExists)
+            {
+                if (dal.InsertReservation(reservation))
+                {
+                    response = "The Reservation has been inserted";
+                }
+            }
+            else
+            {
+                response = "The Reservation already exists";
+            }
+
+            return response;
+        }
+
+        public string UpdateReservation(Reservation reservation)
+        {
+            string response = "";
+            bool reservationExists = GetReservations(reservation).Any();
+            if (!reservationExists)
+            {
+                if (dal.UpdateReservation(reservation))
+                {
+                    response = "The Reservation has been updated";
+                }
+            }
+            else
+            {
+                response = "The Reservation not exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteReservation(Reservation reservation)
+        {
+            string response = "";
+            bool reservationExists = GetReservations(reservation).Any();
+            if (!reservationExists)
+            {
+                if (dal.DeleteReservation(reservation))
+                {
+                    response = "The Reservation has been deleted";
+                }
+            }
+            else
+            {
+                response = "The Reservation not exists";
+            }
+
+            return response;
+        }
+
         /* RESERVATION */
         /* CHART */
         public List<Chart> GetChart(Customer customer)
