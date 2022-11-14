@@ -1563,6 +1563,17 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
+        public ActionResult PlayReservation(int id)
+        {
+            ViewBag.Role = "Owner";
+            Reservation reservation = bl.GetReservations(new Reservation { ReservationID = id }).Single();
+            reservation.ReservationStateID = 2;
+            bl.UpdateReservation(reservation);
+            
+
+            return RedirectToAction("CustomerReservations", reservation.CustomerID);
+        }
+
         // GET: BossController
         public ActionResult Trophies()
         {

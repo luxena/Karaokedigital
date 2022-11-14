@@ -3611,9 +3611,11 @@ namespace DAL
                     string query = @"SELECT r.[ReservationID]
                                     ,r.CustomerID
                                     ,c.[Society] Customer
+                                    ,r.[TrackID] 
                                     ,t.[Title] TrackTitle
                                     ,t.[Author] TrackAuthor
                                     ,STRING_AGG(u.[Username], ' - ') [User]
+                                    ,r.[ReservationStateID]
                                     ,s.[State] [State]
                                     ,r.[Date]
                                     ,r.[Social]
@@ -3626,19 +3628,23 @@ namespace DAL
                               WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
                               (r.CustomerID = @CustomerID or @CustomerID = 0) AND  
                               (c.Society = @Customer or @Customer is null) AND  
+                              (r.TrackID = @TrackID or @TrackID = 0) AND  
                               (t.Title = @TrackTitle or @TrackTitle is null) AND  
                               (t.Author = @TrackAuthor or @TrackAuthor is null) AND  
+                              (r.ReservationStateID = @ReservationStateID or @ReservationStateID = 0) AND  
                               (s.State = @State or @State is null) AND  
                               (r.Date = @Date or @Date is null) AND  
                               (u.Username = @User or @User is null) AND  
                               (r.Social = @Social or @Social = 0)
-                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],t.[Title],t.[Author],s.[State],r.[Social],r.[Date]";
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date]";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
                     _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.TrackAuthor) ? cmd.Parameters.AddWithValue(@"TrackAuthor", reservation.TrackAuthor) : cmd.Parameters.AddWithValue(@"TrackAuthor", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
                     _ = !string.IsNullOrEmpty(reservation.State) ? cmd.Parameters.AddWithValue(@"State", reservation.State) : cmd.Parameters.AddWithValue(@"State", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.Date) ? cmd.Parameters.AddWithValue(@"Date", reservation.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.User) ? cmd.Parameters.AddWithValue(@"User", reservation.User) : cmd.Parameters.AddWithValue(@"User", DBNull.Value);
@@ -3651,6 +3657,8 @@ namespace DAL
                         Reservation _reservation = new Reservation();
                         _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
                         _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _reservation.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
+                        _reservation.ReservationStateID = Convert.ToInt32(reader["ReservationStateID"].ToString());
                         _reservation.Customer = reader["Customer"].ToString();
                         _reservation.TrackTitle = reader["TrackTitle"].ToString();
                         _reservation.TrackAuthor = reader["TrackAuthor"].ToString();

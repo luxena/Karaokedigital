@@ -62,9 +62,7 @@
                 @Html.DisplayFor(modelItem => item.Social)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
             </td>
         </tr>
 }
