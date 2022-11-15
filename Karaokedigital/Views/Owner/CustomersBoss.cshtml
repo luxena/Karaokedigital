@@ -96,7 +96,10 @@
                 @Html.DisplayFor(modelItem => item.DueDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                 @if (item.IsActive)
+                    {
+                        <i class="h2 text-success fas fa-check"></i>
+                    }
             </td>
             <td>
                 <a class="btn btn-glow-circle mr-4" title="List" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerUsers?id=@item.CustomerID"><i class="fas fa-users"></i></a>

@@ -96,7 +96,10 @@
                 @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
+                    @if (item.IsActive)
+                    {
+                        <i class="h2 text-success fas fa-check"></i>
+                    }
             </td>
                 <td>
                     <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditCustomerUser?id=@item.CustomerUserID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>

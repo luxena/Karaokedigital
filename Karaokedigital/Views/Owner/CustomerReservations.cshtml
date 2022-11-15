@@ -15,7 +15,7 @@
 
     <button type="button" class="float-right btn btn-orange">
         <i class="text-dark fas fa-stopwatch mr-2"></i> <span class="badge badge-light text-dark">@ViewBag.Time</span>
-        <span class="sr-only">Date</span>
+        <span class="sr-only">Time</span>
     </button>
 }
 
@@ -58,11 +58,39 @@
             <td>
                 @Html.DisplayFor(modelItem => item.State)
             </td>
-            <td>
+          @*  <td>
                 @Html.DisplayFor(modelItem => item.Social)
-            </td>
+            </td>*@
+                <td>
+                    @if (item.Social)
+                    {
+                        <i class="h2 text-success fas fa-check"></i>
+                    }
+                </td>
+                <td>
+                    @if (item.Social)
+                    {
+                        <i class="h2 sunset fas fa-microphone-alt"></i><i class="h2 sunset fas fa-microphone-alt"></i>
+                    }
+                </td>
             <td>
-                <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
+                    @if (item.State == "Reserved")
+                    {
+                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
+                    }
+
+                    @if (item.State == "Playing")
+                    {
+                        <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="PauseReservation?id=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
+                        <a class="btn btn-player mr-4" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="StopReservation?id=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                    }
+
+                    @if (item.State == "Pause")
+                    {
+                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
+                        <a class="btn btn-player mr-4" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="StopReservation?id=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                    }
+                
             </td>
         </tr>
 }

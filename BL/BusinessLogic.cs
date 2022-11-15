@@ -1713,10 +1713,20 @@ namespace BL
             bool reservationExists = GetReservations(reservation).Any();
             if (!reservationExists)
             {
-                if (dal.UpdateReservation(reservation))
+                bool reservationPlaying = GetReservations(new Reservation { CustomerID = reservation.CustomerID }).Where(r => r.ReservationStateID == 2).Any();
+                if (reservation.ReservationStateID == 2 && reservationPlaying)
                 {
-                    response = "The Reservation has been updated";
+                    response = "Reservation IN PLAYING, stop it to play another one";
                 }
+                else
+                {
+                    if (dal.UpdateReservation(reservation))
+                    {
+                        response = "The Reservation has been updated";
+                    }
+                }
+
+                
             }
             else
             {

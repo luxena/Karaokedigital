@@ -3693,11 +3693,11 @@ namespace DAL
                     string query = @"SELECT CAST(DATEADD(MILLISECOND,SUM(DATEDIFF(MILLISECOND, 0,CAST(REPLACE(Time,'.',':')AS DATETIME))), 0)AS TIME(0))AS SumTime
                                     FROM Tracks t
                                     INNER JOIN Reservations r on r.TrackID = t.TrackID
-                                    WHERE r.ReservationStateID = 1 AND r.CustomerID = @CustomerID AND r.Date = @Date";
+                                    WHERE r.ReservationStateID = 1 AND r.CustomerID = @CustomerID";
 
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"CustomerID",reservation.CustomerID);
-                    cmd.Parameters.AddWithValue(@"Date", reservation.Date);
+                   
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())

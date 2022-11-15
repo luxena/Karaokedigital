@@ -67,11 +67,14 @@
             <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => Model.Username)" width="60" height="60" src="~/Images/Users/@Model.Username/@Html.DisplayFor(modelItem => Model.Img)">
             <p>@Html.DisplayFor(model => model.Img)</p>
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-10">
             @Html.DisplayNameFor(model => model.IsActive)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
+            @if (@Model.IsActive)
+            {
+                <i class="h2 text-success fas fa-check"></i>
+            }
         </dd>
     </dl>
 </div>
