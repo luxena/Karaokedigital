@@ -1548,8 +1548,6 @@ namespace Karaokedigital.Controllers
         public ActionResult CustomerReservations(int id)
         {
             ViewBag.Role = "Owner";
-            ViewBag.Time = bl.GetReservationTimeCode(new Reservation { CustomerID = id });
-            List<Reservation> reservations = bl.GetReservations(new Reservation { CustomerID = id });
             List<ReservationModel> modelList = new List<ReservationModel>();
             foreach (var reservation in reservations)
             {
@@ -1559,7 +1557,6 @@ namespace Karaokedigital.Controllers
             }
 
             ViewBag.Count = modelList.Count;
-
             return View(modelList);
         }
 
