@@ -10,6 +10,7 @@ namespace Karaokedigital.Models
     {
         public int ReservationID { get; set; }
         public string Customer { get; set; }
+        public int CustomerID { get; set; }
         public string TrackTitle { get; set; }
         public string TrackAuthor { get; set; }
         public string User { get; set; }
@@ -19,6 +20,7 @@ namespace Karaokedigital.Models
         public void MapFromChart(Chart chart)
         {
             ReservationID = chart.ReservationID;
+            CustomerID = chart.CustomerID;
             Customer = chart.Customer;
             TrackTitle = chart.TrackTitle;
             TrackAuthor = chart.TrackAuthor;
@@ -32,6 +34,7 @@ namespace Karaokedigital.Models
             return new Chart
             {
                 ReservationID = ReservationID,
+                CustomerID = CustomerID,
                 Customer = Customer,
                 TrackTitle = TrackTitle,
                 TrackAuthor = TrackAuthor,

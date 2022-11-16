@@ -1621,6 +1621,23 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
+        public ActionResult Chart(int id)
+        {
+            ViewBag.Role = "Owner";
+            
+            List<ChartModel> modelList = new List<ChartModel>();
+            var charts = bl.GetChart(new Customer { CustomerID = id });
+
+            foreach (var chart in charts)
+            {
+                ChartModel model = new ChartModel();
+                model.MapFromChart(chart);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
         // GET: BossController
         public ActionResult Trophies()
         {

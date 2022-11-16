@@ -3853,8 +3853,10 @@ namespace DAL
                     con.Open();
                     string query = @"SELECT r.[ReservationID]
                                   ,c.[Society] Customer
+                                  ,r.[CustomerID] 
                                   ,t.[Title] TrackTitle
-	                              ,a.[Alias] TrackAuthor
+                                  ,t.[Author] TrackAuthor
+	                              
                                   ,STRING_AGG(u.[Username], ' - ') [User]
                                   ,p.Vote Votation
                                   ,r.[Date]
@@ -3867,19 +3869,23 @@ namespace DAL
                               INNER JOIN Users u on u.UserID = ru.UserID
                               INNER JOIN (select ReservationID, sum(Vote) Vote,Date from Scores
 											group by ReservationID,Date) p on p.ReservationID = r.ReservationID
-                              WHERE (r.ReservationStateID = 4) AND 
-                                        (c.Society = @Customer) AND
-                                        (p.[Date] = @Date AND r.[Date] = @Date)
-                              GROUP BY r.[ReservationID],c.[Society],t.[Title],a.[Alias],s.[State],r.[Date],p.Vote";
+                              WHERE (r.ReservationStateID <> 1) AND 
+                                        
+                                        (r.CustomerID  = @CustomerID OR @CustomerID = 0) 
+                                        --(p.[Date] = @Date AND r.[Date] = @Date)
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],t.[Title],t.[Author],s.[State],r.[Date],p.Vote
+                              ORDER BY p.Vote DESC";
 
                     SqlCommand cmd = new SqlCommand(query,con);
-                    cmd.Parameters.AddWithValue(@"Customer",customer.Society);
-                    cmd.Parameters.AddWithValue(@"Date", DateTime.Today.ToShortDateString());
+                    cmd.Parameters.AddWithValue(@"CustomerID",customer.CustomerID);
+                    
+                    //cmd.Parameters.AddWithValue(@"Date", DateTime.Today.ToShortDateString());
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         Chart chart = new Chart();
+                        chart.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         chart.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
                         chart.Customer = reader["Customer"].ToString();
                         chart.TrackTitle = reader["TrackTitle"].ToString();
