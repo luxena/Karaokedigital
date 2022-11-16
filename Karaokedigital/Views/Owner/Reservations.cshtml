@@ -5,6 +5,13 @@
 }
 
 <h1>Reservations</h1>
+@if (@ViewBag.Count > 0)
+{
+    <button type="button" class="float-left btn btn-info">
+        <i class="text-dark fas fa-calendar-alt mr-2"></i> <span class="badge badge-light text-dark">@Html.DisplayFor(modelItem => @Model.First().Date)</span>
+        <span class="sr-only">Date</span>
+    </button>
+}
 
 <p class="mt-4">
     <a class="btn btn-glow" title="Add New" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation"><i class="fas fa-plus"></i></a>
@@ -51,14 +58,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.State)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Social)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+                <td>
+                    @if (item.Social)
+                    {
+                        for (int i = 0; i < item.NumberUsers; i++)
+                        {
+
+                            <i class="h4 sunset fas fa-microphone-alt"></i>
+
+                        }
+
+                    }
+                </td>
         </tr>
 }
     </tbody>
