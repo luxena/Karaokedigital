@@ -3851,7 +3851,8 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"SELECT r.[ReservationID]
+                    string query = @"SELECT ROW_NUMBER() OVER (ORDER BY r.[ReservationID] desc) Number
+                                  ,r.[ReservationID]
                                   ,c.[Society] Customer
                                   ,r.[CustomerID] 
                                   ,t.[Title] TrackTitle
@@ -3885,6 +3886,7 @@ namespace DAL
                     while (reader.Read())
                     {
                         Chart chart = new Chart();
+                        chart.Number = Convert.ToInt32(reader["Number"].ToString());
                         chart.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         chart.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
                         chart.Customer = reader["Customer"].ToString();

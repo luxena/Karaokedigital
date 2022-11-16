@@ -8,6 +8,7 @@ namespace Karaokedigital.Models
 {
     public class ChartModel
     {
+        public int Number { get; set; }
         public int ReservationID { get; set; }
         public string Customer { get; set; }
         public int CustomerID { get; set; }
@@ -19,6 +20,7 @@ namespace Karaokedigital.Models
 
         public void MapFromChart(Chart chart)
         {
+            Number = chart.Number;
             ReservationID = chart.ReservationID;
             CustomerID = chart.CustomerID;
             Customer = chart.Customer;
@@ -33,6 +35,7 @@ namespace Karaokedigital.Models
         {
             return new Chart
             {
+                Number = Number,
                 ReservationID = ReservationID,
                 CustomerID = CustomerID,
                 Customer = Customer,

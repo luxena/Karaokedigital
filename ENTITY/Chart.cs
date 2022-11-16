@@ -6,6 +6,7 @@ namespace ENTITY
 {
     public class Chart
     {
+        public int Number { get; set; }
         public int ReservationID { get; set; }
         public string Customer { get; set; }
         public int CustomerID { get; set; }
