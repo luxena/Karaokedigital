@@ -3862,7 +3862,6 @@ namespace DAL
                               FROM [karaokedigital].[dbo].[Reservations] r
                               INNER JOIN Customers c on c.CustomerID = r.CustomerID
                               INNER JOIN Tracks t on t.TrackID = r.TrackID
-                              INNER JOIN Authors a on a.AuthorID = t.AuthorID
                               INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
                               INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
                               INNER JOIN Users u on u.UserID = ru.UserID
