@@ -15,10 +15,12 @@ namespace Karaokedigital.Models
         public string TrackTitle { get; set; }
         public string TrackAuthor { get; set; }
         public string User { get; set; }
+        public int NumberUsers { get; set; }
         public int ReservationStateID { get; set; }
         public string State { get; set; }
         public string Date { get; set; }
         public bool Social { get; set; }
+        public int Votation { get; set; }
 
         public void MapFromReservation(Reservation reservation)
         {
@@ -29,10 +31,12 @@ namespace Karaokedigital.Models
             TrackTitle = reservation.TrackTitle;
             TrackAuthor = reservation.TrackAuthor;
             User = reservation.User;
+            NumberUsers = reservation.NumberUsers;
             ReservationStateID = reservation.ReservationStateID;
             State = reservation.State;
             Date = reservation.Date;
             Social = reservation.Social;
+            Votation = reservation.Votation;
         }
 
         public Reservation MapIntoReservation()
@@ -46,10 +50,12 @@ namespace Karaokedigital.Models
                 TrackTitle = TrackTitle,
                 TrackAuthor = TrackAuthor,
                 User = User,
+                NumberUsers = NumberUsers,
                 ReservationStateID = ReservationStateID,
                 State = State,
                 Date = Date,
-                Social = Social
+                Social = Social,
+                Votation = Votation
             };
            
         }

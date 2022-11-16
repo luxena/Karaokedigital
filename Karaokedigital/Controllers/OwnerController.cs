@@ -1545,51 +1545,80 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
-        public ActionResult CustomerReservations(int id)
+        public ActionResult CustomerReservations(int id,int play,int pause,int stop)
         {
             ViewBag.Role = "Owner";
+            int customerID = 0;
             List<ReservationModel> modelList = new List<ReservationModel>();
-            foreach (var reservation in reservations)
+            List<Reservation> reservations;
+            if (id > 0)
             {
-                ReservationModel model = new ReservationModel();
-                model.MapFromReservation(reservation);
-                modelList.Add(model);
+                customerID = id;
+                
+                reservations = bl.GetReservations(new Reservation { CustomerID = id });
+                
+                foreach (var reservation in reservations)
+                {
+                    ReservationModel model = new ReservationModel();
+                    model.MapFromReservation(reservation);
+                    modelList.Add(model);
+                }
             }
 
+            if (play > 0)
+            {
+                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = play }).Single();
+                reservation.ReservationStateID = 2;
+                customerID = reservation.CustomerID;
+                bl.UpdateReservation(reservation);
+               
+                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+
+                foreach (var r in reservations)
+                {
+                    ReservationModel model = new ReservationModel();
+                    model.MapFromReservation(r);
+                    modelList.Add(model);
+                }
+            }
+
+            if (pause > 0)
+            {
+                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = pause }).Single();
+                reservation.ReservationStateID = 3;
+                customerID = reservation.CustomerID;
+                bl.UpdateReservation(reservation);
+               
+                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+
+                foreach (var r in reservations)
+                {
+                    ReservationModel model = new ReservationModel();
+                    model.MapFromReservation(r);
+                    modelList.Add(model);
+                }
+            }
+
+            if (stop > 0)
+            {
+                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = stop }).Single();
+                reservation.ReservationStateID = 4;
+                customerID = reservation.CustomerID;
+                bl.UpdateReservation(reservation);
+               
+                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+
+                foreach (var r in reservations)
+                {
+                    ReservationModel model = new ReservationModel();
+                    model.MapFromReservation(r);
+                    modelList.Add(model);
+                }
+            }
+
+            ViewBag.Time = bl.GetReservationTimeCode(new Reservation { CustomerID = customerID });
             ViewBag.Count = modelList.Count;
             return View(modelList);
-        }
-
-        public ActionResult PlayReservation(int id)
-        {
-            ViewBag.Role = "Owner";
-            Reservation reservation = bl.GetReservations(new Reservation { ReservationID = id }).Single();
-            reservation.ReservationStateID = 2;
-            bl.UpdateReservation(reservation);
-            
-
-            return RedirectToAction("CustomerReservations", reservation.CustomerID);
-        }
-
-        public ActionResult PauseReservation(int id)
-        {
-            ViewBag.Role = "Owner";
-            Reservation reservation = bl.GetReservations(new Reservation { ReservationID = id }).Single();
-            reservation.ReservationStateID = 3;
-            bl.UpdateReservation(reservation);
-
-
-            return RedirectToAction("CustomerReservations", reservation.CustomerID);
-        }
-        public ActionResult StopReservation(int id)
-        {
-            ViewBag.Role = "Owner";
-            Reservation reservation = bl.GetReservations(new Reservation { ReservationID = id }).Single();
-            reservation.ReservationStateID = 4;
-            bl.UpdateReservation(reservation);
-
-
-            return RedirectToAction("CustomerReservations", reservation.CustomerID);
         }
 
         // GET: BossController

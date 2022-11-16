@@ -1713,7 +1713,7 @@ namespace BL
             bool reservationExists = GetReservations(reservation).Any();
             if (!reservationExists)
             {
-                bool reservationPlaying = GetReservations(new Reservation { CustomerID = reservation.CustomerID }).Where(r => r.ReservationStateID == 2).Any();
+                bool reservationPlaying = GetReservations(new Reservation { CustomerID = reservation.CustomerID }).Where(r => r.ReservationStateID == 2 || r.ReservationStateID == 3).Any();
                 if (reservation.ReservationStateID == 2 && reservationPlaying)
                 {
                     response = "Reservation IN PLAYING, stop it to play another one";

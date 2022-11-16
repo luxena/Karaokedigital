@@ -41,6 +41,7 @@
                 @Html.DisplayNameFor(model => model.Social)
             </th>
             <th></th>
+            <th>@Html.DisplayNameFor(model => model.Votation)</th>
         </tr>
     </thead>
     <tbody>
@@ -58,39 +59,40 @@
             <td>
                 @Html.DisplayFor(modelItem => item.State)
             </td>
-          @*  <td>
-                @Html.DisplayFor(modelItem => item.Social)
-            </td>*@
-                <td>
+                
+            <td>
                     @if (item.Social)
                     {
-                        <i class="h2 text-success fas fa-check"></i>
+                        for (int i = 0; i < item.NumberUsers; i++)
+                        {
+                       
+                            <i class="h4 sunset fas fa-microphone-alt"></i>
+                        
+                        }
+                        
                     }
-                </td>
-                <td>
-                    @if (item.Social)
-                    {
-                        <i class="h2 sunset fas fa-microphone-alt"></i><i class="h2 sunset fas fa-microphone-alt"></i>
-                    }
-                </td>
+            </td>
             <td>
                     @if (item.State == "Reserved")
                     {
-                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
+                        <a class="btn btn-player" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
                     }
 
                     @if (item.State == "Playing")
                     {
-                        <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="PauseReservation?id=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
-                        <a class="btn btn-player mr-4" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="StopReservation?id=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                        <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?pause=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
+                        <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
                     }
 
                     @if (item.State == "Pause")
                     {
-                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="PlayReservation?id=@item.ReservationID"><i class="fas fa-play"></i></a>
-                        <a class="btn btn-player mr-4" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="StopReservation?id=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
+                        <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
                     }
                 
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Votation)
             </td>
         </tr>
 }

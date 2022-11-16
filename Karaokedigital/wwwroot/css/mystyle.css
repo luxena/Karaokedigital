@@ -616,12 +616,16 @@ footer {
     }
 
     .bg-gold {
-        background-color: #B29600;
+        background-color: #B29600!important;
     }
 
     .bg-lightgrey {
         background: #e9ecef;
         border: 1px solid #ced4da;
+    }
+
+    .bg-green {
+        background-color: #00E1AD !important;
     }
 
     .bg-grey {
@@ -660,6 +664,12 @@ footer {
 
     .bg-danger {
         background-color: orangered !important;
+    }
+
+
+
+    .bg-blue {
+        background-color: #052c65!important;
     }
 
     .bg-none {

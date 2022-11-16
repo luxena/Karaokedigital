@@ -3615,16 +3615,20 @@ namespace DAL
                                     ,t.[Title] TrackTitle
                                     ,t.[Author] TrackAuthor
                                     ,STRING_AGG(u.[Username], ' - ') [User]
+                                    ,COUNT(ru.UserID) NumberUsers
                                     ,r.[ReservationStateID]
                                     ,s.[State] [State]
                                     ,r.[Date]
                                     ,r.[Social]
+                                    ,p.Vote Votation
                                     FROM [karaokedigital].[dbo].[Reservations] r
                                     INNER JOIN Customers c on c.CustomerID = r.CustomerID
                                     INNER JOIN Tracks t on t.TrackID = r.TrackID
                                     INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
                                     INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
                                     INNER JOIN Users u on u.UserID = ru.UserID
+                                    LEFT JOIN (select ReservationID, sum(Vote) Vote from Scores
+											group by ReservationID) p on p.ReservationID = r.ReservationID
                               WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
                               (r.CustomerID = @CustomerID or @CustomerID = 0) AND  
                               (c.Society = @Customer or @Customer is null) AND  
@@ -3636,7 +3640,7 @@ namespace DAL
                               (r.Date = @Date or @Date is null) AND  
                               (u.Username = @User or @User is null) AND  
                               (r.Social = @Social or @Social = 0)
-                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date]";
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
@@ -3663,9 +3667,11 @@ namespace DAL
                         _reservation.TrackTitle = reader["TrackTitle"].ToString();
                         _reservation.TrackAuthor = reader["TrackAuthor"].ToString();
                         _reservation.User = reader["User"].ToString();
+                        _reservation.NumberUsers = Convert.ToInt32(reader["NumberUsers"].ToString());
                         _reservation.State = reader["State"].ToString();
                         _reservation.Social = Convert.ToBoolean(reader["Social"].ToString());
                         _reservation.Date = reader["Date"].ToString();
+                        _reservation.Votation = Convert.ToInt32(reader["Votation"].ToString());
                         reservations.Add(_reservation);
                     }
                 }
