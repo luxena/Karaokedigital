@@ -3280,7 +3280,7 @@ namespace DAL
             return response;
         }
         /* AWARD */
-
+        
         /* RESERVATION STATE*/
         public List<ReservationState> GetReservationStates(ReservationState reservationState)
         {
@@ -3971,8 +3971,144 @@ namespace DAL
 
             return response;
         }
-       
+
         /* TRACK */
+        /* TROPHY */
+        public List<Trophy> GetTrophies(Trophy trophy)
+        {
+            List<Trophy> trophies = new List<Trophy>();
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"SELECT 
+                          t.[TrophyID]
+                          ,c.[Society] Customer
+                          ,a.[Award]
+	                      ,a.[Reward]
+                          ,cp.[Cup]
+                          ,u.[Username] [User]
+                          ,t.[WinDate]
+                          ,t.[DueDate]
+                          ,t.[Consumed]
+                          FROM [karaokedigital].[dbo].[Trophies] t
+                          INNER JOIN Customers c on c.CustomerID = t.CustomerID
+                          INNER JOIN Awards a on a.AwardID = t.AwardID
+                          INNER JOIN Cups cp on cp.CupID = t.CupID
+                          INNER JOIN Users u on u.UserID = t.UserID
+                          WHERE (t.TrophyID = @TrophyID OR @TrophyID = 0) AND
+                          (c.Society = @Customer OR @Customer is null) AND
+                          (a.Award = @Award OR @Award is null) AND
+                          (a.Reward = @Reward OR @Reward is null) AND
+                          (cp.Cup = @Cup OR @Cup is null) AND
+                          (u.Username = @User OR @User is null) AND
+                          (t.WinDate = @WinDate OR @WinDate is null) AND
+                          (t.DueDate = @DueDate OR @DueDate is null) AND
+                          (t.Consumed = @Consumed OR @Consumed = 0)";
+
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);
+
+                    if (!string.IsNullOrEmpty(trophy.Customer))
+                    {
+                        cmd.Parameters.AddWithValue(@"Customer", trophy.Customer);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.Award))
+                    {
+                        cmd.Parameters.AddWithValue(@"Award", trophy.Award);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.Reward))
+                    {
+                        cmd.Parameters.AddWithValue(@"Reward", trophy.Award);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.Cup))
+                    {
+                        cmd.Parameters.AddWithValue(@"Cup", trophy.Cup);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"Cup", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.User))
+                    {
+                        cmd.Parameters.AddWithValue(@"User", trophy.User);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"User", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.WinDate))
+                    {
+                        cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"WinDate", DBNull.Value);
+                    }
+
+                    if (!string.IsNullOrEmpty(trophy.DueDate))
+                    {
+                        cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue(@"DueDate", DBNull.Value);
+                    }
+
+                    cmd.Parameters.AddWithValue(@"Consumed", trophy.Consumed);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Trophy _trophy = new Trophy();
+                        _trophy.TrophyID = Convert.ToInt32(reader["TrophyID"].ToString());
+                        _trophy.Customer = reader["Customer"].ToString();
+                        _trophy.Award = reader["Award"].ToString();
+                        _trophy.Reward = reader["Reward"].ToString();
+                        _trophy.Cup = reader["Cup"].ToString();
+                        _trophy.User = reader["User"].ToString();
+                        _trophy.WinDate = reader["WinDate"].ToString();
+                        _trophy.DueDate = reader["DueDate"].ToString();
+                        _trophy.Consumed = Convert.ToBoolean(reader["Consumed"].ToString());
+                        trophies.Add(_trophy);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+            }
+
+
+            return trophies;
+        }
+        /* TROPHY */
 
         public bool GeneralFunction(string obj)
         {

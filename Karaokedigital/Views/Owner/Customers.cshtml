@@ -9,6 +9,7 @@
 <p class="mt-4">
     <a class="btn btn-glow" title="Add New" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateCustomer"><i class="fas fa-plus"></i></a>
 </p>
+<div class="table-responsive">
 <table class="table">
     <thead>
         <tr>
@@ -54,59 +55,76 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditCustomer?id=@item.CustomerID'">
-            <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Society)" width="60" height="60" src="~/Images/Customers/@item.Society/@Html.DisplayFor(modelItem => item.Logo)"></td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Society)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PIvaFiscalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Province)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Plan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                 @if (item.IsActive)
-                    {
-                        <i class="h2 text-success fas fa-check"></i>
-                    }
-            </td>
-            <td>
-                <a class="btn btn-glow-circle mr-3" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerUsers?id=@item.CustomerID"><i class="bg-green fas fa-user-friends"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="SubCustomers" data-bs-toggle="tooltip" data-bs-placement="top" href="SubCustomers?id=@item.CustomerID"><i class="bg-lilla fas fa-users"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Awards" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerAwards?id=@item.CustomerID"><i class="bg-gold fas fa-trophy"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Reservations" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?id=@item.CustomerID"><i class=" fas fa-microphone-alt"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Chart" data-bs-toggle="tooltip" data-bs-placement="top" href="Chart?id=@item.CustomerID"><i class="fas fa-chart-line"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditCustomer?id=@item.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsCustomer?id=@item.CustomerID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateCustomer?id=@item.CustomerID"><i class="bg-warning fas fa-ban"></i></a>
-                <a class="btn btn-glow-circle mr-3" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteCustomer?id=@item.CustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
-            </td>
-        </tr>
+                <tr id="row" class="pt-2 cursor-pointer" onclick="location.href = 'EditCustomer?id=@item.CustomerID'">
+                    <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Society)" width="60" height="60" src="~/Images/Customers/@item.Society/@Html.DisplayFor(modelItem => item.Logo)"></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Society)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PIvaFiscalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Province)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Plan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueDate)
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <i class="h2 text-success fas fa-check"></i>
+                        }
+                    </td>
+                    <td colspan="13" id="customer-button" class="text-center d-none">
+                        <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerUsers?id=@item.CustomerID"><i class="bg-green fas fa-user-friends"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="SubCustomers" data-bs-toggle="tooltip" data-bs-placement="top" href="SubCustomers?id=@item.CustomerID"><i class="bg-lilla fas fa-users"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Awards" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerAwards?id=@item.CustomerID"><i class="bg-gold fas fa-trophy"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Reservations" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?id=@item.CustomerID"><i class=" fas fa-microphone-alt"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Chart" data-bs-toggle="tooltip" data-bs-placement="top" href="Chart?id=@item.CustomerID"><i class="fas fa-chart-line"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditCustomer?id=@item.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsCustomer?id=@item.CustomerID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateCustomer?id=@item.CustomerID"><i class="bg-warning fas fa-ban"></i></a>
+                        <a class="btn btn-glow-circle mr-2" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteCustomer?id=@item.CustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>           
 }
     </tbody>
 </table>
+</div>
+
+<style>
+    #row:hover #customer-button {
+        display:block!important;
+        
+        
+    }
+
+    #customer-button{
+        position:absolute;
+        left:40%;
+        z-index:1;
+        line-height:55px;
+        border:none;
+    }
+</style>

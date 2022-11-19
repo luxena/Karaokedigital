@@ -57,6 +57,13 @@ body {
         box-shadow: inset 1px 1px 121px -23px rgba(212,34,165,1);
 }
 
+.table > :not(:last-child) > :last-child > * {
+    border-bottom-color: #454d55!important;
+}
+
+.table-dark td, .table-dark th, .table-dark thead th {
+    border-color: #454d55;
+}
 
 #logo {
     border-radius: 150px;

@@ -8,21 +8,21 @@
 
 @if (@ViewBag.Count > 0)
 {
-    <button type="button" class="float-left btn btn-info">
-        <i class="text-dark fas fa-calendar-alt mr-2"></i> <span class="badge badge-light text-dark">@Html.DisplayFor(modelItem => @Model.First().Date)</span>
-        <span class="sr-only">Date</span>
-    </button>
+    <div class="">
+        <button type="button" class="float-left btn btn-info">
+            <i class="text-dark fas fa-calendar-alt mr-2"></i> <span class="badge badge-light text-dark">@Html.DisplayFor(modelItem => @Model.First().Date)</span>
+            <span class="sr-only">Date</span>
+        </button>
 
-    <button type="button" class="float-right btn btn-orange">
-        <i class="text-dark fas fa-stopwatch mr-2"></i> <span class="badge badge-light text-dark">@ViewBag.Time</span>
-        <span class="sr-only">Time</span>
-    </button>
+        <button type="button" class="float-right btn btn-orange">
+            <i class="text-dark fas fa-stopwatch mr-2"></i> <span class="badge badge-light text-dark">@ViewBag.Time</span>
+            <span class="sr-only">Time</span>
+        </button>
+    </div>
+  
 }
-
-
-
-
-<table class="table">
+<div class="table-responsive">
+<table class="table table-dark table-hover table-striped">
     <thead>
         <tr>
             <th>
@@ -40,7 +40,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Social)
             </th>
-            <th></th>
+            <th>Play/Stop</th>
             <th>@Html.DisplayNameFor(model => model.Votation)</th>
         </tr>
     </thead>
@@ -66,7 +66,7 @@
                         for (int i = 0; i < item.NumberUsers; i++)
                         {
                        
-                            <i class="h4 sunset fas fa-microphone-alt"></i>
+                            <i class="h5 sunset fas fa-microphone-alt"></i>
                         
                         }
                         
@@ -98,3 +98,4 @@
 }
     </tbody>
 </table>
+</div>
