@@ -40,7 +40,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Social)
             </th>
-            <th>Play/Stop</th>
             <th>@Html.DisplayNameFor(model => model.Votation)</th>
         </tr>
     </thead>
@@ -90,9 +89,6 @@
                         <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
                     }
                 
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Votation)
             </td>
         </tr>
 }
