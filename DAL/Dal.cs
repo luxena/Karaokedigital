@@ -3707,6 +3707,60 @@ namespace DAL
             return response;
         }
 
+        public List<ReservationUser> GetReservationUsers(ReservationUser reservationUser)
+        {
+            List<ReservationUser> reservationUsers = new List<ReservationUser>();
+
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = @"SELECT ru.ReservationUserID,ru.ReservationID,ru.CustomerID,c.Society Customer,ru.UserID,u.Username [User],ru.Tone
+                                    FROM ReservationUsers ru
+                                    INNER JOIN Users u on u.UserID = ru.UserID
+                                    INNER JOIN Customers c on c.CustomerID = ru.CustomerID
+                                    WHERE (ReservationUserID = @ReservationUserID OR @ReservationUserID = 0) AND    
+                                    (ReservationID = @ReservationID OR @ReservationID = 0) AND    
+                                    (CustomerID = @CustomerID OR @CustomerID = 0) AND    
+                                    (UserID = @UserID OR @UserID = 0)";
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"ReservationUserID", reservationUser.ReservationUserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID",reservationUser.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservationUser.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", reservationUser.UserID);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ReservationUser _reservationUser = new ReservationUser();
+                        _reservationUser.ReservationUserID = Convert.ToInt32(reader["ReservationUserID"].ToString());
+                        _reservationUser.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
+                        _reservationUser.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _reservationUser.Customer = reader["Customer"].ToString();
+                        _reservationUser.UserID = Convert.ToInt32(reader["UserID"].ToString());
+                        _reservationUser.User = reader["User"].ToString();
+                        _reservationUser.Tone = Convert.ToInt32(reader["Tone"].ToString());
+
+                        reservationUsers.Add(_reservationUser);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return reservationUsers;
+        }
+
         public List<Chart> GetChart(Customer customer)
         {
             List<Chart> charts = new List<Chart>();

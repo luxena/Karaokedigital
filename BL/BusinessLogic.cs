@@ -1750,6 +1750,12 @@ namespace BL
         }
 
         /* RESERVATION */
+        /* RESERVATION USERS*/
+        public List<ReservationUser> GetReservationUsers(ReservationUser reservationUser)
+        {
+            return dal.GetReservationUsers(reservationUser);
+        }
+        /* RESERVATION USERS*/
         /* CHART */
         public List<Chart> GetChart(Customer customer)
         {
@@ -1908,7 +1914,7 @@ namespace BL
 
         public string InsertTrophy(Chart chart)
         {
-            var winners = dal.GetReservationsUsers();
+            var winners = GetReservationUsers(new ReservationUser { CustomerID = chart.CustomerID, ReservationID = chart.ReservationID });
             Trophy trophy = new Trophy();
             trophy.CustomerID = chart.CustomerID;
             trophy.CupID = chart.Number;
