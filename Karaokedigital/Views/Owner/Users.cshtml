@@ -10,6 +10,7 @@
 <p class="mt-4 ml-2">
     <a class="btn btn-glow" title="Add New" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateUser"><i class="fas fa-plus"></i></a>
 </p>
+<div class="table-responsive">
 <table class="table">
     <thead>
         <tr>
@@ -50,7 +51,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="pt-2 cursor-pointer" onclick="location.href = 'EditUser?id=@item.UserID'">
+            <tr class="customer-result pt-2 cursor-pointer" onclick="location.href = 'EditUser?id=@item.UserID'">
                 <td>
                     @Html.DisplayFor(modelItem => item.UserID)
                 </td>
@@ -85,7 +86,7 @@
                         <i class="h2 text-success fas fa-check"></i>
                     }
                 </td>
-                <td>
+                    <td colspan="4" class="customer-button text-center d-none">
                     <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditUser?id=@item.UserID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
                     <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsUser?id=@item.UserID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
                     <a class="btn btn-glow-circle mr-4" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top" href="DeactivateUser?id=@item.UserID"><i class="bg-warning fas fa-ban"></i></a>
@@ -95,3 +96,4 @@
         }
     </tbody>
 </table>
+</div>

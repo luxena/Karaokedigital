@@ -96,6 +96,49 @@ body {
     animation-direction: linear;
 }
 
+
+.customer-result:hover .customer-button {
+    display: block !important;
+}
+
+.customer-button {
+    position: absolute;
+    left: 40%;
+    z-index: 1;
+    line-height: 55px;
+    border: none;
+}
+
+.result{
+    height:62.5px;
+}
+.result:hover .result-button {
+    display: block !important;
+}
+
+.result-button {
+    position: absolute;
+    left: 40%;
+    z-index: 1;
+    line-height: normal;
+    border: none;
+}
+
+.track-result:hover .track-button {
+    display: block !important;
+}
+
+.track-button {
+    position: absolute;
+    left: 40%;
+    z-index: 1;
+    line-height: 92px;
+    border: none;
+}
+
+
+
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes myfirst {
     0% {

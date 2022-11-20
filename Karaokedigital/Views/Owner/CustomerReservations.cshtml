@@ -45,7 +45,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="result">
             <td>
                 @Html.DisplayFor(modelItem => item.TrackTitle)
             </td>
@@ -71,25 +71,29 @@
                         
                     }
             </td>
+            
             <td>
-                    @if (item.State == "Reserved")
-                    {
-                        <a class="btn btn-player" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
-                    }
-
-                    @if (item.State == "Playing")
-                    {
-                        <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?pause=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
-                        <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
-                    }
-
-                    @if (item.State == "Pause")
-                    {
-                        <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
-                        <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
-                    }
-                
+                    @Html.DisplayFor(modelItem => item.Votation)
             </td>
+                    <td colspan="2" class="result-button text-center d-none">
+                        @if (item.State == "Reserved")
+                        {
+                            <a class="btn btn-player" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
+                        }
+
+                        @if (item.State == "Playing")
+                        {
+                            <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?pause=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
+                            <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                        }
+
+                        @if (item.State == "Pause")
+                        {
+                            <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
+                            <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                        }
+
+                    </td>
         </tr>
 }
     </tbody>
