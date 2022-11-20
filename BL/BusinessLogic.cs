@@ -1595,13 +1595,7 @@ namespace BL
             return response;
         }
         /* AWARD */
-        /* TROPHY */
 
-        public List<Trophy> GetTrophies(Trophy trophy)
-        {
-            return dal.GetTrophies(trophy);
-        }
-        /* TROPHY */
 
         /* RESERVATION STATE*/
         public List<ReservationState> GetReservationStates(ReservationState reservationState)
