@@ -34,7 +34,7 @@ namespace BL
             Directory.Delete(path, false);
         }
 
-        public string GetDueDate(string startDate, int planID)
+        public string GetDueDatePlan(string startDate, int planID)
         {
             string duration = GetPlans(new Plans { PlanID = planID }).Single().Duration;
             DateTime today = Convert.ToDateTime(startDate);
@@ -441,7 +441,7 @@ namespace BL
             string response = "";
 
             customer.StartDate = Convert.ToDateTime(customer.StartDate).ToShortDateString();
-            customer.DueDate = GetDueDate(customer.StartDate, Convert.ToInt32(customer.Plan));
+            customer.DueDate = GetDueDatePlan(customer.StartDate, Convert.ToInt32(customer.Plan));
             bool customerExists = GetCustomers(new Customer { Society = customer.Society, PIvaFiscalCode = customer.PIvaFiscalCode, Email = customer.Email }).Any();
 
 
@@ -1595,7 +1595,7 @@ namespace BL
             return response;
         }
         /* AWARD */
-
+       
 
         /* RESERVATION STATE*/
         public List<ReservationState> GetReservationStates(ReservationState reservationState)
@@ -1899,7 +1899,94 @@ namespace BL
         }
 
         /* TRACK */
+        /* TROPHY */
 
-         
+        public List<Trophy> GetTrophies(Trophy trophy)
+        {
+            return dal.GetTrophies(trophy);
+        }
+
+        public string InsertTrophy(Chart chart)
+        {
+            var winners = dal.GetReservationsUsers();
+            Trophy trophy = new Trophy();
+            trophy.CustomerID = chart.CustomerID;
+            trophy.CupID = chart.Number;
+            trophy.AwardID = GetAwards(new Awards { CustomerID = trophy.CustomerID, IsActive = true, CupID = chart.Number }).Single().AwardID;
+            trophy.WinDate = chart.Date;
+            trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
+            trophy.Consumed = false;
+            return "";
+        }
+        /* TROPHY */
+
+        public string GetDueDateTrophy(string startDate, int awardID)
+        {
+            string duration = GetAwards(new Awards { AwardID = awardID }).Single().Duration;
+            DateTime today = Convert.ToDateTime(startDate);
+            DateTime endDate = today;
+
+
+            var index = duration.IndexOf(" ");
+
+            var n = duration.Substring(0, index);
+            var p = duration.Substring((index + 1), duration.Length - (index + 1));
+
+            switch (p)
+            {
+                case "day":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "days":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "Day":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "Days":
+                    endDate = today.AddDays(Convert.ToInt32(n));
+                    break;
+                case "week":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "weeks":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "Week":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "Weeks":
+                    endDate = today.AddDays(7 * Convert.ToInt32(n));
+                    break;
+                case "month":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "months":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "Month":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "Months":
+                    endDate = today.AddMonths(Convert.ToInt32(n));
+                    break;
+                case "year":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "years":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "Year":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                case "Years":
+                    endDate = today.AddYears(Convert.ToInt32(n));
+                    break;
+                default:
+                    break;
+            }
+
+            return endDate.ToShortDateString();
+        }
     }
 }
