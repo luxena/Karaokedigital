@@ -50,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.Award)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cup)
+                <i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i> @Html.DisplayFor(modelItem => item.Cup)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Reward)

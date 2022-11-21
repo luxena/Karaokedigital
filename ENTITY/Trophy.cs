@@ -16,6 +16,7 @@ namespace ENTITY
         public string Cup { get; set; }
         public int UserID { get; set; }
         public string User { get; set; }
+        public string UserImg { get; set; }
         public string WinDate { get; set; }
         public string DueDate { get; set; }
         public bool Consumed { get; set; }

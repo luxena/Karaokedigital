@@ -4051,6 +4051,7 @@ namespace DAL
                           ,cp.[Cup]
                           ,t.[UserID]
                           ,u.[Username] [User]
+                          ,u.[Img] [UserImg]
                           ,t.[WinDate]
                           ,t.[DueDate]
                           ,t.[Consumed]
@@ -4107,6 +4108,7 @@ namespace DAL
                         _trophy.Reward = reader["Reward"].ToString();
                         _trophy.Cup = reader["Cup"].ToString();
                         _trophy.User = reader["User"].ToString();
+                        _trophy.UserImg = reader["UserImg"].ToString();
                         _trophy.WinDate = reader["WinDate"].ToString();
                         _trophy.DueDate = reader["DueDate"].ToString();
                         _trophy.Consumed = Convert.ToBoolean(reader["Consumed"].ToString());

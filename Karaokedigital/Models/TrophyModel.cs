@@ -18,6 +18,7 @@ namespace Karaokedigital.Models
         public string Cup { get; set; }
         public int UserID { get; set; }
         public string User { get; set; }
+        public string UserImg { get; set; }
         public string WinDate { get; set; }
         public string DueDate { get; set; }
         public bool Consumed { get; set; }
@@ -34,6 +35,7 @@ namespace Karaokedigital.Models
             Cup = trophy.Cup;
             UserID = trophy.UserID;
             User = trophy.User;
+            UserImg = trophy.UserImg;
             WinDate = trophy.WinDate;
             DueDate = trophy.DueDate;
             Consumed = trophy.Consumed;
@@ -53,6 +55,7 @@ namespace Karaokedigital.Models
                 Cup = Cup,
                 UserID = UserID,
                 User = User,
+                UserImg = UserImg,
                 WinDate = WinDate,
                 DueDate = DueDate,
                 Consumed = Consumed
