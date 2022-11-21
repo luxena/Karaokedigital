@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Karaokedigital.Models.TrophyModel>
 
 @{
-    ViewData["Title"] = "CustomerTrophies";
+    ViewData["Title"] = "Trophies";
 }
 
 <h1>Trophies</h1>
@@ -9,6 +9,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Award)
             </th>
@@ -38,13 +41,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Customer)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Award)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Reward)
             </td>
             <td>
-               <i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i> @Html.DisplayFor(modelItem => item.Cup)
+                <i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i> @Html.DisplayFor(modelItem => item.Cup)
             </td>
             <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.User)" width="60" height="60" src="~/Images/Users/@item.User/@Html.DisplayFor(modelItem => item.UserImg)"></td>
             <td>

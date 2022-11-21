@@ -1691,6 +1691,21 @@ namespace Karaokedigital.Controllers
             return View(trophyModelList);
         }
 
+        public ActionResult CustomerTrophies(int id)
+        {
+            ViewBag.Role = "Owner";
+            List<Trophy> trophies = bl.GetTrophies(new Trophy { CustomerID = id });
+            List<TrophyModel> trophyModelList = new List<TrophyModel>();
+            foreach (var trophy in trophies)
+            {
+                TrophyModel trophyModel = new TrophyModel();
+                trophyModel.MapFromTrophy(trophy);
+                trophyModelList.Add(trophyModel);
+            }
+
+            return View(trophyModelList);
+        }
+
     }
 
 }
