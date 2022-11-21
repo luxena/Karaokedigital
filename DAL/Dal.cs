@@ -4042,10 +4042,14 @@ namespace DAL
                     con.Open();
                     string query = @"SELECT 
                           t.[TrophyID]
+                          ,t.[CustomerID]
                           ,c.[Society] Customer
+                          ,t.[AwardID]
                           ,a.[Award]
 	                      ,a.[Reward]
+                          ,t.CupID
                           ,cp.[Cup]
+                          ,t.[UserID]
                           ,u.[Username] [User]
                           ,t.[WinDate]
                           ,t.[DueDate]
@@ -4056,10 +4060,14 @@ namespace DAL
                           INNER JOIN Cups cp on cp.CupID = t.CupID
                           INNER JOIN Users u on u.UserID = t.UserID
                           WHERE (t.TrophyID = @TrophyID OR @TrophyID = 0) AND
+                          (t.CustomerID = @CustomerID OR @CustomerID = 0) AND
                           (c.Society = @Customer OR @Customer is null) AND
+                          (t.AwardID = @AwardID OR @AwardID = 0) AND
                           (a.Award = @Award OR @Award is null) AND
                           (a.Reward = @Reward OR @Reward is null) AND
+                          (t.CupID = @CupID OR @CupID = 0) AND
                           (cp.Cup = @Cup OR @Cup is null) AND
+                          (t.UserID = @UserID OR @UserID = 0) AND
                           (u.Username = @User OR @User is null) AND
                           (t.WinDate = @WinDate OR @WinDate is null) AND
                           (t.DueDate = @DueDate OR @DueDate is null) AND
@@ -4069,69 +4077,18 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", trophy.CustomerID);
+                    cmd.Parameters.AddWithValue(@"AwardID", trophy.AwardID);
+                    cmd.Parameters.AddWithValue(@"UserID", trophy.UserID);
+                    cmd.Parameters.AddWithValue(@"CupID", trophy.CupID);
 
-                    if (!string.IsNullOrEmpty(trophy.Customer))
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", trophy.Customer);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.Award))
-                    {
-                        cmd.Parameters.AddWithValue(@"Award", trophy.Award);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.Reward))
-                    {
-                        cmd.Parameters.AddWithValue(@"Reward", trophy.Award);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.Cup))
-                    {
-                        cmd.Parameters.AddWithValue(@"Cup", trophy.Cup);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Cup", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.User))
-                    {
-                        cmd.Parameters.AddWithValue(@"User", trophy.User);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"User", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.WinDate))
-                    {
-                        cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"WinDate", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(trophy.DueDate))
-                    {
-                        cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"DueDate", DBNull.Value);
-                    }
+                    _ = !string.IsNullOrEmpty(trophy.Customer) ? cmd.Parameters.AddWithValue(@"Customer", trophy.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.Award) ? cmd.Parameters.AddWithValue(@"Award", trophy.Award) : cmd.Parameters.AddWithValue(@"Award", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.Reward) ? cmd.Parameters.AddWithValue(@"Reward", trophy.Reward) : cmd.Parameters.AddWithValue(@"Reward", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.Cup) ? cmd.Parameters.AddWithValue(@"Cup", trophy.Cup) : cmd.Parameters.AddWithValue(@"Cup", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.User) ? cmd.Parameters.AddWithValue(@"User", trophy.User) : cmd.Parameters.AddWithValue(@"User", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.WinDate) ? cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate) : cmd.Parameters.AddWithValue(@"WinDate", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(trophy.DueDate) ? cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate) : cmd.Parameters.AddWithValue(@"DueDate", DBNull.Value);
 
                     cmd.Parameters.AddWithValue(@"Consumed", trophy.Consumed);
 
@@ -4141,6 +4098,10 @@ namespace DAL
                     {
                         Trophy _trophy = new Trophy();
                         _trophy.TrophyID = Convert.ToInt32(reader["TrophyID"].ToString());
+                        _trophy.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _trophy.AwardID = Convert.ToInt32(reader["AwardID"].ToString());
+                        _trophy.CupID = Convert.ToInt32(reader["CupID"].ToString());
+                        _trophy.UserID = Convert.ToInt32(reader["UserID"].ToString());
                         _trophy.Customer = reader["Customer"].ToString();
                         _trophy.Award = reader["Award"].ToString();
                         _trophy.Reward = reader["Reward"].ToString();

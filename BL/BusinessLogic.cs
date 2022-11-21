@@ -1915,7 +1915,8 @@ namespace BL
         public string AssignTrophy(Customer customer)
         {
             string response = "";
-            foreach (var chart in GetChart(new Customer {  CustomerID = customer.CustomerID}).Where(c => c.Number < 6))
+            var charts = GetChart(new Customer { CustomerID = customer.CustomerID }).Where(c => c.Number < 6).OrderByDescending(c => c.Votation).ToList();
+            foreach (var chart in charts)
             {
                 
                 var winners = GetReservationUsers(new ReservationUser { CustomerID = chart.CustomerID, ReservationID = chart.ReservationID });
@@ -1931,9 +1932,14 @@ namespace BL
                     trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
                     trophy.Consumed = false;
 
-                    if (InsertTrophy(trophy) == "Trophy has been assigned")
+                    var res = InsertTrophy(trophy);
+                    if (res == "Trophy has been assigned")
                     {
                         n = n + 1;
+                    }
+                    else
+                    {
+                        response = res;
                     }
 
                 }
@@ -1944,7 +1950,7 @@ namespace BL
                 }
                 else
                 {
-                    response = "Error";
+                    response = response;
                 }
             }
 
@@ -1957,7 +1963,7 @@ namespace BL
         {
             string response = "";
 
-            bool trophyExists = GetTrophies(trophy).Any();
+            bool trophyExists = GetTrophies(new Trophy { CustomerID = trophy.CustomerID,CupID = trophy.CupID,AwardID = trophy.AwardID,UserID = trophy.UserID,WinDate = trophy.WinDate }).Any();
             if (!trophyExists)
             {
                 dal.InsertTrophy(trophy);
