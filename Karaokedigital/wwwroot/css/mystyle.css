@@ -607,7 +607,7 @@ footer {
     .text-orange-red {
         color: #cc3700 !important;
         text-shadow: 2px 2px 2px #000;
-        !important;
+
         text-shadow: 2px 2px 2px #000;
     }
 
@@ -615,9 +615,52 @@ footer {
         color: #17a2b8 !important;
     }
 
+    .bg-diamond {
+        background-color: #b9f2ff !important;
+    }
+
     .bg-gold {
         background-color: #B29600!important;
     }
+
+
+    .bg-platinum {
+        background-color: #a7b0c0 !important;
+    }
+
+    .bg-silver {
+        background-color: #acacac !important;
+    }
+
+
+    .bg-bronze {
+        background-color: #cd7f32 !important;
+    }
+
+    .bg-1 {
+        background-color: #b9f2ff !important;
+    }
+
+
+    .bg-2 {
+        background-color: #a7b0c0 !important;
+    }
+
+
+    .bg-3 {
+        background-color: #B29600 !important;
+    }
+
+
+    .bg-4 {
+        background-color: #acacac !important;
+    }
+
+
+    .bg-5 {
+        background-color: #cd7f32 !important;
+    }
+
 
     .bg-lightgrey {
         background: #e9ecef;

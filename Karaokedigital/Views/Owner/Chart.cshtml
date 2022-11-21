@@ -53,9 +53,18 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <form method="post" asp-action="AssignTrophy">
+                     <input name="Number" class="form-control" value="@item.Number" hidden />
+                     <input name="CustomerID" class="form-control" value="@item.CustomerID" hidden />
+                     <input name="ReservationID" class="form-control" value="@item.ReservationID" hidden />
+                           
+                      <button type="submit" class="btn btn-glow" title="AssignTrophy" data-bs-toggle="tooltip" data-bs-placement="top">
+                          @if (item.Number < 6)
+                                {
+                                    <i class="bg-@item.Number fas fa-trophy"></i>
+                                }
+                      </button>
+                </form>
             </td>
         </tr>
 }

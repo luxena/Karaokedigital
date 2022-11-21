@@ -12,6 +12,7 @@ namespace ENTITY
         public int ReservationID { get; set; }
         public int UserID { get; set; }
         public string User { get; set; }
+        public string UserImg { get; set; }
         public int Tone { get; set; }
     }
 }

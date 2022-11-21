@@ -79,18 +79,27 @@
                         @if (item.State == "Reserved")
                         {
                             <a class="btn btn-player" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
+                            <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservationUsers?id=@item.ReservationID"><i class="bg-green fas fa-users"></i></a>
                         }
 
                         @if (item.State == "Playing")
                         {
                             <a class="btn btn-player mr-4" title="Pause" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?pause=@item.ReservationID"><i class="far fa-pause-circle"></i></a>
                             <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                            <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservationUsers?id=@item.ReservationID"><i class="bg-green fas fa-users"></i></a>
                         }
 
                         @if (item.State == "Pause")
                         {
                             <a class="btn btn-player mr-4" title="Play" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?play=@item.ReservationID"><i class="fas fa-play"></i></a>
                             <a class="btn btn-player" title="Stop" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservations?stop=@item.ReservationID"><i class="far fa-stop-circle"></i></a>
+                            <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservationUsers?id=@item.ReservationID"><i class="bg-green fas fa-users"></i></a>
+                        }
+
+
+                        @if (item.State == "Stopped")
+                        {
+                            <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="CustomerReservationUsers?id=@item.ReservationID"><i class="bg-green fas fa-users"></i></a>
                         }
 
                     </td>

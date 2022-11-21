@@ -3719,14 +3719,14 @@ namespace DAL
                 {
                     con.Open();
 
-                    string query = @"SELECT ru.ReservationUserID,ru.ReservationID,ru.CustomerID,c.Society Customer,ru.UserID,u.Username [User],ru.Tone
+                    string query = @"SELECT ru.ReservationUserID,ru.ReservationID,ru.CustomerID,c.Society Customer,ru.UserID,u.Username [User],u.Img UserImg,ru.Tone
                                     FROM ReservationUsers ru
                                     INNER JOIN Users u on u.UserID = ru.UserID
                                     INNER JOIN Customers c on c.CustomerID = ru.CustomerID
-                                    WHERE (ReservationUserID = @ReservationUserID OR @ReservationUserID = 0) AND    
-                                    (ReservationID = @ReservationID OR @ReservationID = 0) AND    
-                                    (CustomerID = @CustomerID OR @CustomerID = 0) AND    
-                                    (UserID = @UserID OR @UserID = 0)";
+                                    WHERE (ru.ReservationUserID = @ReservationUserID OR @ReservationUserID = 0) AND    
+                                    (ru.ReservationID = @ReservationID OR @ReservationID = 0) AND    
+                                    (ru.CustomerID = @CustomerID OR @CustomerID = 0) AND    
+                                    (ru.UserID = @UserID OR @UserID = 0)";
 
                     SqlCommand cmd = new SqlCommand(query, con);
 
@@ -3745,6 +3745,7 @@ namespace DAL
                         _reservationUser.Customer = reader["Customer"].ToString();
                         _reservationUser.UserID = Convert.ToInt32(reader["UserID"].ToString());
                         _reservationUser.User = reader["User"].ToString();
+                        _reservationUser.UserImg = reader["UserImg"].ToString();
                         _reservationUser.Tone = Convert.ToInt32(reader["Tone"].ToString());
 
                         reservationUsers.Add(_reservationUser);
@@ -4162,6 +4163,49 @@ namespace DAL
 
             return trophies;
         }
+
+        public bool InsertTrophy(Trophy trophy)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT Trophies VALUES (@CustomerID,@AwardID,@CupID,@UserID,@WinDate,@DueDate,@Consumed)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"CustomerID",trophy.CustomerID);
+                    cmd.Parameters.AddWithValue(@"AwardID", trophy.AwardID);
+                    cmd.Parameters.AddWithValue(@"CupID", trophy.CupID);
+                    cmd.Parameters.AddWithValue(@"UserID", trophy.UserID);
+                    cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
+                    cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
+                    cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate);
+                    cmd.Parameters.AddWithValue(@"Consumed", trophy.Consumed);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetTrophies(trophy).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
         /* TROPHY */
 
         public bool GeneralFunction(string obj)

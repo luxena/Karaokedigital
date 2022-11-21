@@ -1912,17 +1912,66 @@ namespace BL
             return dal.GetTrophies(trophy);
         }
 
-        public string InsertTrophy(Chart chart)
+        public string AssignTrophy(Chart chart)
         {
+            string response = "";
             var winners = GetReservationUsers(new ReservationUser { CustomerID = chart.CustomerID, ReservationID = chart.ReservationID });
-            Trophy trophy = new Trophy();
-            trophy.CustomerID = chart.CustomerID;
-            trophy.CupID = chart.Number;
-            trophy.AwardID = GetAwards(new Awards { CustomerID = trophy.CustomerID, IsActive = true, CupID = chart.Number }).Single().AwardID;
-            trophy.WinDate = chart.Date;
-            trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
-            trophy.Consumed = false;
-            return "";
+            int n = 0;
+            foreach (var user in winners)
+            {
+                Trophy trophy = new Trophy();
+                trophy.UserID = user.UserID;
+                trophy.CustomerID = chart.CustomerID;
+                trophy.CupID = chart.Number;
+                trophy.AwardID = GetAwards(new Awards { CustomerID = trophy.CustomerID, IsActive = true, CupID = chart.Number }).Single().AwardID;
+                trophy.WinDate = chart.Date;
+                trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
+                trophy.Consumed = false;
+
+                if (InsertTrophy(trophy) == "Trophy has been assigned")
+                {
+                    n = n + 1;
+                }
+               
+            }
+
+            if (n == winners.Count)
+            {
+                response = "Trophies are been assigned";
+            }
+            else
+            {
+                response = "Error";
+            }
+
+            return response;
+           
+        }
+
+        public string InsertTrophy(Trophy trophy)
+        {
+            string response = "";
+
+            bool trophyExists = GetTrophies(trophy).Any();
+            if (!trophyExists)
+            {
+                dal.InsertTrophy(trophy);
+                trophyExists = GetTrophies(trophy).Any();
+                if (trophyExists)
+                {
+                    response = "Trophy has been assigned";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "Trophy already assigned";
+            }
+
+            return response;
         }
         /* TROPHY */
 

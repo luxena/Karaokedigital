@@ -11,6 +11,7 @@ namespace Karaokedigital.Models
         public int ReservationID { get; set; }
         public int UserID { get; set; }
         public string User { get; set; }
+        public string UserImg { get; set; }
         public int Tone { get; set; }
 
         public void MapFromReservationUser(ReservationUser reservationUser)
@@ -21,6 +22,7 @@ namespace Karaokedigital.Models
             ReservationID = reservationUser.ReservationID;
             UserID = reservationUser.UserID;
             User = reservationUser.User;
+            UserImg = reservationUser.UserImg;
             Tone = reservationUser.Tone;
         }
 
@@ -34,6 +36,7 @@ namespace Karaokedigital.Models
                 ReservationID = ReservationID,
                 UserID = UserID,
                 User = User,
+                UserImg = UserImg,
                 Tone = Tone
             };
         }

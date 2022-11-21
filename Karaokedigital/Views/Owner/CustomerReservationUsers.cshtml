@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Karaokedigital.Models.ReservationUserModel>
+
+@{
+    ViewData["Title"] = "CustomerReservationUsers";
+}
+
+<h1>CustomerReservationUsers</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" title="Add New" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="InsertReservationUser"><i class="fas fa-plus"></i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Photo</th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="result pt-2 cursor-pointer" onclick="location.href = 'EditReservationUser?id=@item.ReservationUserID'">
+            <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.User)" width="60" height="60" src="~/Images/Users/@item.User/@Html.DisplayFor(modelItem => item.UserImg)">
+            <td>
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tone)
+            </td>
+            <td colspan="3" class="result-button text-center d-none">
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditReservationUser?id=@item.ReservationUserID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsReservationUser?id=@item.ReservationUserID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteReservationUser?id=@item.ReservationUserID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1545,6 +1545,21 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
+        public ActionResult ReservationUsers(int id)
+        {
+            ViewBag.Role = "Owner";
+            List<ReservationUser> reservationUsers = bl.GetReservationUsers(new ReservationUser { ReservationID = id }).OrderBy(ru => ru.ReservationID).ToList();
+            List<ReservationUserModel> modelList = new List<ReservationUserModel>();
+            foreach (var reservationUser in reservationUsers)
+            {
+                ReservationUserModel model = new ReservationUserModel();
+                model.MapFromReservationUser(reservationUser);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
         public ActionResult CustomerReservations(int id,int play,int pause,int stop)
         {
             ViewBag.Role = "Owner";
@@ -1621,6 +1636,21 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
+        public ActionResult CustomerReservationUsers(int id)
+        {
+            ViewBag.Role = "Owner";
+            List<ReservationUser> reservationUsers = bl.GetReservationUsers(new ReservationUser { ReservationID = id});
+            List<ReservationUserModel> modelList = new List<ReservationUserModel>();
+            foreach (var reservationUser in reservationUsers)
+            {
+                ReservationUserModel model = new ReservationUserModel();
+                model.MapFromReservationUser(reservationUser);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
         public ActionResult Chart(int id)
         {
             ViewBag.Role = "Owner";
@@ -1636,6 +1666,14 @@ namespace Karaokedigital.Controllers
             }
 
             return View(modelList);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignTrophy(int Number,int CustomerID,int ReservationID)
+        {
+            ViewBag.Role = "Owner";
+            return View();
         }
 
         // GET: BossController

@@ -42,7 +42,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="result">
             <td>
                 @Html.DisplayFor(modelItem => item.Customer)
             </td>
@@ -69,6 +69,9 @@
                         }
 
                     }
+                </td>
+                <td colspan="1" class="result-button text-center d-none">
+                    <a class="btn btn-glow-circle mr-2" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" href="ReservationUsers?id=@item.ReservationID"><i class="bg-green fas fa-users"></i></a>
                 </td>
         </tr>
 }
