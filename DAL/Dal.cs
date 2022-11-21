@@ -4183,7 +4183,6 @@ namespace DAL
                     cmd.Parameters.AddWithValue(@"CupID", trophy.CupID);
                     cmd.Parameters.AddWithValue(@"UserID", trophy.UserID);
                     cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
-                    cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
                     cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate);
                     cmd.Parameters.AddWithValue(@"Consumed", trophy.Consumed);
 
