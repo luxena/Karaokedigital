@@ -1654,7 +1654,7 @@ namespace Karaokedigital.Controllers
         public ActionResult Chart(int id)
         {
             ViewBag.Role = "Owner";
-            
+            ViewBag.CustomerID = id;
             List<ChartModel> modelList = new List<ChartModel>();
             var charts = bl.GetChart(new Customer { CustomerID = id });
 
@@ -1668,11 +1668,10 @@ namespace Karaokedigital.Controllers
             return View(modelList);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AssignTrophy(int Number,int CustomerID,int ReservationID)
+        public ActionResult AssignTrophies(int id)
         {
             ViewBag.Role = "Owner";
+            ViewBag.Response = bl.AssignTrophy(new Customer { CustomerID = id });
             return View();
         }
 

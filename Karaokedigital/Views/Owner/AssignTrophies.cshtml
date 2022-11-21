@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "AssignTrophies";
+}
+
+<h1>AssignTrophies</h1>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+
+    }
+</div>

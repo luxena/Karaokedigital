@@ -1912,37 +1912,42 @@ namespace BL
             return dal.GetTrophies(trophy);
         }
 
-        public string AssignTrophy(Chart chart)
+        public string AssignTrophy(Customer customer)
         {
             string response = "";
-            var winners = GetReservationUsers(new ReservationUser { CustomerID = chart.CustomerID, ReservationID = chart.ReservationID });
-            int n = 0;
-            foreach (var user in winners)
+            foreach (var chart in GetChart(new Customer {  CustomerID = customer.CustomerID}).Where(c => c.Number < 6))
             {
-                Trophy trophy = new Trophy();
-                trophy.UserID = user.UserID;
-                trophy.CustomerID = chart.CustomerID;
-                trophy.CupID = chart.Number;
-                trophy.AwardID = GetAwards(new Awards { CustomerID = trophy.CustomerID, IsActive = true, CupID = chart.Number }).Single().AwardID;
-                trophy.WinDate = chart.Date;
-                trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
-                trophy.Consumed = false;
-
-                if (InsertTrophy(trophy) == "Trophy has been assigned")
+                
+                var winners = GetReservationUsers(new ReservationUser { CustomerID = chart.CustomerID, ReservationID = chart.ReservationID });
+                int n = 0;
+                foreach (var user in winners)
                 {
-                    n = n + 1;
+                    Trophy trophy = new Trophy();
+                    trophy.UserID = user.UserID;
+                    trophy.CustomerID = chart.CustomerID;
+                    trophy.CupID = chart.Number;
+                    trophy.AwardID = GetAwards(new Awards { CustomerID = trophy.CustomerID, IsActive = true, CupID = chart.Number }).Single().AwardID;
+                    trophy.WinDate = chart.Date;
+                    trophy.DueDate = GetDueDateTrophy(trophy.WinDate, trophy.AwardID);
+                    trophy.Consumed = false;
+
+                    if (InsertTrophy(trophy) == "Trophy has been assigned")
+                    {
+                        n = n + 1;
+                    }
+
                 }
-               
+
+                if (n == winners.Count)
+                {
+                    response = "Trophies are been assigned";
+                }
+                else
+                {
+                    response = "Error";
+                }
             }
 
-            if (n == winners.Count)
-            {
-                response = "Trophies are been assigned";
-            }
-            else
-            {
-                response = "Error";
-            }
 
             return response;
            
