@@ -1984,6 +1984,58 @@ namespace BL
 
             return response;
         }
+
+        public string UpdateTrophy(Trophy trophy)
+        {
+            string response = "";
+            bool trophyExists = GetTrophies(new Trophy { CustomerID = trophy.CustomerID,CupID = trophy.CupID, AwardID = trophy.AwardID,UserID = trophy.UserID }).Where(t => t.TrophyID != trophy.TrophyID).Any();
+
+            if (!trophyExists)
+            {
+                dal.UpdateTrophy(trophy);
+                trophyExists = GetTrophies(trophy).Any();
+                if (trophyExists)
+                {
+                    response = "Trophy has been updated";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "Trophy already exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteTrophy(Trophy trophy)
+        {
+            string response = "";
+            bool trophyExists = GetTrophies(new Trophy { TrophyID = trophy.TrophyID }).Any();
+
+            if (trophyExists)
+            {
+                dal.DeleteTrophy(trophy);
+                trophyExists = GetTrophies(trophy).Any();
+                if (!trophyExists)
+                {
+                    response = "Trophy has been deleted";
+                }
+                else
+                {
+                    response = "Error";
+                }
+            }
+            else
+            {
+                response = "Trophy not exists";
+            }
+
+            return response;
+        }
         /* TROPHY */
 
         public string GetDueDateTrophy(string startDate, int awardID)

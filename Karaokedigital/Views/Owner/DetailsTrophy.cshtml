@@ -1,0 +1,76 @@
+﻿@model Karaokedigital.Models.TrophyModel
+
+@{
+    ViewData["Title"] = "DetailsTrophy";
+}
+
+<h1>Details Trophy</h1>
+
+<div>
+    <h4>TrophyModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Customer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Award)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Award)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Reward)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reward)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cup)
+        </dt>
+        <dd class = "col-sm-10">
+            <i class="h3 fas fa-trophy text-@Model.Cup.ToLower()"></i> @Html.DisplayFor(model => model.Cup)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserImg)
+        </dt>
+        <dd class = "col-sm-10">
+            <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => modelItem.User)" width="60" height="60" src="~/Images/Users/@Model.User/@Html.DisplayFor(modelItem => @Model.UserImg)">
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WinDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WinDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Consumed)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (@Model.Consumed)
+            {
+                <i class="h2 text-success fas fa-check"></i>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="mb-4">
+    <a class="btn btn-glow" href="EditTrophy/@Model.TrophyID" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+    <a class="btn btn-glow ml-2" href="CustomerTrophy?id=@Model.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+</div>
+

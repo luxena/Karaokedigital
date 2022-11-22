@@ -4168,6 +4168,84 @@ namespace DAL
             return response;
         }
 
+        public bool UpdateTrophy(Trophy trophy)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE Trophies SET CustomerID = @CustomerID,AwardID = @AwardID,CupID = @CupID,UserID = @UserID,WinDate = @WinDate,DueDate = @DueDate,Consumed = @Consumed
+                                    WHERE TrophyID = @TrophyID)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", trophy.CustomerID);
+                    cmd.Parameters.AddWithValue(@"AwardID", trophy.AwardID);
+                    cmd.Parameters.AddWithValue(@"CupID", trophy.CupID);
+                    cmd.Parameters.AddWithValue(@"UserID", trophy.UserID);
+                    cmd.Parameters.AddWithValue(@"WinDate", trophy.WinDate);
+                    cmd.Parameters.AddWithValue(@"DueDate", trophy.DueDate);
+                    cmd.Parameters.AddWithValue(@"Consumed", trophy.Consumed);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetTrophies(trophy).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteTrophy(Trophy trophy)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE Trophies WHERE TrophyID = @TrophyID)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetTrophies(trophy).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
         /* TROPHY */
 
         public bool GeneralFunction(string obj)

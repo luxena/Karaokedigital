@@ -1706,6 +1706,64 @@ namespace Karaokedigital.Controllers
             return View(trophyModelList);
         }
 
+        public ActionResult DetailsTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            return View(model);
+        }
+
+
+        public ActionResult EditTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+            
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTrophy(TrophyModel model)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Response = bl.UpdateTrophy(model.MapIntoTrophy());
+            return View(model);
+
+        }
+
+        public ActionResult DeleteTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteTrophy(int id,IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            try
+            {
+                ViewBag.Response = bl.DeleteTrophy(new Trophy { TrophyID = id });
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+
+
+        }
+
     }
 
 }

@@ -36,7 +36,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="customer-result pt-2 cursor-pointer" onclick="location.href = 'EditTrophy?id=@item.TrophyID'">
             <td>
                 @Html.DisplayFor(modelItem => item.Award)
             </td>
@@ -57,12 +57,15 @@
                 @Html.DisplayFor(modelItem => item.DueDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Consumed)
+               @if (item.Consumed)
+               {
+                   <i class="h2 text-success fas fa-check"></i>
+               }
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            <td colspan="4" class="customer-button text-center d-none">
+                <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" href="EditTrophy?id=@item.TrophyID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsTrophy?id=@item.TrophyID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteTrophy?id=@item.TrophyID"><i class="bg-danger fas fa-trash-alt"></i></a>
             </td>
         </tr>
 }
