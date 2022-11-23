@@ -1733,6 +1733,7 @@ namespace Karaokedigital.Controllers
         {
             ViewBag.Role = "Owner";
             ViewBag.Response = bl.UpdateTrophy(model.MapIntoTrophy());
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = model.TrophyID }).Single());
             return View(model);
 
         }
@@ -1789,7 +1790,9 @@ namespace Karaokedigital.Controllers
         public ActionResult EditCustomerTrophy(TrophyModel model)
         {
             ViewBag.Role = "Owner";
+            ViewBag.Cups = bl.GetCups(new Cups());
             ViewBag.Response = bl.UpdateTrophy(model.MapIntoTrophy());
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = model.TrophyID }).Single());
             return View(model);
 
         }

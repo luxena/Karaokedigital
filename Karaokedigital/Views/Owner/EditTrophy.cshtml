@@ -65,7 +65,11 @@
 
             <div class="form-group">
                 <label asp-for="Cup" class="control-label"></label>
-                <i class="h3 fas fa-trophy text-@Model.Cup.ToLower()"></i>
+                @if (@Model != null)
+                {
+                    <i class="h3 fas fa-trophy text-@Model.Cup.ToLower()"></i>
+                }
+
                 <select name="CupID" class="form-select" aria-label="Default select example">
                     @foreach (var item in @ViewBag.Cups)
                     {
@@ -91,10 +95,14 @@
                 <input asp-for="User" class="form-control" />
                 <span asp-validation-for="User" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => modelItem.User)" width="60" height="60" src="~/Images/Users/@Model.User/@Html.DisplayFor(modelItem => @Model.UserImg)">
-            </div>
 
+            @if (@Model != null)
+            {
+                <div class="form-group">
+                    <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => modelItem.User)" width="60" height="60" src="~/Images/Users/@Model.User/@Html.DisplayFor(modelItem => @Model.UserImg)">
+                </div>
+            }
+           
             <div class="form-group">
                 @Html.LabelFor(model => model.WinDate, htmlAttributes: new { @class = "control-label" })
                 <div>
