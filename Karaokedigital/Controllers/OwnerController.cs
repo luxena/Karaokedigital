@@ -1725,7 +1725,6 @@ namespace Karaokedigital.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditTrophy(TrophyModel model)
