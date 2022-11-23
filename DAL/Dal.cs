@@ -4180,7 +4180,7 @@ namespace DAL
                 {
                     con.Open();
                     string query = @"UPDATE Trophies SET CustomerID = @CustomerID,AwardID = @AwardID,CupID = @CupID,UserID = @UserID,WinDate = @WinDate,DueDate = @DueDate,Consumed = @Consumed
-                                    WHERE TrophyID = @TrophyID)";
+                                    WHERE TrophyID = @TrophyID";
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);
@@ -4222,7 +4222,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"DELETE Trophies WHERE TrophyID = @TrophyID)";
+                    string query = @"DELETE Trophies WHERE TrophyID = @TrophyID";
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"TrophyID", trophy.TrophyID);

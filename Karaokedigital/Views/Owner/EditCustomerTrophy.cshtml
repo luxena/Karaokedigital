@@ -1,0 +1,125 @@
+﻿@model Karaokedigital.Models.TrophyModel
+
+@{
+    ViewData["Title"] = "EditCustomerTrophy";
+}
+
+<h1>Edit Customer Trophy</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "Trophy already exists")
+    {
+          <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+          </div>
+    }
+    else
+    {
+         <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+         </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditCustomerTrophy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group d-none">
+                <label asp-for="TrophyID" class="control-label"></label>
+                <input asp-for="TrophyID" class="form-control" />
+                <span asp-validation-for="TrophyID" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <input asp-for="CustomerID" class="form-control" />
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="Customer" class="control-label"></label>
+                <input asp-for="Customer" class="form-control" />
+                <span asp-validation-for="Customer" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="AwardID" class="control-label"></label>
+                <input asp-for="AwardID" class="form-control" />
+                <span asp-validation-for="AwardID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Award" class="control-label"></label>
+                <input asp-for="Award" class="form-control" />
+                <span asp-validation-for="Award" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reward" class="control-label"></label>
+                <input asp-for="Reward" class="form-control" />
+                <span asp-validation-for="Reward" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CupID" class="control-label"></label>
+                <i class="h3 fas fa-trophy text-@Model.Cup.ToLower()"></i>
+                <select name="Cup" class="form-select" aria-label="Default select example">
+                    @foreach (var item in @ViewBag.Cups)
+                    {
+                        @if (@item.CupID == Model.CupID)
+                        {
+                            <option selected value="@item.CupID">@item.Cup</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CupID">@item.Cup</option>
+                        }
+
+                    }
+                </select>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="UserID" class="control-label"></label>
+                <input asp-for="UserID" class="form-control" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User" class="control-label"></label>
+                <input asp-for="User" class="form-control" />
+                <span asp-validation-for="User" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => modelItem.User)" width="60" height="60" src="~/Images/Users/@Model.User/@Html.DisplayFor(modelItem => @Model.UserImg)">
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.WinDate, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.WinDate, new { @type = "date", @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.WinDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.DueDate, new { @type = "date", @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    @if (@Model.Consumed)
+                    {
+                        <i class="h2 text-success fas fa-check"></i>
+                    }
+                    else
+                    {
+                        <input class="form-check-input" asp-for="Consumed" /> @Html.DisplayNameFor(model => model.Consumed)
+                    }
+                </label>
+            </div>
+             <div class="form-group mt-3">
+                <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
+                <a class="btn btn-glow ml-2" href="CustomerTrophies?id=@Model.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            </div>
+        </form>
+    </div>
+</div>

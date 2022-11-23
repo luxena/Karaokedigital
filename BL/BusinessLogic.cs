@@ -1987,6 +1987,8 @@ namespace BL
 
         public string UpdateTrophy(Trophy trophy)
         {
+            trophy.WinDate = Convert.ToDateTime(trophy.WinDate).ToShortDateString();
+            trophy.DueDate = Convert.ToDateTime(trophy.DueDate).ToShortDateString();
             string response = "";
             bool trophyExists = GetTrophies(new Trophy { CustomerID = trophy.CustomerID,CupID = trophy.CupID, AwardID = trophy.AwardID,UserID = trophy.UserID }).Where(t => t.TrophyID != trophy.TrophyID).Any();
 
@@ -2018,7 +2020,7 @@ namespace BL
 
             if (trophyExists)
             {
-                dal.DeleteTrophy(trophy);
+                bool res = dal.DeleteTrophy(trophy);
                 trophyExists = GetTrophies(trophy).Any();
                 if (!trophyExists)
                 {

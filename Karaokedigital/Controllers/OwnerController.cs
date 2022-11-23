@@ -1719,9 +1719,11 @@ namespace Karaokedigital.Controllers
         public ActionResult EditTrophy(int id)
         {
             ViewBag.Role = "Owner";
-            
+            ViewBag.Cups = bl.GetCups(new Cups());
             var model = new TrophyModel();
             model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            model.WinDate = Convert.ToDateTime(model.WinDate).ToString("yyyy-MM-dd");
+            model.DueDate = Convert.ToDateTime(model.DueDate).ToString("yyyy-MM-dd");
             return View(model);
         }
 
@@ -1746,13 +1748,13 @@ namespace Karaokedigital.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteTrophy(int id,IFormCollection collection)
+        public ActionResult DeleteTrophy(int TrophyID, IFormCollection collection)
         {
             ViewBag.Role = "Owner";
 
             try
             {
-                ViewBag.Response = bl.DeleteTrophy(new Trophy { TrophyID = id });
+                ViewBag.Response = bl.DeleteTrophy(new Trophy { TrophyID = TrophyID });
                 return View();
             }
             catch
@@ -1762,6 +1764,64 @@ namespace Karaokedigital.Controllers
 
 
         }
+
+        public ActionResult DetailsCustomerTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            return View(model);
+        }
+        public ActionResult EditCustomerTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Cups = bl.GetCups(new Cups());
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            model.WinDate = Convert.ToDateTime(model.WinDate).ToString("yyyy-MM-dd");
+            model.DueDate = Convert.ToDateTime(model.DueDate).ToString("yyyy-MM-dd");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCustomerTrophy(TrophyModel model)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.Response = bl.UpdateTrophy(model.MapIntoTrophy());
+            return View(model);
+
+        }
+
+        public ActionResult DeleteCustomerTrophy(int id)
+        {
+            ViewBag.Role = "Owner";
+
+            var model = new TrophyModel();
+            model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCustomerTrophy(int TrophyID, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+            ViewBag.CustomerID = bl.GetTrophies(new Trophy { TrophyID = TrophyID }).Single().CustomerID;
+            try
+            {
+                ViewBag.Response = bl.DeleteTrophy(new Trophy { TrophyID = TrophyID });
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+
+
+        }
+
 
     }
 
