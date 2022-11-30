@@ -3707,6 +3707,7 @@ namespace DAL
             return response;
         }
 
+        /* RESERVATION USER */
         public List<ReservationUser> GetReservationUsers(ReservationUser reservationUser)
         {
             List<ReservationUser> reservationUsers = new List<ReservationUser>();
@@ -3762,6 +3763,120 @@ namespace DAL
             return reservationUsers;
         }
 
+        public bool InsertReservationUser(ReservationUser reservationUser)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO ReservationUsers VALUE (@CustomerID,@ReservationID,@UserID,@Tone)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"CustomerID",reservationUser.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservationUser.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", reservationUser.UserID);
+                    cmd.Parameters.AddWithValue(@"Tone", reservationUser.Tone);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservationUsers(reservationUser).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool UpdateReservationUser(ReservationUser reservationUser)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE ReservationUsers SET CustomerID = @CustomerID,UserID = @UserID,Tone = @Tone
+                                    WHERE ReservationID = @ReservationID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservationUser.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservationUser.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", reservationUser.UserID);
+                    cmd.Parameters.AddWithValue(@"Tone", reservationUser.Tone);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservationUsers(reservationUser).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteReservationUser(ReservationUser reservationUser)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE ReservationUsers
+                                    WHERE ReservationID = @ReservationID AND CustomerID = @CustomerID AND UserID = @UserID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservationUser.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservationUser.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", reservationUser.UserID);
+                   
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetReservationUsers(reservationUser).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        /* RESERVATION USER */
         public List<Chart> GetChart(Customer customer)
         {
             List<Chart> charts = new List<Chart>();

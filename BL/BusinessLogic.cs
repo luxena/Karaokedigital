@@ -1701,6 +1701,41 @@ namespace BL
             return response;
         }
 
+        public string CreateReservation(Reservation reservation,ReservationUser reservationUser)
+        {
+            string response = "";
+            string responseReservation = "";
+            string responseReservationUser = "";
+            bool reservationInserted = false;
+            bool reservationUserInserted = false;
+
+            responseReservation = InsertReservation(reservation);
+            if (responseReservation == "The Reservation has been inserted")
+            {
+                reservationInserted = true;
+                if (reservation.CustomerID == reservationUser.CustomerID && reservation.ReservationID == reservationUser.ReservationID)
+                {
+                    responseReservationUser = InsertReservationUser(reservationUser);
+                    if (responseReservationUser == "ReservationUser has been inserted")
+                    {
+                        reservationUserInserted = true;
+                    }
+                }
+                
+            }
+
+            if (reservationInserted && reservationUserInserted)
+            {
+                response = "Reservation has been created";
+            }
+            else
+            {
+                response = "Error => " + responseReservation + " : " + responseReservationUser;
+            }
+
+            return response;
+        }
+
         public string UpdateReservation(Reservation reservation)
         {
             string response = "";
@@ -1754,6 +1789,65 @@ namespace BL
         public List<ReservationUser> GetReservationUsers(ReservationUser reservationUser)
         {
             return dal.GetReservationUsers(reservationUser);
+        }
+
+        public string InsertReservationUser(ReservationUser reservationUser)
+        {
+            string response = "";
+            bool reservationUserExists = GetReservationUsers(reservationUser).Any();
+            if (!reservationUserExists)
+            {
+                if (dal.InsertReservationUser(reservationUser))
+                {
+                    response = "ReservationUser has been inserted";
+                }
+            }
+            else
+            {
+                response = "ReservationUser already exists";
+            }
+
+            return response;
+        }
+
+        public string UpdateReservationUser(ReservationUser reservationUser)
+        {
+            string response = "";
+            bool reservationUserExists = GetReservationUsers(reservationUser).Any();
+
+            if (!reservationUserExists)
+            {
+                if (dal.UpdateReservationUser(reservationUser))
+                {
+                    response = "ReservationUser has been updated";
+                }
+            }
+            else
+            {
+                response = "ReservationUser already exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteReservationUser(ReservationUser reservationUser)
+        {
+            string response = "";
+            bool reservationUserExists = GetReservationUsers(reservationUser).Any();
+
+            if (reservationUserExists)
+            {
+                if (dal.DeleteReservationUser(reservationUser))
+                {
+                    response = "ReservationUser has been deleted";
+                }
+            }
+            else
+            {
+                response = "ReservationUser not exists";
+            }
+
+            return response;
         }
         /* RESERVATION USERS*/
         /* CHART */
