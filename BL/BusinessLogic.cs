@@ -1,9 +1,15 @@
 ﻿using DAL;
 using ENTITY;
+using IronBarCode;
+
+using SixLabors.ImageSharp.Drawing.Processing;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using Brushes = System.Drawing.Brushes;
 
 namespace BL
 {
@@ -639,6 +645,78 @@ namespace BL
 
             return response;
         }
+
+        [Obsolete]
+        public void CreateCustomerQR(Customer customer,string pathFolder)
+        {
+            string path = pathFolder + @"\Images\Customers\" + customer.Society + @"\";
+
+            string qrImg = "qr.png";
+            string testo = customer.Society;
+            string qrImgPath = path + qrImg;
+            string logoImgPath = path + customer.Logo;
+            string qrCodeFileName = "QR" + testo + ".png";
+            string QrCodeImg = path + @"\" + qrCodeFileName;
+
+            var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", testo, 500, 500);
+            WebResponse response = default(WebResponse);
+            Stream remoteStream = default(Stream);
+            StreamReader readStream = default(StreamReader);
+            WebRequest request = WebRequest.Create(url);
+            response = request.GetResponse();
+            remoteStream = response.GetResponseStream();
+            readStream = new StreamReader(remoteStream);
+            System.Drawing.Image img = System.Drawing.Image.FromStream(remoteStream);
+            img.Save(qrImgPath);
+          
+        
+            response.Close();
+            remoteStream.Close();
+            readStream.Close();
+            
+
+
+            Image backImg = Image.FromFile(qrImgPath);
+            Image logoImg = Image.FromFile(logoImgPath);
+            var logo = new Bitmap(logoImg, new Size(50, 50));
+            Graphics g = Graphics.FromImage(backImg);
+
+
+            g.DrawImage(logo, (backImg.Width / 2 - 25), (backImg.Height / 2 - 25));
+
+            backImg.Save(path + qrCodeFileName);
+            
+            
+
+            string firstText = "karaokedigital";
+            string secondText = "https://www.karaokedigital.it";
+
+            PointF firstLocation = new PointF(backImg.Width / 2 - 65, 15f);
+            PointF secondLocation = new PointF(120f, backImg.Height - 50f);
+
+            string imageFilePath = path + @"\QR" + customer.Society + ".png";
+
+            Bitmap newBitmap;
+            using (var bitmap = (Bitmap)Image.FromFile(imageFilePath))//load the image file
+            {
+                using (Graphics graphics = Graphics.FromImage(bitmap))
+                {
+                    using (Font arialFont = new Font("Arial", 15))
+                    {
+                        graphics.DrawString(firstText, arialFont, Brushes.Blue, firstLocation);
+                        graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+                        
+                    }
+                }
+                newBitmap = new Bitmap(bitmap);
+            }
+
+            newBitmap.Save(imageFilePath);//save the image file
+            newBitmap.Dispose();
+            
+
+        }
+
         /* CUSTOMER */
         /* CUSTOMER USER */
         public List<CustomerUser> GetCustomerUsers(CustomerUser customerUser)

@@ -9,6 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+
+using System.Drawing;
+using Microsoft.Extensions.Hosting;
+using System.IO;
+
 namespace Karaokedigital.Controllers
 {
 
@@ -197,6 +202,17 @@ namespace Karaokedigital.Controllers
             {
                 return View();
             }
+        }
+
+        [Obsolete]
+        public ActionResult CreateCustomerQR(int id)
+        {
+            string path = _iweb.WebRootPath;
+            bl.CreateCustomerQR(bl.GetCustomers(new Customer { CustomerID = id }).Single(),path);
+
+           
+            return View();
+
         }
 
         public ActionResult CustomersUsers()
