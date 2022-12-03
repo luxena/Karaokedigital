@@ -210,8 +210,46 @@ namespace Karaokedigital.Controllers
             string path = _iweb.WebRootPath;
             bl.CreateCustomerQR(bl.GetCustomers(new Customer { CustomerID = id }).Single(),path);
 
-           
-            return View();
+
+            return RedirectToAction("EditCustomer", new { id = id });
+
+        }
+
+
+        public IActionResult DownloadQRCode(string society)
+        {
+
+            var memory = DownloadSinghFile("QR" + society + ".png", _iweb.WebRootPath + @"\Images\Customers\" + society);
+
+            return File(memory.ToArray(), "image/png", "qr.png");
+
+        }
+
+        private MemoryStream DownloadSinghFile(string filename, string uploadPath)
+
+        {
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), uploadPath, filename);
+
+            var memory = new MemoryStream();
+
+            if (System.IO.File.Exists(path))
+
+            {
+
+                var net = new System.Net.WebClient();
+
+                var data = net.DownloadData(path);
+
+                var content = new System.IO.MemoryStream(data);
+
+                memory = content;
+
+            }
+
+            memory.Position = 0;
+
+            return memory;
 
         }
 

@@ -678,7 +678,7 @@ namespace BL
 
             Image backImg = Image.FromFile(qrImgPath);
             Image logoImg = Image.FromFile(logoImgPath);
-            var logo = new Bitmap(logoImg, new Size(50, 50));
+            var logo = new Bitmap(logoImg, new Size(80, 80));
             Graphics g = Graphics.FromImage(backImg);
 
 
@@ -688,10 +688,10 @@ namespace BL
             
             
 
-            string firstText = "karaokedigital";
+            string firstText = customer.Society;
             string secondText = "https://www.karaokedigital.it";
 
-            PointF firstLocation = new PointF(backImg.Width / 2 - 65, 15f);
+            PointF firstLocation = new PointF(((backImg.Width / 2) - (customer.Society.Length * 3)), 15f);
             PointF secondLocation = new PointF(120f, backImg.Height - 50f);
 
             string imageFilePath = path + @"\QR" + customer.Society + ".png";
@@ -703,8 +703,8 @@ namespace BL
                 {
                     using (Font arialFont = new Font("Arial", 15))
                     {
-                        graphics.DrawString(firstText, arialFont, Brushes.Blue, firstLocation);
-                        graphics.DrawString(secondText, arialFont, Brushes.Red, secondLocation);
+                        graphics.DrawString(firstText, arialFont, Brushes.Black, firstLocation);
+                        graphics.DrawString(secondText, arialFont, Brushes.Black, secondLocation); 
                         
                     }
                 }
