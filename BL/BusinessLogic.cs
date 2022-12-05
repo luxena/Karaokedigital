@@ -678,7 +678,7 @@ namespace BL
 
             Image backImg = Image.FromFile(qrImgPath);
             Image logoImg = Image.FromFile(logoImgPath);
-            var logo = new Bitmap(logoImg, new Size(80, 80));
+            var logo = new Bitmap(logoImg, new Size(60, 60));
             Graphics g = Graphics.FromImage(backImg);
 
 
