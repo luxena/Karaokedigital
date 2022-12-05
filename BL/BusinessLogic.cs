@@ -1,8 +1,5 @@
 ﻿using DAL;
 using ENTITY;
-using IronBarCode;
-
-using SixLabors.ImageSharp.Drawing.Processing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
