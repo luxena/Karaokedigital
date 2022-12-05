@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -16,12 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\ENTITY\ENTITY.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="IronBarCode">
-      <HintPath>..\..\..\Users\Luxena\Downloads\IronBarCode\IronBarcode2022.10.9883\netstandard2.0\IronBarCode.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
