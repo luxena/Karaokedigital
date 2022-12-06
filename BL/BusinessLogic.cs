@@ -13,7 +13,7 @@ namespace BL
     public class BusinessLogic
     {
         public Dal dal = new Dal();
-        public Configuration GetConfguration()
+        public Configuration GetConfiguration()
         {
             return dal.GetConfiguration();
         }
