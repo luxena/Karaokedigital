@@ -1352,14 +1352,12 @@ namespace BL
         {
             string response = "";
             bool planExists = GetPlans(new Plans()).Where(p => p.Plan == plan.Plan || p.Duration == plan.Duration || p.Cost == plan.Cost || p.Properties == plan.Properties).Any();
-
             if (!planExists)
             {
                 if (dal.InsertPlan(plan))
                 {
                     response = "The plan has been inserted";
                 }
-
             }
             else
             {
@@ -1371,14 +1369,12 @@ namespace BL
         {
             string response = "";
             bool planExists = GetPlans(new Plans()).Where(p => p.Plan == plan.Plan && p.PlanID != plan.PlanID || p.Duration == plan.Duration && p.PlanID != plan.PlanID || p.Cost == plan.Cost && p.PlanID != plan.PlanID || p.Properties == plan.Properties && p.PlanID != plan.PlanID).Any();
-
             if (planExists!)
             {
                 if (dal.UpdatePlan(plan))
                 {
                     response = "The plan has been updated";
                 }
-
             }
             else
             {
