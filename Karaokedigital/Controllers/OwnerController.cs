@@ -1310,8 +1310,6 @@ namespace Karaokedigital.Controllers
             return View(model);
         }
 
-
-
         public ActionResult DeactivateUser(int id)
         {
             ViewBag.Role = "Owner";
