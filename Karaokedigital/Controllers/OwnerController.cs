@@ -1359,7 +1359,7 @@ namespace Karaokedigital.Controllers
             }
         }
 
-        public ActionResult UserCustomers()
+        public ActionResult UsersCustomers()
         {
             ViewBag.Role = "Owner";
 
@@ -1373,6 +1373,55 @@ namespace Karaokedigital.Controllers
             }
 
             return View(userCustomerModelList);
+        }
+
+        public ActionResult UserCustomers(int id)
+        {
+            ViewBag.Role = "Owner";
+           
+            List<UserCustomer> userCustomers = bl.GetUserCustomers(new UserCustomer { UserID = id });
+            List<UserCustomerModel> modelList = new List<UserCustomerModel>();
+            foreach (var userCustomer in userCustomers)
+            {
+                UserCustomerModel model = new UserCustomerModel();
+                model.MapFromUserCustomer(userCustomer);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
+        public ActionResult DetailsUserCustomer(int id)
+        {
+            ViewBag.Role = "Owner";
+            var model = new UserCustomerModel();
+            model.MapFromUserCustomer(bl.GetUserCustomers(new UserCustomer { UserCustomerID = id }).Single());
+            return View(model);
+        }
+
+        public ActionResult DeleteUserCustomer(int id)
+        {
+            ViewBag.Role = "Owner";
+            var model = new UserCustomerModel();
+            model.MapFromUserCustomer(bl.GetUserCustomers(new UserCustomer { UserCustomerID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteUserCustomer(int id, IFormCollection collection)
+        {
+            ViewBag.Role = "Owner";
+
+            try
+            {
+                ViewBag.Response = bl.DeleteUserCustomer(new UserCustomer { UserCustomerID = id});
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public ActionResult Tracks()

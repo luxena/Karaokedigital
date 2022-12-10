@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using Brushes = System.Drawing.Brushes;
 
 namespace BL
@@ -1340,6 +1341,65 @@ namespace BL
         {
             return dal.GetUserCustomers(userCustomer);
         }
+
+        public string InsertUserCustomer(UserCustomer userCustomer)
+        {
+            string response = "";
+            bool userCustomerExists = GetUserCustomers(new UserCustomer()).Where(u => u.UserID == userCustomer.UserID && u.CustomerID == userCustomer.CustomerID && u.Date == userCustomer.Date).Any();
+
+                if (!userCustomerExists)
+                {
+                    dal.InsertUserCustomer(userCustomer);
+                    userCustomerExists = GetUserCustomers(userCustomer).Any();
+                    if (userCustomerExists)
+                    {
+                        response = "UserCustomer has been inserted correctly";
+                    }
+                }
+                else
+                {
+                    response = "UserCustomer already exists";
+                }
+
+            return response;
+        }
+
+        public string UpdateUserCustomer(UserCustomer userCustomer)
+        {
+            string response = "";
+            bool userCustomerExists = GetUserCustomers(new UserCustomer()).Where(u => u.UserID == userCustomer.UserID && u.CustomerID == userCustomer.CustomerID && u.Date == userCustomer.Date).Any();
+            if (!userCustomerExists)
+            {
+                if (dal.UpdateUserCustomer(userCustomer))
+                {
+                    response = "The UserCustomer has been updated";
+                }
+            }
+            else
+            {
+                response = "The UserCustomer already exists";
+            }
+            return response;
+        }
+
+        public string DeleteUserCustomer(UserCustomer userCustomer)
+        {
+            string response = "";
+            bool userCustomerExists = GetUserCustomers(new UserCustomer()).Where(u => u.UserID == userCustomer.UserID && u.CustomerID == userCustomer.CustomerID && u.Date == userCustomer.Date).Any();
+            if (userCustomerExists)
+            {
+                if (dal.DeleteUserCustomer(userCustomer))
+                {
+                    response = "The UserCustomer has been deleted";
+                }
+            }
+            else
+            {
+                response = "The UserCustomer not exists";
+            }
+            return response;
+        }
+
         /* USER CUSTOMER */
 
 

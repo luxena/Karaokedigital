@@ -1,16 +1,18 @@
 ﻿@model IEnumerable<Karaokedigital.Models.UserCustomerModel>
 
 @{
-    ViewData["Title"] = "UserCustomers";
+    ViewData["Title"] = "UsersCustomers";
 }
 
-<h1>User Customers</h1>
+<h1>UsersCustomers</h1>
 
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-          @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.UserCustomerID)
             </th>
             <th>
@@ -18,7 +20,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CustomerID)
-            </th>*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Username)
             </th>
@@ -42,8 +44,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="result pt-2 cursor-pointer" onclick="location.href = 'EditUserCustomer?id=@item.UserCustomerID'">
-           @* <td>
+        <tr>
+            <td>
                 @Html.DisplayFor(modelItem => item.UserCustomerID)
             </td>
             <td>
@@ -51,7 +53,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerID)
-            </td>*@
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Username)
             </td>
@@ -70,9 +72,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
-            <td colspan="3" class="result-button text-center d-none">
-                    <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" href="DetailsUserCustomer?id=@item.UserCustomerID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
-                    <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" href="DeleteUserCustomer?id=@item.UserCustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }
