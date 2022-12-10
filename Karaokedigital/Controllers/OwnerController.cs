@@ -1359,6 +1359,22 @@ namespace Karaokedigital.Controllers
             }
         }
 
+        public ActionResult UserCustomers()
+        {
+            ViewBag.Role = "Owner";
+
+            List<UserCustomer> userCustomers = bl.GetUserCustomers(new UserCustomer());
+            List<UserCustomerModel> userCustomerModelList = new List<UserCustomerModel>();
+            foreach (var userCustomer in userCustomers)
+            {
+                UserCustomerModel userCustomerModel = new UserCustomerModel();
+                userCustomerModel.MapFromUserCustomer(userCustomer);
+                userCustomerModelList.Add(userCustomerModel);
+            }
+
+            return View(userCustomerModelList);
+        }
+
         public ActionResult Tracks()
         {
             ViewBag.Role = "Owner";

@@ -2328,6 +2328,177 @@ namespace DAL
 
         /* USER */
 
+        /* USER CUSTOMER */
+        public List<UserCustomer> GetUserCustomers(UserCustomer userCustomer)
+        {
+            List<UserCustomer> userCustomers = new List<UserCustomer>();
+
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"SELECT uc.UserCustomerID,uc.UserID,uc.CustomerID,u.Username,c.Society,c.[Address],c.City,c.Province,uc.[Date]
+                                     FROM UserCustomers uc
+                                     INNER JOIN Customers c ON c.CustomerID = uc.CustomerID
+                                     INNER JOIN Users u ON u.UserID = uc.UserID
+                                     WHERE (uc.UserCustomerID = @UserCustomerID OR @UserCustomerID = 0) AND
+                                     (uc.UserID = @UserID OR @UserID = 0) AND
+                                     (uc.CustomerID = @CustomerID OR @CustomerID = 0) AND
+                                     (uc.Date = @Date OR @Date IS NULL)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"UserCustomerID", userCustomer.UserCustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", userCustomer.UserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", userCustomer.CustomerID);
+                    _ = !string.IsNullOrEmpty(userCustomer.Date) ? cmd.Parameters.AddWithValue(@"Date", userCustomer.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        UserCustomer _userCustomer = new UserCustomer();
+                        _userCustomer.UserCustomerID = Convert.ToInt32(reader["UserCustomerID"].ToString());
+                        _userCustomer.UserID = Convert.ToInt32(reader["UserID"].ToString());
+                        _userCustomer.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _userCustomer.Username = reader["Username"].ToString();
+                        _userCustomer.Society = reader["Society"].ToString();
+                        _userCustomer.Address = reader["Address"].ToString();
+                        _userCustomer.City = reader["City"].ToString();
+                        _userCustomer.Province = reader["Province"].ToString();
+                        _userCustomer.Date = reader["Date"].ToString();
+
+                        userCustomers.Add(_userCustomer);
+                    }
+
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+            }
+
+            return userCustomers;
+        }
+
+        public bool InsertUserCustomer(UserCustomer userCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO UserCustomers VALUE (@UserID,@CustomerID,@Date)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"UserID", userCustomer.UserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", userCustomer.CustomerID);
+                    _ = !string.IsNullOrEmpty(userCustomer.Date) ? cmd.Parameters.AddWithValue(@"Date", userCustomer.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetUserCustomers(userCustomer).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool UpdateUserCustomer(UserCustomer userCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"UPDATE UserCustomers SET UserID = @UserID,CustomerID = @CustomerID,Date = @Date
+                                    WHERE UserCustomerID = @UserCustomerID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"UserCustomerID", userCustomer.UserCustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", userCustomer.UserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", userCustomer.CustomerID);
+                    _ = !string.IsNullOrEmpty(userCustomer.Date) ? cmd.Parameters.AddWithValue(@"Date", userCustomer.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetUserCustomers(userCustomer).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteUserCustomer(UserCustomer userCustomer)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE FROM WHERE UserCustomerID = @UserCustomerID AND UserID = @UserID AND CustomerID = @CustomerID AND Date = @Date";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"UserCustomerID", userCustomer.UserCustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", userCustomer.UserID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", userCustomer.CustomerID);
+                    _ = !string.IsNullOrEmpty(userCustomer.Date) ? cmd.Parameters.AddWithValue(@"Date", userCustomer.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetUserCustomers(userCustomer).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+        /* USER CUSTOMER */
+
         /* PLAN */
         public List<Plans> GetPlans(Plans plan)
         {

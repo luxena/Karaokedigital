@@ -1334,6 +1334,15 @@ namespace BL
             return response;
         }
         /* USER */
+
+        /* USER CUSTOMER */
+        public List<UserCustomer> GetUserCustomers(UserCustomer userCustomer)
+        {
+            return dal.GetUserCustomers(userCustomer);
+        }
+        /* USER CUSTOMER */
+
+
         /* PLAN */
         public List<Plans> GetPlans(Plans plan)
         {
