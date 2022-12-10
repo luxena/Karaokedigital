@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Karaokedigital.Controllers
@@ -77,24 +78,24 @@ namespace Karaokedigital.Controllers
         public IActionResult Login(UserModel model)
         {
             ViewBag.Role = "User";
+            var user = bl.GetUser(new User { Username = model.Username,Password = model.Password });
+              
             ViewBag.Response = bl.LoginUser(model.MapIntoUser());
-            return View();
-        }
+
+           
+			return RedirectToAction("Index", new { id = user.UserID, message = ViewBag.Response });
+		}
 
 
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             ViewBag.Role = "User";
-            List<User> users = bl.GetUsers(new User());
-            List<UserModel> usersModelList = new List<UserModel>();
-            foreach (var user in users)
-            {
-                UserModel userModel = new UserModel();
-                userModel.MapFromUser(user);
-                usersModelList.Add(userModel);
-            }
-
-            return View(usersModelList);
+            User user = bl.GetUsers(new User { UserID = id }).Single();
+        
+            UserModel userModel = new UserModel();
+            userModel.MapFromUser(user);
+            ViewBag.Model = userModel;
+            return View(userModel);
         }
 
         // GET: UserController/Details/5

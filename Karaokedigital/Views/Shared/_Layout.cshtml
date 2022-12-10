@@ -35,14 +35,14 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+     @*   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="sunset fas fa-microphone-alt"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex">
+                <div class="navbar-collapse collapse d-sm-inline-flex">*@
                     @*flex-sm-row-reverse**@
 
 
@@ -63,8 +63,17 @@
                             }
                         </ul>*@
 
-                    @if (@ViewBag.Role == null)
-                    {
+@if (@ViewBag.Role == null)
+{
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="sunset fas fa-microphone-alt"></i></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex">
+
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -76,9 +85,29 @@
                             </li>
                         </ul>
 
+                </div>
+            </div>
+        </nav>
+ }
+
+                    @if (@ViewBag.Role == "User")
+                    {
+                       
+                    }
+
 
                     @if (@ViewBag.Role == "Owner")
                     {
+
+ <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+     <div class="container">
+      <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="sunset fas fa-microphone-alt"></i></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+      </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex">
+
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-area="" asp-controller="Owner" asp-action="Plans">Plans</a>
@@ -198,10 +227,23 @@
                         </div>
                     </li>
                 </ul>
+
+      </div>
+ </div>
+</nav>
                     }
 
                     @if (@ViewBag.Role == "Boss")
                     {
+                        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0">
+                            <div class="container">
+                                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="sunset fas fa-microphone-alt"></i></a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="navbar-collapse collapse d-sm-inline-flex">
+
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Index">Home</a>
@@ -276,10 +318,14 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Boss" asp-action="Chart">Chart</a>
                             </li>
                         </ul>
-                    }
+
                 </div>
             </div>
         </nav>
+                    }
+   @*             </div>
+            </div>
+        </nav>*@
     </header>
     <div class="container-fluid">
         <main role="main" class="pb-0">
