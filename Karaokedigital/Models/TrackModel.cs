@@ -19,8 +19,10 @@ namespace Karaokedigital.Models
         public IFormFile MediaFile { get; set; }
         public string FilePath { get; set; }
         public bool IsFeaturing { get; set; }
+		public bool IsSocial { get; set; }
+		public bool IsReservable { get; set; }
 
-        public void MapFromTrack(Track track)
+		public void MapFromTrack(Track track)
         {
              TrackID = track.TrackID;
              Title = track.Title;
@@ -32,6 +34,8 @@ namespace Karaokedigital.Models
              MediaFile = track.MediaFile;
              FilePath = track.FilePath;
              IsFeaturing = track.IsFeaturing;
+			 IsSocial = track.IsSocial;
+			 IsReservable = track.IsReservable;
     }
 
         public Track MapIntoTrack()
@@ -46,8 +50,10 @@ namespace Karaokedigital.Models
                 File = File,
                 MediaFile = MediaFile,
                 FilePath = FilePath,
-                IsFeaturing = IsFeaturing
-            };
+                IsFeaturing = IsFeaturing,
+				IsSocial = IsSocial,
+			    IsReservable = IsReservable
+		    };
         }
     }
 }

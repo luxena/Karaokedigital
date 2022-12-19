@@ -20,7 +20,9 @@ a {
     background: linear-gradient(135deg, #000000 0%, #000000 25%, #1e539e 50%, #ff3083 75%, #7800a8 100%);
 }
 
-
+.btn-menu {
+    margin-right: 0.5rem!important;
+}
 
 footer {
     width: 100%;

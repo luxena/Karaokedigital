@@ -4313,6 +4313,71 @@ namespace DAL
             return response;
         }
 
+        public List<Track> GetTracks4Reservation(Track track,Customer customer)
+        {
+			List<Track> tracks = new List<Track>();
+
+			string connectionString = GetConfiguration().DBConnection;
+			SqlConnection con = new SqlConnection(connectionString);
+			using (con)
+			{
+				try
+				{
+					con.Open();
+					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(CustomerID IS NULL OR Social = 1,1,0)Reservable
+                                     FROM Tracks t
+                                     LEFT JOIN Reservations r on r.TrackID = t.TrackID AND r.CustomerID = @CustomerID
+                                     WHERE (TrackID = @TrackID OR @TrackID = 0) AND
+                                     (Title = @Title OR @Title IS NULL) AND
+                                     (Author = @Author OR @Author IS NULL) AND
+                                     (Time = @Time OR @Time IS NULL) AND
+                                     (Year = @Year OR @Year = 0) AND
+                                     (Genre = @Genre OR @Genre IS NULL) AND
+                                     ([File] = @File OR @File IS NULL) AND
+                                     (IsFeaturing = @IsFeaturing OR @IsFeaturing = 0)";
+
+
+					SqlCommand cmd = new SqlCommand(query, con);
+					cmd.Parameters.AddWithValue(@"TrackID", track.TrackID);
+					cmd.Parameters.AddWithValue(@"CustomerID", customer.CustomerID);
+					_ = !string.IsNullOrEmpty(track.Title) ? cmd.Parameters.AddWithValue(@"Title", track.Title) : cmd.Parameters.AddWithValue(@"Title", DBNull.Value);
+					_ = !string.IsNullOrEmpty(track.Author) ? cmd.Parameters.AddWithValue(@"Author", track.Author) : cmd.Parameters.AddWithValue(@"Author", DBNull.Value);
+					_ = !string.IsNullOrEmpty(track.Time) ? cmd.Parameters.AddWithValue(@"Time", track.Time) : cmd.Parameters.AddWithValue(@"Time", DBNull.Value);
+					cmd.Parameters.AddWithValue(@"Year", track.Year);
+					_ = !string.IsNullOrEmpty(track.Genre) ? cmd.Parameters.AddWithValue(@"Genre", track.Genre) : cmd.Parameters.AddWithValue(@"Genre", DBNull.Value);
+					_ = !string.IsNullOrEmpty(track.File) ? cmd.Parameters.AddWithValue(@"File", track.File) : cmd.Parameters.AddWithValue(@"File", DBNull.Value);
+					cmd.Parameters.AddWithValue(@"IsFeaturing", track.IsFeaturing);
+
+					SqlDataReader reader = cmd.ExecuteReader();
+					while (reader.Read())
+					{
+						Track _track = new Track();
+
+						_track.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
+						_track.Title = reader["Title"].ToString();
+						_track.Author = reader["Author"].ToString();
+						_track.Time = reader["Time"].ToString().Replace(":00", "");
+						_track.Year = Convert.ToInt32(reader["Year"].ToString());
+						_track.Genre = reader["Genre"].ToString();
+						_track.File = reader["File"].ToString();
+						_track.IsFeaturing = Convert.ToBoolean(reader["IsFeaturing"].ToString());
+						_track.IsSocial = Convert.ToBoolean(reader["Social"].ToString());
+						_track.IsReservable = Convert.ToBoolean(reader["Reservable"].ToString());
+
+						tracks.Add(_track);
+					}
+				}
+				catch (SqlException ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
+
+				con.Close();
+			}
+
+			return tracks;
+		}
+
         /* TRACK */
         /* TROPHY */
         public List<Trophy> GetTrophies(Trophy trophy)

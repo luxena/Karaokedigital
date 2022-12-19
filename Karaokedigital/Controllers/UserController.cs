@@ -83,7 +83,8 @@ namespace Karaokedigital.Controllers
             ViewBag.Response = bl.LoginUser(model.MapIntoUser());
 
            
-			return RedirectToAction("Index", new { id = user.UserID, message = ViewBag.Response });
+			return RedirectToAction("Index", new { id = user.UserID});
+			//return RedirectToRoute("Default", new { controller = "User", action = "Index" , id = user.UserID });
 		}
 
 
@@ -126,23 +127,37 @@ namespace Karaokedigital.Controllers
         }
 
 
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+		public ActionResult Edit(int UserID)
+		{
+			ViewBag.Role = "User";
+			var model = new UserModel();
+			model.MapFromUser(bl.GetUsers(new User { UserID = UserID }).Single());
+			return View(model);
+		}
 
-        // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(UserModel model)
+		{
+			ViewBag.Role = "User";
+
+			if (model.ImgFile != null)
+			{
+				model.ImgPath = _iweb.WebRootPath;
+			}
+			else
+			{
+				model.Img = bl.GetUser(new User { UserID = model.UserID }).Img;
+			}
+
+			
+            ViewBag.Response = bl.EditUser(model.MapIntoUser());
+			model.Img = bl.GetUsers(new User { UserID = model.UserID }).Single().Img;
+			return View(model);
+		}
+
+		// GET: UserController/Delete/5
+		public ActionResult Delete(int id)
         {
             return View();
         }
@@ -160,6 +175,22 @@ namespace Karaokedigital.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult Tracks()
+        {
+            ViewBag.Role = "User";
+
+            List<Track> list = bl.GetTracks(new Track());
+            List<TrackModel> modelList = new List<TrackModel>();
+            foreach (var obj in list)
+            {
+                TrackModel model = new TrackModel();
+                model.MapFromTrack(obj);
+                modelList.Add(model);
+            }
+
+            return View(modelList);
         }
     }
 }

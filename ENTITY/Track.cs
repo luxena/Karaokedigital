@@ -17,5 +17,7 @@ namespace ENTITY
         public IFormFile MediaFile { get; set; }
         public string FilePath { get; set; }
         public bool IsFeaturing { get; set; }
+        public bool IsSocial { get; set; }
+        public bool IsReservable { get; set; }
     }
 }
