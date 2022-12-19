@@ -125,11 +125,6 @@ namespace Karaokedigital.Controllers
             }
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
         // POST: UserController/Edit/5
         [HttpPost]
