@@ -1353,12 +1353,12 @@ namespace BL
                     userCustomerExists = GetUserCustomers(userCustomer).Any();
                     if (userCustomerExists)
                     {
-                        response = "UserCustomer has been inserted correctly";
+                        response = "Location has been inserted correctly";
                     }
                 }
                 else
                 {
-                    response = "UserCustomer already exists";
+                    response = "Location already exists";
                 }
 
             return response;
@@ -1372,12 +1372,12 @@ namespace BL
             {
                 if (dal.UpdateUserCustomer(userCustomer))
                 {
-                    response = "The UserCustomer has been updated";
+                    response = "Location has been updated";
                 }
             }
             else
             {
-                response = "The UserCustomer already exists";
+                response = "Location already exists";
             }
             return response;
         }
@@ -1390,12 +1390,12 @@ namespace BL
             {
                 if (dal.DeleteUserCustomer(userCustomer))
                 {
-                    response = "The UserCustomer has been deleted";
+                    response = "Location has been deleted";
                 }
             }
             else
             {
-                response = "The UserCustomer not exists";
+                response = "Location not exists";
             }
             return response;
         }
@@ -2138,10 +2138,15 @@ namespace BL
             return response;
         }
 
-        /* TRACK */
-        /* TROPHY */
+		public List<Track> GetTracks4Reservation(Track track, Customer customer)
+        {
+            return dal.GetTracks4Reservation(track,customer);
+        }
 
-        public List<Trophy> GetTrophies(Trophy trophy)
+		/* TRACK */
+		/* TROPHY */
+
+		public List<Trophy> GetTrophies(Trophy trophy)
         {
             return dal.GetTrophies(trophy);
         }

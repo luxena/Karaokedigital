@@ -2395,7 +2395,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"INSERT INTO UserCustomers VALUE (@UserID,@CustomerID,@Date)";
+                    string query = @"INSERT INTO UserCustomers VALUES (@UserID,@CustomerID,@Date)";
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"UserID", userCustomer.UserID);
@@ -2471,7 +2471,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"DELETE FROM WHERE UserCustomerID = @UserCustomerID AND UserID = @UserID AND CustomerID = @CustomerID AND Date = @Date";
+                    string query = @"DELETE FROM UserCustomers WHERE UserCustomerID = @UserCustomerID AND UserID = @UserID AND CustomerID = @CustomerID AND Date = @Date";
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"UserCustomerID", userCustomer.UserCustomerID);
@@ -4327,14 +4327,14 @@ namespace DAL
 					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(CustomerID IS NULL OR Social = 1,1,0)Reservable
                                      FROM Tracks t
                                      LEFT JOIN Reservations r on r.TrackID = t.TrackID AND r.CustomerID = @CustomerID
-                                     WHERE (TrackID = @TrackID OR @TrackID = 0) AND
-                                     (Title = @Title OR @Title IS NULL) AND
-                                     (Author = @Author OR @Author IS NULL) AND
-                                     (Time = @Time OR @Time IS NULL) AND
-                                     (Year = @Year OR @Year = 0) AND
-                                     (Genre = @Genre OR @Genre IS NULL) AND
-                                     ([File] = @File OR @File IS NULL) AND
-                                     (IsFeaturing = @IsFeaturing OR @IsFeaturing = 0)";
+                                     WHERE (t.TrackID = @TrackID OR @TrackID = 0) AND
+                                     (t.Title = @Title OR @Title IS NULL) AND
+                                     (t.Author = @Author OR @Author IS NULL) AND
+                                     (t.Time = @Time OR @Time IS NULL) AND
+                                     (t.Year = @Year OR @Year = 0) AND
+                                     (t.Genre = @Genre OR @Genre IS NULL) AND
+                                     (t.[File] = @File OR @File IS NULL) AND
+                                     (t.IsFeaturing = @IsFeaturing OR @IsFeaturing = 0)";
 
 
 					SqlCommand cmd = new SqlCommand(query, con);
@@ -4362,7 +4362,7 @@ namespace DAL
 						_track.File = reader["File"].ToString();
 						_track.IsFeaturing = Convert.ToBoolean(reader["IsFeaturing"].ToString());
 						_track.IsSocial = Convert.ToBoolean(reader["Social"].ToString());
-						_track.IsReservable = Convert.ToBoolean(reader["Reservable"].ToString());
+						_track.IsReservable = Convert.ToBoolean(Convert.ToInt32(reader["Reservable"].ToString()));
 
 						tracks.Add(_track);
 					}

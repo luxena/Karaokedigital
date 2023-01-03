@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<div>
+    <partial name="NavBar" model="@ViewBag.Model" />
+</div>
 <h1>Edit</h1>
 @if (!string.IsNullOrEmpty(@ViewBag.Response))
 {
