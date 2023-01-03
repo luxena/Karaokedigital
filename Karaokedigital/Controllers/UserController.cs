@@ -91,7 +91,6 @@ namespace Karaokedigital.Controllers
         public ActionResult Index(int id)
         {
             ViewBag.Role = "User";
-            User user = bl.GetUsers(new User { UserID = id }).Single();
         
             UserModel userModel = new UserModel();
             userModel.MapFromUser(user);
