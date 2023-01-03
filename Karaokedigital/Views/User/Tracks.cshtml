@@ -77,8 +77,13 @@
                             <i class="h2 text-success fas fa-check"></i>
                         }
                     </td>
+                    
                     <td colspan="3" class="track-button text-center d-none">
-                        <a class="btn btn-glow-circle mr-4" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                        @*aggiungere social e tono*@
+                        <form method="post" asp-action="CreateReservation">
+                            <a class="btn btn-glow-circle mr-4" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                        </form >
+                        
                     </td>
                 </tr>
             }
