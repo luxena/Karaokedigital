@@ -3689,7 +3689,6 @@ namespace DAL
                     cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
                     _ = !string.IsNullOrEmpty(reservation.State) ? cmd.Parameters.AddWithValue(@"State", reservation.State) : cmd.Parameters.AddWithValue(@"State", DBNull.Value);
                     _ = !string.IsNullOrEmpty(reservation.Date) ? cmd.Parameters.AddWithValue(@"Date", reservation.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
-                    _ = !string.IsNullOrEmpty(reservation.User) ? cmd.Parameters.AddWithValue(@"User", reservation.User) : cmd.Parameters.AddWithValue(@"User", DBNull.Value);
                     cmd.Parameters.AddWithValue(@"Social", reservation.Social);
 
                     SqlDataReader reader = cmd.ExecuteReader();
