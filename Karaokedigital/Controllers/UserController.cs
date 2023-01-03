@@ -350,14 +350,29 @@ namespace Karaokedigital.Controllers
             }
         }
 
-        //da finire
-        public ActionResult CreateReservation(int TrackID, int UserID,int CustomerID)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateReservation(string Social,int Tone,int TrackID, int UserID,int CustomerID)
         {
-            ViewBag.Response = bl.CreateReservation(new Reservation { CustomerID = CustomerID, TrackID = TrackID, Date = DateTime.Today.ToShortDateString(),Social = false,ReservationStateID = 1 },new ReservationUser { CustomerID = CustomerID,UserID = UserID, Tone = 2 });
-       
-            return View();
+            ViewBag.Response = bl.CreateReservation(new Reservation { CustomerID = CustomerID, TrackID = TrackID, Date = DateTime.Today.ToShortDateString(),Social = Social == "on" ? true:false, ReservationStateID = 1 },new ReservationUser { CustomerID = CustomerID,UserID = UserID, Tone = Tone });
+
+            return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
         }
 
+		public ActionResult ReservationUsers(int userID)
+		{
+			ViewBag.Role = "User";
+			List<ReservationUser> reservationUsers = bl.GetReservationUsers(new ReservationUser { UserID = userID }).OrderBy(ru => ru.ReservationID).ToList();
+			List<ReservationUserModel> modelList = new List<ReservationUserModel>();
+			foreach (var reservationUser in reservationUsers)
+			{
+				ReservationUserModel model = new ReservationUserModel();
+				model.MapFromReservationUser(reservationUser);
+				modelList.Add(model);
+			}
+
+			return View(modelList);
+		}
 
 	}
 }

@@ -15,6 +15,7 @@ namespace Karaokedigital.Models
         public string TrackTitle { get; set; }
         public string TrackAuthor { get; set; }
         public string User { get; set; }
+        public int UserID { get; set; }
         public int NumberUsers { get; set; }
         public int ReservationStateID { get; set; }
         public string State { get; set; }
@@ -31,6 +32,7 @@ namespace Karaokedigital.Models
             TrackTitle = reservation.TrackTitle;
             TrackAuthor = reservation.TrackAuthor;
             User = reservation.User;
+			UserID = reservation.UserID;
             NumberUsers = reservation.NumberUsers;
             ReservationStateID = reservation.ReservationStateID;
             State = reservation.State;
@@ -50,6 +52,7 @@ namespace Karaokedigital.Models
                 TrackTitle = TrackTitle,
                 TrackAuthor = TrackAuthor,
                 User = User,
+				UserID = UserID,
                 NumberUsers = NumberUsers,
                 ReservationStateID = ReservationStateID,
                 State = State,

@@ -43,7 +43,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr class="track-result pt-2 cursor-pointer" onclick="location.href = 'EditTrack?id=@item.TrackID'">
+                <tr class="track-result pt-2 cursor-pointer">
                     <td>
                         @Html.DisplayFor(modelItem => item.TrackID)
                     </td>
@@ -81,7 +81,24 @@
                     <td colspan="3" class="track-button text-center d-none">
                         @*aggiungere social e tono*@
                         <form method="post" asp-action="CreateReservation">
-                            <a class="btn btn-glow-circle mr-4" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                            <div class="input-group mt-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$ocial</span>
+                                </div>
+                                <div class="input-group-text">
+                                    <input name="Social" type="checkbox" aria-label="Checkbox for following text input">
+                                </div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Tone</span>
+                                </div>
+                                <div class="input-group-text">
+                                    <input name="Tone" type="number" min="-3" max="3" value="0" aria-label="Checkbox for following text input">
+                                </div>
+                                <input name="UserID" type="text" value="@ViewBag.Model.UserID" hidden>
+                                <input name="CustomerID" type="text" value="@ViewBag.CustomerID" hidden>
+                                <input name="TrackID" type="text" value="@item.TrackID" hidden>
+                                <button type="submit" class="btn btn-glow" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
+                            </div>
                         </form >
                         
                     </td>
