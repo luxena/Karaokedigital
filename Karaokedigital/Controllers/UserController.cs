@@ -359,19 +359,30 @@ namespace Karaokedigital.Controllers
             return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
         }
 
-		public ActionResult ReservationUsers(int userID)
+		public ActionResult Reservations(int userID)
 		{
 			ViewBag.Role = "User";
-			List<ReservationUser> reservationUsers = bl.GetReservationUsers(new ReservationUser { UserID = userID }).OrderBy(ru => ru.ReservationID).ToList();
-			List<ReservationUserModel> modelList = new List<ReservationUserModel>();
-			foreach (var reservationUser in reservationUsers)
+			List<Reservation> reservations = bl.GetUserReservations(new User { UserID = userID });
+			List<ReservationModel> modelList = new List<ReservationModel>();
+			foreach (var reservation in reservations)
 			{
-				ReservationUserModel model = new ReservationUserModel();
-				model.MapFromReservationUser(reservationUser);
+				ReservationModel model = new ReservationModel();
+				model.MapFromReservation(reservation);
 				modelList.Add(model);
 			}
 
-			return View(modelList);
+            var user = bl.GetUsers(new User { UserID = userID }).Single();
+
+            UserModel userModel = new UserModel();
+            userModel.MapFromUser(user);
+            ViewBag.Model = userModel;
+
+            if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+            }
+
+            return View(modelList);
 		}
 
 	}

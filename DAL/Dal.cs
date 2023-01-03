@@ -3653,6 +3653,7 @@ namespace DAL
                                     ,t.[Title] TrackTitle
                                     ,t.[Author] TrackAuthor
                                     ,STRING_AGG(u.[Username], ' - ') [User]
+                                    ,u.[UserID]
                                     ,COUNT(ru.UserID) NumberUsers
                                     ,r.[ReservationStateID]
                                     ,s.[State] [State]
@@ -3676,12 +3677,13 @@ namespace DAL
                               (r.ReservationStateID = @ReservationStateID or @ReservationStateID = 0) AND  
                               (s.State = @State or @State is null) AND  
                               (r.Date = @Date or @Date is null) AND  
-                              (u.Username = @User or @User is null) AND  
+                              (u.UserID = @UserID or @UserID = 0) AND  
                               (r.Social = @Social or @Social = 0)
-                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],u.[UserID],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", reservation.UserID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
                     cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
                     _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
@@ -3698,6 +3700,7 @@ namespace DAL
                         Reservation _reservation = new Reservation();
                         _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
                         _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _reservation.UserID = Convert.ToInt32(reader["UserID"].ToString());
                         _reservation.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
                         _reservation.ReservationStateID = Convert.ToInt32(reader["ReservationStateID"].ToString());
                         _reservation.Customer = reader["Customer"].ToString();
@@ -3708,7 +3711,7 @@ namespace DAL
                         _reservation.State = reader["State"].ToString();
                         _reservation.Social = Convert.ToBoolean(reader["Social"].ToString());
                         _reservation.Date = reader["Date"].ToString();
-                        _reservation.Votation = Convert.ToInt32(reader["Votation"].ToString());
+                        _reservation.Votation = Convert.ToInt32(!string.IsNullOrEmpty( reader["Votation"].ToString()) ? reader["Votation"].ToString() : 0);
                         reservations.Add(_reservation);
                     }
                 }
@@ -4323,9 +4326,9 @@ namespace DAL
 				try
 				{
 					con.Open();
-					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(CustomerID IS NULL OR Social = 1,1,0)Reservable
+					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(CustomerID IS NULL OR Social = 1,1,0)Reservable,IIF(r.CustomerID is not null,1,0)Reserved
                                      FROM Tracks t
-                                     LEFT JOIN Reservations r on r.TrackID = t.TrackID AND r.CustomerID = @CustomerID
+                                     LEFT JOIN Reservations r on r.TrackID = t.TrackID AND r.CustomerID = @CustomerID AND r.Date = @Today
                                      WHERE (t.TrackID = @TrackID OR @TrackID = 0) AND
                                      (t.Title = @Title OR @Title IS NULL) AND
                                      (t.Author = @Author OR @Author IS NULL) AND
@@ -4346,6 +4349,9 @@ namespace DAL
 					_ = !string.IsNullOrEmpty(track.Genre) ? cmd.Parameters.AddWithValue(@"Genre", track.Genre) : cmd.Parameters.AddWithValue(@"Genre", DBNull.Value);
 					_ = !string.IsNullOrEmpty(track.File) ? cmd.Parameters.AddWithValue(@"File", track.File) : cmd.Parameters.AddWithValue(@"File", DBNull.Value);
 					cmd.Parameters.AddWithValue(@"IsFeaturing", track.IsFeaturing);
+                    var today = DateTime.Today.ToShortDateString();
+
+                    cmd.Parameters.AddWithValue(@"Today", today);
 
 					SqlDataReader reader = cmd.ExecuteReader();
 					while (reader.Read())
@@ -4360,8 +4366,11 @@ namespace DAL
 						_track.Genre = reader["Genre"].ToString();
 						_track.File = reader["File"].ToString();
 						_track.IsFeaturing = Convert.ToBoolean(reader["IsFeaturing"].ToString());
-						_track.IsSocial = Convert.ToBoolean(reader["Social"].ToString());
-						_track.IsReservable = Convert.ToBoolean(Convert.ToInt32(reader["Reservable"].ToString()));
+						_track.IsSocial = Convert.ToBoolean(!string.IsNullOrEmpty(reader["Social"].ToString()) ? reader["Social"].ToString():0);
+                        var res = Convert.ToBoolean(Convert.ToInt32(reader["Reservable"].ToString()));
+
+                        _track.IsReservable = Convert.ToBoolean(Convert.ToInt32(reader["Reservable"].ToString()));
+                        _track.IsReserved = Convert.ToBoolean(Convert.ToInt32(reader["Reserved"].ToString()));
 
 						tracks.Add(_track);
 					}

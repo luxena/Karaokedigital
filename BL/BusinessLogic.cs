@@ -1402,6 +1402,15 @@ namespace BL
 
         /* USER CUSTOMER */
 
+        /* USER RESERVATIONS */
+
+        public List<Reservation> GetUserReservations(User user)
+        {
+            return dal.GetReservations(new Reservation { UserID = user.UserID , CustomerID = GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID , Date = DateTime.Today.ToShortDateString() });
+        }
+
+        /* USER RESERVATIONS */
+
 
         /* PLAN */
         public List<Plans> GetPlans(Plans plan)
@@ -2140,7 +2149,8 @@ namespace BL
 
 		public List<Track> GetTracks4Reservation(Track track, Customer customer)
         {
-            return dal.GetTracks4Reservation(track,customer);
+            var list = dal.GetTracks4Reservation(track, customer).ToList();
+            return list;
         }
 
 		/* TRACK */

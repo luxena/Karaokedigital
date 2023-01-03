@@ -19,5 +19,6 @@ namespace ENTITY
         public bool IsFeaturing { get; set; }
         public bool IsSocial { get; set; }
         public bool IsReservable { get; set; }
+        public bool IsReserved { get; set; }
     }
 }

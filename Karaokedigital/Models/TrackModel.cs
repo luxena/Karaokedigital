@@ -21,6 +21,7 @@ namespace Karaokedigital.Models
         public bool IsFeaturing { get; set; }
 		public bool IsSocial { get; set; }
 		public bool IsReservable { get; set; }
+		public bool IsReserved { get; set; }
 
 		public void MapFromTrack(Track track)
         {
@@ -36,6 +37,7 @@ namespace Karaokedigital.Models
              IsFeaturing = track.IsFeaturing;
 			 IsSocial = track.IsSocial;
 			 IsReservable = track.IsReservable;
+             IsReserved = track.IsReserved;
     }
 
         public Track MapIntoTrack()
@@ -52,8 +54,9 @@ namespace Karaokedigital.Models
                 FilePath = FilePath,
                 IsFeaturing = IsFeaturing,
 				IsSocial = IsSocial,
-			    IsReservable = IsReservable
-		    };
+			    IsReservable = IsReservable,
+                IsReserved = IsReserved
+            };
         }
     }
 }
