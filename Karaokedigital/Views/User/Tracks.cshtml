@@ -4,6 +4,10 @@
     ViewData["Title"] = "Tracks";
 }
 
+<div>
+    <partial name="NavBar" model="@ViewBag.Model" />
+</div>
+
 <h1>Tracks</h1>
 
 <div class="table-responsive">
@@ -118,11 +122,38 @@
                                     <input name="UserID" type="text" value="@ViewBag.Model.UserID" hidden>
                                     <input name="CustomerID" type="text" value="@ViewBag.CustomerID" hidden>
                                     <input name="TrackID" type="text" value="@item.TrackID" hidden>
-                                    <button type="submit" class="btn btn-glow" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
+                                    <button type="submit" class="btn btn-glow" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
                                 </div>
                             </form>
                         </td>
                     }
+
+                    @if (item.IsReservable == true && item.IsSocial == true && item.IsReserved == true)
+                    {
+                        <td colspan="3" class="track-button text-center d-none">
+                            <form method="post" asp-action="InsertReservationUser">
+                                <div class="input-group mt-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$ocial</span>
+                                    </div>
+                                    <div class="input-group-text">
+                                        <input name="Social" type="checkbox" checked disabled readonly aria-label="Checkbox for following text input">
+                                    </div>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Tone</span>
+                                    </div>
+                                    <div class="input-group-text">
+                                        <input name="Tone" type="number" min="-3" max="3" value="0" aria-label="Checkbox for following text input">
+                                    </div>
+                                    <input name="UserID" type="text" value="@ViewBag.Model.UserID" hidden>
+                                    <input name="CustomerID" type="text" value="@ViewBag.CustomerID" hidden>
+                                    <input name="TrackID" type="text" value="@item.TrackID" hidden>
+                                    <button type="submit" class="btn btn-glow" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
+                                </div>
+                            </form>
+                        </td>
+                    }
+
                 </tr>
             }
         </tbody>

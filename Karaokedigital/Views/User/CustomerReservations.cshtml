@@ -4,23 +4,6 @@
     <partial name="NavBar" model="@ViewBag.Model" />
 </div>
 
-@if (!string.IsNullOrEmpty(@ViewBag.Response))
-{
-    @if (@ViewBag.Response != "Reservation has been created")
-    {
-        <div class="alert alert-danger" role="alert">
-            @ViewBag.Response
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-info" role="alert">
-            @ViewBag.Response
-        </div>
-    }
-
-}
-
 <table class="table">
     <thead>
         <tr>
@@ -57,7 +40,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-           
             <td>
                 @Html.DisplayFor(modelItem => item.Customer)
             </td>
@@ -80,18 +62,13 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                 @if (item.Social)
-                 {
-                     <i class="h2 text-success fas fa-check"></i>
-                 }
+                @if (item.Social)
+                {
+                    <i class="h2 text-success fas fa-check"></i>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Votation)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

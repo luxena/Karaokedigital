@@ -15,7 +15,6 @@ namespace Karaokedigital.Models
         public string TrackTitle { get; set; }
         public string TrackAuthor { get; set; }
         public string User { get; set; }
-        public int UserID { get; set; }
         public int NumberUsers { get; set; }
         public int ReservationStateID { get; set; }
         public string State { get; set; }

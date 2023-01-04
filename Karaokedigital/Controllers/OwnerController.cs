@@ -1650,7 +1650,7 @@ namespace Karaokedigital.Controllers
         public ActionResult Reservations()
         {
             ViewBag.Role = "Owner";
-            List<Reservation> reservations = bl.GetReservations(new Reservation());
+            List<Reservation> reservations = bl.GetFullReservations(new Reservation());
             List<ReservationModel> modelList = new List<ReservationModel>();
             foreach (var reservation in reservations)
             {
@@ -1687,7 +1687,7 @@ namespace Karaokedigital.Controllers
             {
                 customerID = id;
                 
-                reservations = bl.GetReservations(new Reservation { CustomerID = id });
+                reservations = bl.GetFullReservations(new Reservation { CustomerID = id });
                 
                 foreach (var reservation in reservations)
                 {
@@ -1699,12 +1699,12 @@ namespace Karaokedigital.Controllers
 
             if (play > 0)
             {
-                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = play }).Single();
+                Reservation reservation = bl.GetFullReservations(new Reservation { ReservationID = play }).Single();
                 reservation.ReservationStateID = 2;
                 customerID = reservation.CustomerID;
                 bl.UpdateReservation(reservation);
                
-                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+                reservations = bl.GetFullReservations(new Reservation { CustomerID = reservation.CustomerID });
 
                 foreach (var r in reservations)
                 {
@@ -1716,12 +1716,12 @@ namespace Karaokedigital.Controllers
 
             if (pause > 0)
             {
-                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = pause }).Single();
+                Reservation reservation = bl.GetFullReservations(new Reservation { ReservationID = pause }).Single();
                 reservation.ReservationStateID = 3;
                 customerID = reservation.CustomerID;
                 bl.UpdateReservation(reservation);
                
-                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+                reservations = bl.GetFullReservations(new Reservation { CustomerID = reservation.CustomerID });
 
                 foreach (var r in reservations)
                 {
@@ -1733,12 +1733,12 @@ namespace Karaokedigital.Controllers
 
             if (stop > 0)
             {
-                Reservation reservation = bl.GetReservations(new Reservation { ReservationID = stop }).Single();
+                Reservation reservation = bl.GetFullReservations(new Reservation { ReservationID = stop }).Single();
                 reservation.ReservationStateID = 4;
                 customerID = reservation.CustomerID;
                 bl.UpdateReservation(reservation);
                
-                reservations = bl.GetReservations(new Reservation { CustomerID = reservation.CustomerID });
+                reservations = bl.GetFullReservations(new Reservation { CustomerID = reservation.CustomerID });
 
                 foreach (var r in reservations)
                 {

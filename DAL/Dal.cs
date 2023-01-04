@@ -3634,8 +3634,10 @@ namespace DAL
 
             return response;
         }
-        /* RESERVATION STATE*/
-        public List<Reservation> GetReservations(Reservation reservation) 
+        /* RESERVATION STATE */
+
+        /* RESERVATIONS */
+        public List<Reservation> GetFullReservations(Reservation reservation)
         {
             List<Reservation> reservations = new List<Reservation>();
 
@@ -3677,9 +3679,9 @@ namespace DAL
                               (s.State = @State or @State is null) AND  
                               (r.Date = @Date or @Date is null) AND  
                               (r.Social = @Social or @Social = 0)
-                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],u.[UserID],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
-                    SqlCommand cmd = new SqlCommand(query,con);
-                    cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservation.ReservationID);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
                     cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
@@ -3707,7 +3709,171 @@ namespace DAL
                         _reservation.State = reader["State"].ToString();
                         _reservation.Social = Convert.ToBoolean(reader["Social"].ToString());
                         _reservation.Date = reader["Date"].ToString();
-                        _reservation.Votation = Convert.ToInt32(!string.IsNullOrEmpty( reader["Votation"].ToString()) ? reader["Votation"].ToString() : 0);
+                        _reservation.Votation = Convert.ToInt32(!string.IsNullOrEmpty(reader["Votation"].ToString()) ? reader["Votation"].ToString() : 0);
+                        reservations.Add(_reservation);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+            }
+
+            return reservations;
+        }
+        public List<Reservation> GetReservations(Reservation reservation) 
+        {
+            List<Reservation> reservations = new List<Reservation>();
+
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"SELECT r.[ReservationID]
+                                    ,r.CustomerID
+                                    ,c.[Society] Customer
+                                    ,r.[TrackID] 
+                                    ,t.[Title] TrackTitle
+                                    ,t.[Author] TrackAuthor
+                                    ,r.[ReservationStateID]
+                                    ,s.[State] [State]
+                                    ,r.[Date]
+                                    ,r.[Social]
+                                    FROM [karaokedigital].[dbo].[Reservations] r
+                                    INNER JOIN Customers c on c.CustomerID = r.CustomerID
+                                    INNER JOIN Tracks t on t.TrackID = r.TrackID
+                                    INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
+                              WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
+                              (r.CustomerID = @CustomerID or @CustomerID = 0) AND  
+                              (c.Society = @Customer or @Customer is null) AND  
+                              (r.TrackID = @TrackID or @TrackID = 0) AND  
+                              (t.Title = @TrackTitle or @TrackTitle is null) AND  
+                              (t.Author = @TrackAuthor or @TrackAuthor is null) AND  
+                              (r.ReservationStateID = @ReservationStateID or @ReservationStateID = 0) AND  
+                              (s.State = @State or @State is null) AND  
+                              (r.Date = @Date or @Date is null) AND  
+                              (r.Social = @Social or @Social = 0)
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date]";
+                    SqlCommand cmd = new SqlCommand(query,con);
+                    cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
+                    _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
+                    _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(reservation.TrackAuthor) ? cmd.Parameters.AddWithValue(@"TrackAuthor", reservation.TrackAuthor) : cmd.Parameters.AddWithValue(@"TrackAuthor", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
+                    _ = !string.IsNullOrEmpty(reservation.State) ? cmd.Parameters.AddWithValue(@"State", reservation.State) : cmd.Parameters.AddWithValue(@"State", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(reservation.Date) ? cmd.Parameters.AddWithValue(@"Date", reservation.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"Social", reservation.Social);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Reservation _reservation = new Reservation();
+                        _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
+                        _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _reservation.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
+                        _reservation.ReservationStateID = Convert.ToInt32(reader["ReservationStateID"].ToString());
+                        _reservation.Customer = reader["Customer"].ToString();
+                        _reservation.TrackTitle = reader["TrackTitle"].ToString();
+                        _reservation.TrackAuthor = reader["TrackAuthor"].ToString();
+                        _reservation.State = reader["State"].ToString();
+                        _reservation.Social = Convert.ToBoolean(reader["Social"].ToString());
+                        _reservation.Date = reader["Date"].ToString();
+                       
+                        reservations.Add(_reservation);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+            }
+
+            return reservations;
+        }
+
+        public List<Reservation> GetUserReservations(Reservation reservation,User user)
+        {
+            List<Reservation> reservations = new List<Reservation>();
+
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"SELECT r.[ReservationID]
+                                    ,r.CustomerID
+                                    ,c.[Society] Customer
+                                    ,r.[TrackID] 
+                                    ,t.[Title] TrackTitle
+                                    ,t.[Author] TrackAuthor
+                                    ,STRING_AGG(u.[Username], ' - ') [User]
+                                    ,COUNT(ru.UserID) NumberUsers
+                                    ,r.[ReservationStateID]
+                                    ,s.[State] [State]
+                                    ,r.[Date]
+                                    ,r.[Social]
+                                    ,p.Vote Votation
+                                    FROM [karaokedigital].[dbo].[Reservations] r
+                                    INNER JOIN Customers c on c.CustomerID = r.CustomerID
+                                    INNER JOIN Tracks t on t.TrackID = r.TrackID
+                                    INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
+                                    INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
+                                    RIGHT JOIN ReservationUsers ru2 on ru2.ReservationID = r.ReservationID and ru2.userid = @UserID
+                                    INNER JOIN Users u on u.UserID = ru.UserID
+                                    LEFT JOIN (select ReservationID, sum(Vote) Vote from Scores
+											group by ReservationID) p on p.ReservationID = r.ReservationID
+                              WHERE (r.ReservationID = @ReservationID or @ReservationID = 0) AND  
+                              (r.CustomerID = @CustomerID or @CustomerID = 0) AND  
+                              (c.Society = @Customer or @Customer is null) AND  
+                              (r.TrackID = @TrackID or @TrackID = 0) AND  
+                              (t.Title = @TrackTitle or @TrackTitle is null) AND  
+                              (t.Author = @TrackAuthor or @TrackAuthor is null) AND  
+                              (r.ReservationStateID = @ReservationStateID or @ReservationStateID = 0) AND  
+                              (s.State = @State or @State is null) AND  
+                              (r.Date = @Date or @Date is null) AND  
+                              (r.Social = @Social or @Social = 0)
+                              GROUP BY r.[ReservationID],r.CustomerID,c.[Society],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"ReservationID", reservation.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", user.UserID);
+                    _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
+                    _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(reservation.TrackAuthor) ? cmd.Parameters.AddWithValue(@"TrackAuthor", reservation.TrackAuthor) : cmd.Parameters.AddWithValue(@"TrackAuthor", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"ReservationStateID", reservation.ReservationStateID);
+                    _ = !string.IsNullOrEmpty(reservation.State) ? cmd.Parameters.AddWithValue(@"State", reservation.State) : cmd.Parameters.AddWithValue(@"State", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(reservation.Date) ? cmd.Parameters.AddWithValue(@"Date", reservation.Date) : cmd.Parameters.AddWithValue(@"Date", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"Social", reservation.Social);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Reservation _reservation = new Reservation();
+                        _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
+                        _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _reservation.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
+                        _reservation.ReservationStateID = Convert.ToInt32(reader["ReservationStateID"].ToString());
+                        _reservation.Customer = reader["Customer"].ToString();
+                        _reservation.TrackTitle = reader["TrackTitle"].ToString();
+                        _reservation.TrackAuthor = reader["TrackAuthor"].ToString();
+                        _reservation.User = reader["User"].ToString();
+                        _reservation.NumberUsers = Convert.ToInt32(reader["NumberUsers"].ToString());
+                        _reservation.State = reader["State"].ToString();
+                        _reservation.Social = Convert.ToBoolean(reader["Social"].ToString());
+                        _reservation.Date = reader["Date"].ToString();
+                        _reservation.Votation = Convert.ToInt32(!string.IsNullOrEmpty(reader["Votation"].ToString()) ? reader["Votation"].ToString() : 0);
                         reservations.Add(_reservation);
                     }
                 }
@@ -3758,10 +3924,11 @@ namespace DAL
             return timeCode;
         }
 
-        public bool InsertReservation(Reservation reservation)
+        public int InsertReservation(Reservation reservation)
         {
             bool response = false;
             int result = 0;
+           
             string connectionString = GetConfiguration().DBConnection;
             SqlConnection con = new SqlConnection(connectionString);
             using (con)
@@ -3769,7 +3936,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"INSERT INTO Reservations VALUES (@CustomerID,@TrackID,@ReservationStateID,@Date,@Social)";
+                    string query = @"INSERT INTO Reservations VALUES (@CustomerID,@TrackID,@ReservationStateID,@Date,@Social) SELECT SCOPE_IDENTITY(); ";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue(@"CustomerID",reservation.CustomerID);
                     cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
@@ -3777,7 +3944,7 @@ namespace DAL
                     cmd.Parameters.AddWithValue(@"Date", reservation.Date);
                     cmd.Parameters.AddWithValue(@"Social", reservation.Social);
 
-                    result = cmd.ExecuteNonQuery();
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
 
                     bool objExists = GetReservations(reservation).Any();
                     if (objExists && result > 0)
@@ -3792,8 +3959,16 @@ namespace DAL
                 con.Close();
 
             }
+            if (response)
+            {
+                return result;
+            }
+            else
+            {
+                return Convert.ToInt32(response);
+            }
 
-            return response;
+            
         }
 
         public bool UpdateReservation(Reservation reservation)
@@ -3875,6 +4050,7 @@ namespace DAL
 
             return response;
         }
+        /* RESERVATIONS */
 
         /* RESERVATION USER */
         public List<ReservationUser> GetReservationUsers(ReservationUser reservationUser)
@@ -3943,7 +4119,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"INSERT INTO ReservationUsers VALUE (@CustomerID,@ReservationID,@UserID,@Tone)";
+                    string query = @"INSERT INTO ReservationUsers VALUES (@CustomerID,@ReservationID,@UserID,@Tone)";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue(@"CustomerID",reservationUser.CustomerID);
                     cmd.Parameters.AddWithValue(@"ReservationID", reservationUser.ReservationID);

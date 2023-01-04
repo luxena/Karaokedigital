@@ -104,6 +104,7 @@ namespace Karaokedigital.Controllers
                 if (bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Any())
                 {
 					ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().Society;
+					ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
 				}
 
 				
@@ -135,7 +136,8 @@ namespace Karaokedigital.Controllers
 				if (bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Any())
 				{
 					ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().Society;
-				}
+                    ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+                }
 
 				UserModel userModel = new UserModel();
                 userModel.MapFromUser(user);
@@ -166,6 +168,7 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Last().CustomerID;
             }
 
             ViewBag.Model = model;
@@ -193,6 +196,7 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = model.UserID }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = model.UserID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = model.UserID }).Last().CustomerID;
             }
             model.Img = bl.GetUsers(new User { UserID = model.UserID }).Single().Img;
 			return View(model);
@@ -240,6 +244,11 @@ namespace Karaokedigital.Controllers
             ViewBag.Model = userModel;
             ViewBag.CustomerID = customerID;
 
+            if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+            }
+
             return View(modelList);
         }
 
@@ -255,6 +264,7 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
             }
 
             return View();
@@ -276,6 +286,7 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = UserID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
             }
 
 
@@ -302,6 +313,7 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = id }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = id }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
             }
 
 
@@ -321,6 +333,12 @@ namespace Karaokedigital.Controllers
             UserModel userModel = new UserModel();
             userModel.MapFromUser(user);
             ViewBag.Model = userModel;
+            if (bl.GetUserCustomers(new UserCustomer { UserID = id }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = id }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+            }
+
 
             return View(model);
         }
@@ -339,6 +357,12 @@ namespace Karaokedigital.Controllers
             ViewBag.Model = userModel;
 
             ViewBag.UserID = userCustomer.UserID;
+            if (bl.GetUserCustomers(new UserCustomer { UserID = userCustomer.UserID }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userCustomer.UserID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+            }
+
             try
             {
                 ViewBag.Response = bl.DeleteUserCustomer(userCustomer);
@@ -359,9 +383,21 @@ namespace Karaokedigital.Controllers
             return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
         }
 
-		public ActionResult Reservations(int userID)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult InsertReservationUser(int Tone, int TrackID, int UserID, int CustomerID)
+        {
+            var reservation = bl.GetFullReservations(new Reservation { TrackID = TrackID,CustomerID = CustomerID,Date = DateTime.Today.ToShortDateString() }).Single();
+            var reservationUser = new ReservationUser { UserID = UserID,Tone = Tone,CustomerID = CustomerID,ReservationID = reservation.ReservationID};
+            ViewBag.Response = bl.InsertReservationUser(reservationUser);
+            return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
+        }
+
+
+        public ActionResult Reservations(int userID,string message)
 		{
 			ViewBag.Role = "User";
+            ViewBag.Response = message;
 			List<Reservation> reservations = bl.GetUserReservations(new User { UserID = userID });
 			List<ReservationModel> modelList = new List<ReservationModel>();
 			foreach (var reservation in reservations)
@@ -380,6 +416,35 @@ namespace Karaokedigital.Controllers
             if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
             {
                 ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+            }
+
+
+            return View(modelList);
+		}
+
+		public ActionResult CustomerReservations(int customerID, int userID)
+		{
+			ViewBag.Role = "User";
+			List<Reservation> reservations = bl.GetFullReservations(new Reservation {  CustomerID = customerID });
+			List<ReservationModel> modelList = new List<ReservationModel>();
+			foreach (var reservation in reservations)
+			{
+				ReservationModel model = new ReservationModel();
+				model.MapFromReservation(reservation);
+				modelList.Add(model);
+			}
+
+			var user = bl.GetUsers(new User { UserID = userID }).Single();
+
+			UserModel userModel = new UserModel();
+			userModel.MapFromUser(user);
+			ViewBag.Model = userModel;
+
+            if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
             }
 
             return View(modelList);

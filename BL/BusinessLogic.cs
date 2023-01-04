@@ -1406,7 +1406,7 @@ namespace BL
 
         public List<Reservation> GetUserReservations(User user)
         {
-            return dal.GetReservations(new Reservation { UserID = user.UserID , CustomerID = GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID , Date = DateTime.Today.ToShortDateString() });
+            return dal.GetUserReservations(new Reservation {  CustomerID = GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID , Date = DateTime.Today.ToShortDateString() },user);
         }
 
         /* USER RESERVATIONS */
@@ -1820,6 +1820,11 @@ namespace BL
         }
         /* RESERVATION STATE*/
         /* RESERVATION */
+        public List<Reservation> GetFullReservations(Reservation reservation)
+        {
+            return dal.GetFullReservations(reservation);
+        }
+
         public List<Reservation> GetReservations(Reservation reservation)
         {
             return dal.GetReservations(reservation);
@@ -1837,9 +1842,15 @@ namespace BL
             bool reservationExists = GetReservations(reservation).Any();
             if (!reservationExists)
             {
-                if (dal.InsertReservation(reservation))
+
+                int res = dal.InsertReservation(reservation);
+                if ( res > 0 )
                 {
-                    response = "The Reservation has been inserted";
+                    response = res.ToString();
+                }
+                else
+                {
+                    response = "Error";
                 }
             }
             else
@@ -1859,7 +1870,11 @@ namespace BL
             bool reservationUserInserted = false;
 
             responseReservation = InsertReservation(reservation);
-            if (responseReservation == "The Reservation has been inserted")
+            var list = GetReservations(new Reservation{ CustomerID = reservation.CustomerID,Date = reservation.Date,TrackID = reservation.TrackID } ).ToList();
+            int reservationID = GetReservations(reservation).Where(r => r.Date == reservation.Date).Single().ReservationID;
+            reservation.ReservationID = reservationID;  
+            reservationUser.ReservationID = reservationID;  
+            if (Convert.ToInt32(responseReservation) > 0)
             {
                 reservationInserted = true;
                 if (reservation.CustomerID == reservationUser.CustomerID && reservation.ReservationID == reservationUser.ReservationID)
