@@ -32,7 +32,6 @@ namespace Karaokedigital.Models
             TrackTitle = reservation.TrackTitle;
             TrackAuthor = reservation.TrackAuthor;
             User = reservation.User;
-			UserID = reservation.UserID;
             NumberUsers = reservation.NumberUsers;
             ReservationStateID = reservation.ReservationStateID;
             State = reservation.State;
@@ -52,7 +51,6 @@ namespace Karaokedigital.Models
                 TrackTitle = TrackTitle,
                 TrackAuthor = TrackAuthor,
                 User = User,
-				UserID = UserID,
                 NumberUsers = NumberUsers,
                 ReservationStateID = ReservationStateID,
                 State = State,

@@ -3653,7 +3653,6 @@ namespace DAL
                                     ,t.[Title] TrackTitle
                                     ,t.[Author] TrackAuthor
                                     ,STRING_AGG(u.[Username], ' - ') [User]
-                                    ,u.[UserID]
                                     ,COUNT(ru.UserID) NumberUsers
                                     ,r.[ReservationStateID]
                                     ,s.[State] [State]
@@ -3677,13 +3676,11 @@ namespace DAL
                               (r.ReservationStateID = @ReservationStateID or @ReservationStateID = 0) AND  
                               (s.State = @State or @State is null) AND  
                               (r.Date = @Date or @Date is null) AND  
-                              (u.UserID = @UserID or @UserID = 0) AND  
                               (r.Social = @Social or @Social = 0)
                               GROUP BY r.[ReservationID],r.CustomerID,c.[Society],u.[UserID],r.TrackID,t.[Title],t.[Author],r.ReservationStateID,s.[State],r.[Social],r.[Date],p.Vote";
                     SqlCommand cmd = new SqlCommand(query,con);
                     cmd.Parameters.AddWithValue(@"ReservationID",reservation.ReservationID);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservation.CustomerID);
-                    cmd.Parameters.AddWithValue(@"UserID", reservation.UserID);
                     _ = !string.IsNullOrEmpty(reservation.Customer) ? cmd.Parameters.AddWithValue(@"Customer", reservation.Customer) : cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
                     cmd.Parameters.AddWithValue(@"TrackID", reservation.TrackID);
                     _ = !string.IsNullOrEmpty(reservation.TrackTitle) ? cmd.Parameters.AddWithValue(@"TrackTitle", reservation.TrackTitle) : cmd.Parameters.AddWithValue(@"TrackTitle", DBNull.Value);
@@ -3700,7 +3697,6 @@ namespace DAL
                         Reservation _reservation = new Reservation();
                         _reservation.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
                         _reservation.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
-                        _reservation.UserID = Convert.ToInt32(reader["UserID"].ToString());
                         _reservation.TrackID = Convert.ToInt32(reader["TrackID"].ToString());
                         _reservation.ReservationStateID = Convert.ToInt32(reader["ReservationStateID"].ToString());
                         _reservation.Customer = reader["Customer"].ToString();

@@ -101,7 +101,6 @@
                     @if (item.IsReservable == true && item.IsSocial == false && item.IsReserved == false)
                     {
                         <td colspan="3" class="track-button text-center d-none">
-                            @*aggiungere social e tono*@
                             <form method="post" asp-action="CreateReservation">
                                 <div class="input-group mt-4">
                                     <div class="input-group-prepend">
@@ -122,10 +121,8 @@
                                     <button type="submit" class="btn btn-glow" title="Reserve" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateReservation" asp-route-TrackID="@item.TrackID" asp-route-UserID="@ViewBag.Model.UserID" asp-route-CustomerID="@ViewBag.CustomerID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
                                 </div>
                             </form>
-
                         </td>
                     }
-                   
                 </tr>
             }
         </tbody>
