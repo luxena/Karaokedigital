@@ -393,7 +393,6 @@ namespace Karaokedigital.Controllers
             return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
         }
 
-
         public ActionResult Reservations(int userID,string message)
 		{
 			ViewBag.Role = "User";
