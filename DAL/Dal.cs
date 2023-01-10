@@ -4498,7 +4498,7 @@ namespace DAL
 				try
 				{
 					con.Open();
-					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(CustomerID IS NULL OR Social = 1,1,0)Reservable,IIF(r.CustomerID is not null,1,0)Reserved
+					string query = @"SELECT t.TrackID,t.Title,t.Author,t.[Time],t.Year,t.Genre,t.[File],t.IsFeaturing,r.Social,IIF(r.CustomerID IS NULL AND r.ReservationStateID = 1 OR r.Social = 1 AND r.ReservationStateID = 1,1,0)Reservable,IIF(r.CustomerID is not null,1,0)Reserved
                                      FROM Tracks t
                                      LEFT JOIN Reservations r on r.TrackID = t.TrackID AND r.CustomerID = @CustomerID AND r.Date = @Today
                                      WHERE (t.TrackID = @TrackID OR @TrackID = 0) AND

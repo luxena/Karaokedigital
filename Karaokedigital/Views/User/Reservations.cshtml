@@ -87,9 +87,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Votation)
             </td>
-             <td colspan="4" class="result-button text-center d-none">
-                 <a class="btn btn-glow-circle" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="DeleteReservation" asp-route-reservationID="@item.ReservationID" asp-route-userID="@ViewBag.Model.UserID" asp-route-customerID="@ViewBag.CustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
-            </td>
+            @if (item.State == "Reserved")
+                {
+                    <td colspan="4" class="result-button text-center d-none">
+                        <a class="btn btn-glow-circle" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="DeleteReservation" asp-route-reservationID="@item.ReservationID" asp-route-userID="@ViewBag.Model.UserID" asp-route-customerID="@ViewBag.CustomerID"><i class="bg-danger fas fa-trash-alt"></i></a>
+                    </td>
+                }
+             
         </tr>
 }
     </tbody>
