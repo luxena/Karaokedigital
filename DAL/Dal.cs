@@ -4194,7 +4194,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"DELETE ReservationUsers
+                    string query = @"DELETE FROM ReservationUsers
                                     WHERE ReservationID = @ReservationID AND CustomerID = @CustomerID AND UserID = @UserID";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue(@"CustomerID", reservationUser.CustomerID);
@@ -4778,6 +4778,161 @@ namespace DAL
         }
 
         /* TROPHY */
+        /* SCORE */
+
+        public List<Score> GetScores(Score score)
+        {
+            List<Score> scores = new List<Score>();
+            string connectionString = GetConfiguration().DBConnection;  
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = @"SELECT 
+                                    sc.ScoreID
+                                    ,sc.ReservationID
+                                    ,sc.CustomerID
+                                    ,c.[Society] Customer
+                                    ,t.[Title] TrackTitle
+                                    ,t.[Author] TrackAuthor
+                                    ,STRING_AGG(u.[Username], ' - ') [Users]
+                                    ,sc.[Date]
+                                    ,sc.Vote Votation
+                                    ,sc.[UserID]
+                                    FROM [karaokedigital].[dbo].[Reservations] r
+                                    INNER JOIN Customers c on c.CustomerID = r.CustomerID
+                                    INNER JOIN Tracks t on t.TrackID = r.TrackID
+                                    INNER JOIN ReservationStates s on s.ReservationStateID = r.ReservationStateID
+                                    INNER JOIN ReservationUsers ru on ru.ReservationID = r.ReservationID
+                                    INNER JOIN Users u on u.UserID = ru.UserID
+                                    INNER JOIN (select ScoreID, ReservationID, sum(Vote) Vote,CustomerID,UserID,Date from Scores group by ScoreID, ReservationID,CustomerID,UserID,Date) sc on sc.ReservationID = r.ReservationID
+                                    WHERE (sc.ScoreID = @ScoreID OR @ScoreID = 0) AND 
+                                    (sc.CustomerID = @CustomerID OR @CustomerID = 0) AND 
+                                    (sc.ReservationID = @ReservationID OR @ReservationID = 0) AND 
+                                    (sc.UserID = @UserID OR @UserID = 0) AND 
+                                    (sc.Vote = @Vote OR @Vote = 0) AND 
+                                    (sc.Date = @Date OR @Date IS NULL)
+                                    GROUP BY sc.ReservationID, sc.CustomerID,c.[Society],t.[Title],t.[Author],sc.ScoreID,sc.UserID,sc.Vote,sc.Date";
+
+                    SqlCommand cmd = new SqlCommand(query,con);
+
+                    cmd.Parameters.AddWithValue(@"ScoreID",score.ScoreID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", score.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", score.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", score.UserID);
+                    cmd.Parameters.AddWithValue(@"Vote", score.Vote);
+                    cmd.Parameters.AddWithValue(@"Date", score.Date);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Score _score = new Score();
+                        _score.ScoreID = Convert.ToInt32(reader["ScoreID"].ToString());
+                        _score.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
+                        _score.Customer = reader["Customer"].ToString();
+                        _score.TrackTitle = reader["TrackTitle"].ToString();
+                        _score.TrackAuthor = reader["TrackAuthor"].ToString();
+                        _score.Users = reader["Users"].ToString();
+                        _score.ReservationID = Convert.ToInt32(reader["ReservationID"].ToString());
+                        _score.UserID = Convert.ToInt32(reader["UserID"].ToString());
+                        _score.Vote = Convert.ToInt32(reader["Votation"].ToString());
+                        _score.Date = reader["Date"].ToString();
+
+                        scores.Add(_score);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+
+            }
+
+            return scores;
+        }
+        public bool InsertScore(Score score)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"INSERT INTO Scores VALUES(@CustomerID,@ReservationID,@UserID,@Vote,@Date)";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"CustomerID", score.CustomerID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", score.ReservationID);
+                    cmd.Parameters.AddWithValue(@"UserID", score.UserID);
+                    cmd.Parameters.AddWithValue(@"Vote", score.Vote);
+                    cmd.Parameters.AddWithValue(@"Date", score.Date);
+
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetScores(score).Any();
+                    if (objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        public bool DeleteScore(Score score)
+        {
+            bool response = false;
+            int result = 0;
+            string connectionString = GetConfiguration().DBConnection;
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+                    string query = @"DELETE FROM Scores WHERE ScoreID = @ScoreID AND ReservationID = @ReservationID AND CustomerID = @CustomerID AND UserID = @UserID AND Date = @Date";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue(@"ScoreID", score.ScoreID);
+                    cmd.Parameters.AddWithValue(@"ReservationID", score.ReservationID);
+                    cmd.Parameters.AddWithValue(@"CustomerID", score.CustomerID);
+                    cmd.Parameters.AddWithValue(@"UserID", score.UserID);
+                    cmd.Parameters.AddWithValue(@"Date", score.Date);
+                    result = cmd.ExecuteNonQuery();
+
+                    bool objExists = GetCustomers(new Customer { }).Any();
+                    if (!objExists && result > 0)
+                    {
+                        response = true;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                con.Close();
+
+            }
+
+            return response;
+        }
+
+        /* SCORE */
 
         public bool GeneralFunction(string obj)
         {

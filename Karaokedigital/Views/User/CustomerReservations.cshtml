@@ -39,7 +39,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="result pt-2 cursor-pointer">
             <td>
                 @Html.DisplayFor(modelItem => item.Customer)
             </td>
@@ -70,6 +70,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Votation)
             </td>
+                @if (item.State == "Stopped" && !item.User.Contains(@ViewBag.Model.Username))
+                {
+                    <td colspan="3" class="result-button text-center d-none">
+                    <form method="post" asp-action="VoteReservation">
+                    <div class="input-group">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">Vote</span>
+                    </div>
+                    <div class="input-group-text">
+                    <input name="Vote" type="number" min="1" max="10" value="0" aria-label="Checkbox for following text input">
+                    </div>
+                    <input name="UserID" type="text" value="@ViewBag.Model.UserID" hidden>
+                    <input name="CustomerID" type="text" value="@ViewBag.CustomerID" hidden>
+                    <input name="ReservationID" type="text" value="@item.ReservationID" hidden>
+                    <button type="submit" class="btn btn-glow" title="Vote" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></button>
+                    </div>
+                    </form>
+                    </td>
+                }
         </tr>
 }
     </tbody>

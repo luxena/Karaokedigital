@@ -1822,6 +1822,7 @@ namespace BL
         /* RESERVATION */
         public List<Reservation> GetFullReservations(Reservation reservation)
         {
+            reservation.Date = DateTime.Today.ToShortDateString();
             return dal.GetFullReservations(reservation);
         }
 
@@ -1945,6 +1946,41 @@ namespace BL
                 response = "The Reservation not exists";
             }
 
+            return response;
+        }
+
+        public string DeleteReservation(Reservation reservation, ReservationUser reservationUser)
+        {
+            string response = "";
+            int numberSongers = GetFullReservations(reservation).Single().NumberUsers;
+            bool reservationExists = GetReservations(reservation).Any();
+            bool reservationUserExists = GetReservationUsers(reservationUser).Any();
+
+            if (reservationExists && reservationUserExists && numberSongers < 2)
+            {
+                DeleteReservation(reservation);
+                DeleteReservationUser(reservationUser);
+
+                reservationExists = GetReservations(reservation).Any();
+                reservationUserExists = GetReservationUsers(reservationUser).Any();
+
+                if (!reservationExists && !reservationUserExists)
+                {
+                    response = "Reservation has been deleted";
+                }
+
+            }
+            else
+            {
+                string res = DeleteReservationUser(reservationUser);
+                
+                reservationUserExists = GetReservationUsers(reservationUser).Any();
+
+                if (!reservationUserExists)
+                {
+                    response = "Reservation has been deleted";
+                }
+            }
             return response;
         }
 
@@ -2168,10 +2204,59 @@ namespace BL
             return list;
         }
 
-		/* TRACK */
-		/* TROPHY */
+        /* TRACK */
+        /* SCORE */
+        public List<Score> GetScores(Score score)
+        {
+            score.Date = DateTime.Today.ToShortDateString();
+            return dal.GetScores(score);
+        }
 
-		public List<Trophy> GetTrophies(Trophy trophy)
+        public string InsertScore(Score score)
+        {
+            string response = "";
+            bool scoreExists = GetScores(new Score { ReservationID = score.ReservationID,CustomerID = score.CustomerID,Date = score.Date }).Any();
+            if (!scoreExists)
+            {
+                if (dal.InsertScore(score))
+                {
+                    response = "Votation has been inserted";
+                }
+            }
+            else
+            {
+                response = "Votation already exists";
+            }
+
+            return response;
+        }
+
+        public string DeleteScore(Score score)
+        {
+            string response = "";
+            bool scoreExists = GetScores(score).Any();
+
+            if (scoreExists)
+            {
+                if (dal.DeleteScore(score))
+                {
+                    response = "The Votation has been deleted";
+                }
+            }
+            else
+            {
+                response = "The Votation not exists";
+            }
+
+            return response;
+        }
+
+        /* SCORE */
+
+
+        /* TROPHY */
+
+        public List<Trophy> GetTrophies(Trophy trophy)
         {
             return dal.GetTrophies(trophy);
         }

@@ -4,6 +4,7 @@ using Karaokedigital.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.DependencyResolver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -378,15 +379,24 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateReservation(string Social,int Tone,int TrackID, int UserID,int CustomerID)
         {
+            ViewBag.Role = "User";
             ViewBag.Response = bl.CreateReservation(new Reservation { CustomerID = CustomerID, TrackID = TrackID, Date = DateTime.Today.ToShortDateString(),Social = Social == "on" ? true:false, ReservationStateID = 1 },new ReservationUser { CustomerID = CustomerID,UserID = UserID, Tone = Tone });
 
             return RedirectToAction("Reservations", new { userID = UserID, message = ViewBag.Response });
         }
 
-		[HttpPost]
+        public ActionResult DeleteReservation(int reservationID,int userID, int customerID)
+        {
+            ViewBag.Role = "User";
+            ViewBag.Response = bl.DeleteReservation(new Reservation { ReservationID = reservationID, CustomerID = customerID },new ReservationUser { ReservationID = reservationID, UserID = userID ,CustomerID = customerID });
+            return RedirectToAction("Reservations", new { userID = userID, message = ViewBag.Response });
+        }
+
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult InsertReservationUser(int Tone, int TrackID, int UserID, int CustomerID)
         {
+            ViewBag.Role = "User";
             var reservation = bl.GetFullReservations(new Reservation { TrackID = TrackID,CustomerID = CustomerID,Date = DateTime.Today.ToShortDateString() }).Single();
             var reservationUser = new ReservationUser { UserID = UserID,Tone = Tone,CustomerID = CustomerID,ReservationID = reservation.ReservationID};
             ViewBag.Response = bl.InsertReservationUser(reservationUser);
@@ -449,5 +459,82 @@ namespace Karaokedigital.Controllers
             return View(modelList);
 		}
 
-	}
+        public ActionResult MyVotation(int userID,int customerID,string message)
+        {
+			ViewBag.Role = "User";
+            ViewBag.Response = message;
+
+            List<Score> list = bl.GetScores(new Score { UserID = userID,CustomerID = customerID });
+			List<ScoreModel> modelList = new List<ScoreModel>();
+			foreach (var obj in list)
+			{
+				ScoreModel model = new ScoreModel();
+				model.MapFromScore(obj);
+				modelList.Add(model);
+			}
+
+			var user = bl.GetUsers(new User { UserID = userID }).Single();
+
+			UserModel userModel = new UserModel();
+			userModel.MapFromUser(user);
+			ViewBag.Model = userModel;
+			
+
+			if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+			{
+				ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+				ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+			}
+
+			return View(modelList);
+			
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VoteReservation(int Vote, int UserID,int CustomerID,int ReservationID)
+        {
+            ViewBag.Role = "User";
+            ViewBag.Response = bl.InsertScore(new Score { ReservationID = ReservationID,CustomerID = CustomerID,UserID = UserID,Vote = Vote, Date = DateTime.Today.ToShortDateString() });
+            return RedirectToAction("MyVotation", new { userID = UserID, message = ViewBag.Response });
+        }
+
+        public ActionResult DeleteVotation(int scoreID, int UserID, int CustomerID, int ReservationID)
+        {
+            ViewBag.Role = "User";
+            ViewBag.Response = bl.DeleteScore(new Score { ScoreID = scoreID , ReservationID = ReservationID, CustomerID = CustomerID, UserID = UserID, Date = DateTime.Today.ToShortDateString() });
+            return RedirectToAction("MyVotation", new { userID = UserID, message = ViewBag.Response });
+        }
+
+        public ActionResult Chart(int id,int userID)
+        {
+            ViewBag.Role = "User";
+            ViewBag.CustomerID = id;
+            List<ChartModel> modelList = new List<ChartModel>();
+            var charts = bl.GetChart(new Customer { CustomerID = id });
+
+            foreach (var chart in charts)
+            {
+                ChartModel model = new ChartModel();
+                model.MapFromChart(chart);
+                modelList.Add(model);
+            }
+
+            var user = bl.GetUsers(new User { UserID = userID }).Single();
+
+            UserModel userModel = new UserModel();
+            userModel.MapFromUser(user);
+            ViewBag.Model = userModel;
+
+			if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+			{
+				ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+				//ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+			}
+
+
+			return View(modelList);
+        }
+
+    }
 }
