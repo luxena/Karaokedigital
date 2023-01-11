@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Karaokedigital.Models.TrophyModel>
+
+<div>
+    <partial name="NavBar" model="@ViewBag.Model" />
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Award)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reward)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WinDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consumed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Award)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reward)
+            </td>
+            <td>
+                <i title="@item.Cup" data-bs-toggle="tooltip" data-bs-placement="top" class="cursor-pointer h3 fas fa-trophy text-@item.Cup.ToLower()"></i>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WinDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                    @if (item.Consumed)
+                    {
+                       <i class="h2 text-success fas fa-check"></i>
+                    }
+            </td>
+         
+        </tr>
+}
+    </tbody>
+</table>
