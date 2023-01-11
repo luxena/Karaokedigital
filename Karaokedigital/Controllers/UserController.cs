@@ -536,5 +536,34 @@ namespace Karaokedigital.Controllers
 			return View(modelList);
         }
 
+        public ActionResult Trophies(int userID)
+        {
+            ViewBag.Role = "User";
+            List<Trophy> trophies = bl.GetTrophies(new Trophy { UserID = userID });
+            List<TrophyModel> trophyModelList = new List<TrophyModel>();
+            foreach (var trophy in trophies)
+            {
+                TrophyModel trophyModel = new TrophyModel();
+                trophyModel.MapFromTrophy(trophy);
+                trophyModelList.Add(trophyModel);
+            }
+
+            var user = bl.GetUsers(new User { UserID = userID }).Single();
+
+            UserModel userModel = new UserModel();
+            userModel.MapFromUser(user);
+            ViewBag.Model = userModel;
+
+            if (bl.GetUserCustomers(new UserCustomer { UserID = userID }).Any())
+            {
+                ViewBag.LastLocal = bl.GetUserCustomers(new UserCustomer { UserID = userID }).Last().Society;
+                ViewBag.CustomerID = bl.GetUserCustomers(new UserCustomer { UserID = user.UserID }).Last().CustomerID;
+            }
+
+
+            return View(trophyModelList);
+        }
+
+
     }
 }
