@@ -752,12 +752,12 @@ namespace DAL
                       INNER JOIN Boss b on b.BossID = c.BossID
                       INNER JOIN CustomerTypes t on t.CustomerTypeID = c.CustomerTypeID
                       INNER JOIN Plans p on p.PlanID = c.PlanID
-                      WHERE (CustomerID = @CustomerID or @CustomerID = 0) AND 
+                      WHERE (c.CustomerID = @CustomerID or @CustomerID = 0) AND 
                             (b.Username = @Boss or @Boss is null) AND 
                             (t.[Type] = @CustomerType or @CustomerType is null) AND 
-                            (Society = @Society or @Society is null) AND 
-                            (PIvaFiscalCode = @PIvaFiscalCode or @PIvaFiscalCode is null) AND 
-                            (URL = @URL or @URL is null) AND 
+                            (c.Society = @Society or @Society is null) AND 
+                            (c.PIvaFiscalCode = @PIvaFiscalCode or @PIvaFiscalCode is null) AND 
+                            (c.URL = @URL or @URL is null) AND 
                             (c.Phone = @Phone or @Phone is null) AND 
                             (c.Email = @Email or @Email is null) AND 
                             (c.Country = @Country or @Country is null) AND 

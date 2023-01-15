@@ -276,7 +276,7 @@ namespace Karaokedigital.Controllers
 		public ActionResult AddLocation(int UserID, string society)
 		{
 			ViewBag.Role = "User";
-			var customer = bl.GetCustomers(new Customer { Society = society }).Single();
+			var customer = bl.GetCustomers(new Customer { Society = society ,IsActive = true }).Single();
 			var data = DateTime.Today.ToShortDateString();
 			ViewBag.Response = bl.InsertUserCustomer(new UserCustomer { UserID = UserID,CustomerID = customer.CustomerID,Date = data });
 			var user = bl.GetUsers(new User { UserID = UserID }).Single();
