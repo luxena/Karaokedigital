@@ -61,6 +61,16 @@
                 top: 0;
             }*/
 
+    .row > * {
+        padding-right: 0 !important;
+        padding-left: 0!important;
+    }
+
+    .container{
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
 </style>
 
 
@@ -69,7 +79,7 @@
 </div>
 
 
-<div class="row row-cols-1 row-cols-md-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 mt-4 mb-4">
     <a asp-action="Edit" asp-route-UserID="@Model.UserID">
         <div class="card">
         <img class="card-img card-img-top cursor-pointer" src="~/Img/Cards/profile.jpeg" alt="profile" width="250" height="250">
@@ -102,7 +112,7 @@
         <img class="card-img card-img-top cursor-pointer" src="~/Img/Cards/reservation.jpg" alt="reservations" width="300" height="250">
         <div class="card-img-filter card-body">
              <div></div>
-            <h5 class="card-title text-light">RESERVATIONS</h5>
+            <h5 class="card-title text-light">MY RESERVATIONS</h5>
         </div>
     </div>
     </a>
@@ -117,7 +127,7 @@
     </a>
     <a asp-action="MyVotation" asp-route-userID="@Model.UserID" asp-route-customerID="@ViewBag.CustomerID">
         <div class="card">
-        <img class="card-img card-img-top cursor-pointer" src="~/Img/Background/img9.jpg" alt="votations" width="300" height="250">
+        <img class="card-img card-img-top cursor-pointer" src="~/Img/Cards/votations.jpg" alt="votations" width="300" height="250">
         <div class="card-img-filter card-body">
             <div></div>
             <h5 class="card-title text-light">VOTATIONS</h5>
@@ -133,5 +143,15 @@
         </div>
         </div>
     </a>
+    <a asp-action="CustomerReservations" asp-route-userID="@Model.UserID" asp-route-customerID="@ViewBag.CustomerID">
+        <div class="card">
+            <img class="card-img card-img-top cursor-pointer" src="~/Img/Cards/allreservations.jpg" alt="chart" width="300" height="250">
+            <div class="card-img-filter card-body">
+                <div></div>
+                <h5 class="card-title text-light">ALL RESERVATIONS</h5>
+            </div>
+        </div>
+    </a>
 </div>
 
+ <partial name="Footer" />

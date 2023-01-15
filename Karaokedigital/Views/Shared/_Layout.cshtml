@@ -356,6 +356,8 @@
 
     }
 
+    @if (@ViewBag.Role != "User")
+    {
 
     <footer class="border-top footer text-muted">
 
@@ -422,6 +424,7 @@
 
     </footer>
 
+    }
     @RenderSection("Scripts", required: false)
 </body>
 </html>
