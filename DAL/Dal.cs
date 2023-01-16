@@ -1196,27 +1196,27 @@ namespace DAL
                               FROM [karaokedigital].[dbo].[CustomerUsers] c
                               INNER JOIN Roles r on r.RoleID = c.RoleID
                               INNER JOIN Customers cm on cm.CustomerID = c.CustomerID
-                              WHERE (CustomerUserID = @CustomerUserID or @CustomerUserID = 0) AND 
+                              WHERE (c.CustomerUserID = @CustomerUserID or @CustomerUserID = 0) AND 
                                     (c.CustomerID = @CustomerID or @CustomerID  = 0 ) AND 
-                                    (Society = @Customer or @Customer  is null ) AND 
-                                    (Name = @Name or @Name  is null ) AND 
-                                    (Surname = @Surname or @Surname is null) AND 
-                                    (Username = @Username or @Username is null) AND 
-                                    (Password = @Password or @Password is null) AND 
+                                    (cm.Society = @Customer or @Customer  is null ) AND 
+                                    (c.Name = @Name or @Name  is null ) AND 
+                                    (c.Surname = @Surname or @Surname is null) AND 
+                                    (c.Username = @Username or @Username is null) AND 
+                                    (c.Password = @Password or @Password is null) AND 
                                     (c.Phone = @Phone or @Phone is null) AND 
                                     (c.Email = @Email or @Email is null) AND 
-                                    (DateOfBirth = @DateOfBirth or @DateOfBirth is null) AND 
-                                    (BornCountry = @BornCountry or @BornCountry is null) AND 
-                                    (BornProvince = @BornProvince or @BornProvince is null) AND 
-                                    (BornCity = @BornCity or @BornCity is null) AND 
-                                    (FiscalCode = @FiscalCode or @FiscalCode is null) AND 
+                                    (c.DateOfBirth = @DateOfBirth or @DateOfBirth is null) AND 
+                                    (c.BornCountry = @BornCountry or @BornCountry is null) AND 
+                                    (c.BornProvince = @BornProvince or @BornProvince is null) AND 
+                                    (c.BornCity = @BornCity or @BornCity is null) AND 
+                                    (c.FiscalCode = @FiscalCode or @FiscalCode is null) AND 
                                     (c.Country = @Country or @Country is null) AND 
                                     (c.Province = @Province or @Province is null) AND 
                                     (c.City = @City or @City is null) AND 
                                     (c.Address = @Address or @Address is null) AND 
                                     (c.ZipCode = @ZipCode or @ZipCode is null) AND 
-                                    (Img = @Img or @Img is null) AND 
-                                    (Role = @Role or @Role is null) AND 
+                                    (c.Img = @Img or @Img is null) AND 
+                                    (r.Role = @Role or @Role is null) AND 
                                     (c.IsActive = @IsActive or @IsActive = 0)";
 
                     SqlCommand cmd = new SqlCommand(query, con);

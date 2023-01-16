@@ -1686,14 +1686,17 @@ namespace Karaokedigital.Controllers
             if (id > 0)
             {
                 customerID = id;
-                
-                reservations = bl.GetFullReservations(new Reservation { CustomerID = id });
-                
-                foreach (var reservation in reservations)
+
+                if (id == 0 && play == 0 && pause == 0 && stop == 0)
                 {
-                    ReservationModel model = new ReservationModel();
-                    model.MapFromReservation(reservation);
-                    modelList.Add(model);
+                    reservations = bl.GetFullReservations(new Reservation { CustomerID = customerID });
+
+                    foreach (var reservation in reservations)
+                    {
+                        ReservationModel model = new ReservationModel();
+                        model.MapFromReservation(reservation);
+                        modelList.Add(model);
+                    }
                 }
             }
 

@@ -1,0 +1,75 @@
+﻿@model Karaokedigital.Models.AwardModel
+
+@{
+    ViewData["Title"] = "DeactivateAward";
+}
+
+<h1>Deactivate Award</h1>
+
+<h3>Are you sure you want to deactivate this Award?</h3>
+<div>
+    @if (!string.IsNullOrEmpty(@ViewBag.Response))
+    {
+        @if (@ViewBag.Response == "Award not exists")
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                @ViewBag.Response
+            </div>
+        }
+
+    }
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Award)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Award)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cup)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Reward)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Reward)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+    </dl>
+
+    <form asp-action="DeactivateAward" asp-route-id="@Model.AwardID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
+        <div class="form-group mt-2">
+            <button type="submit" class="btn btn-glow" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-warning fas fa-ban"></i></button>
+            @if (@Model == null)
+            {
+                <a class="btn btn-glow ml-2" asp-action="Awards" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            }
+            else
+            {
+                <a class="btn btn-glow ml-2" asp-action="Awards" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            }
+
+        </div>
+    </form>
+</div>

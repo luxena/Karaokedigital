@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Karaokedigital.Models.TrophyModel>
+
+@{
+    ViewData["Title"] = "Trophies";
+}
+
+
+<div>
+    <partial name="NavBar" />
+</div>
+
+<h1>Trophies</h1>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Award)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reward)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cup)
+                </th>
+                <th>Photo</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WinDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Consumed)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="customer-result pt-2 cursor-pointer" onclick="location.href = 'EditTrophy?id=@item.TrophyID&customerID=@ViewBag.CustomerModel.CustomerID&customerUserID=@ViewBag.Model.CustomerUserID'">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Award)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reward)
+                    </td>
+                    <td>
+                        <i class="h3 fas fa-trophy text-@item.Cup.ToLower()"></i> @Html.DisplayFor(modelItem => item.Cup)
+                    </td>
+                    <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.User)" width="60" height="60" src="~/Images/Users/@item.User/@Html.DisplayFor(modelItem => item.UserImg)"></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WinDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueDate)
+                    </td>
+                    <td>
+                        @if (item.Consumed)
+                        {
+                            <i class="h2 text-success fas fa-check"></i>
+                        }
+                    </td>
+                    <td colspan="4" class="customer-button text-center d-none">
+                        <a class="btn btn-glow-circle mr-4" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="EditTrophy" asp-route-id="@item.TrophyID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-glow-circle mr-4" title="Details" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="DetailsTrophy" asp-route-id="@item.TrophyID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-beetlejuice fas fa-file-invoice"></i></a>
+                        <a class="btn btn-glow-circle mr-4" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="DeleteTrophy" asp-route-id="@item.TrophyID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-danger fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

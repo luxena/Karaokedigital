@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Karaokedigital.Models.ChartModel>
+<div>
+    <partial name="NavBar" />
+</div>
+
+<div>
+    <a class="btn btn-glow float-right" title="AssignTrophies" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="AssignTrophies" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID"><i class="bg-green fas fa-medal"></i></a>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrackTitle)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrackAuthor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                 <th>
+                    @Html.DisplayNameFor(model => model.Votation)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrackTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrackAuthor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Votation)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
