@@ -689,8 +689,112 @@ namespace Karaokedigital.Controllers
 
         }
 
+        public ActionResult Plans(int customerID, int customerUserID)
+        {
+            ViewBag.Role = "CustomerUser";
+            List<Plans> plans = bl.GetPlans(new Plans());
+            List<PlanModel> planModelList = new List<PlanModel>();
+            foreach (var plan in plans)
+            {
+                PlanModel planModel = new PlanModel();
+                planModel.MapFromPlan(plan);
+                planModelList.Add(planModel);
+            }
+
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            return View(planModelList);
+        }
+
+        public ActionResult Roles(int customerID, int customerUserID)
+        {
+            ViewBag.Role = "CustomerUser";
+            List<Roles> roles = bl.GetRoles(new Roles());
+            List<RoleModel> roleModelList = new List<RoleModel>();
+            foreach (var role in roles)
+            {
+                RoleModel roleModel = new RoleModel();
+                roleModel.MapFromRole(role);
+                roleModelList.Add(roleModel);
+            }
+
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
 
 
+            return View(roleModelList);
+        }
+
+        public ActionResult Cups(int customerID, int customerUserID)
+        {
+            ViewBag.Role = "CustomerUser";
+            List<Cups> cups = bl.GetCups(new Cups());
+            List<CupModel> cupModelList = new List<CupModel>();
+            foreach (var cup in cups)
+            {
+                CupModel cupModel = new CupModel();
+                cupModel.MapFromCup(cup);
+                cupModelList.Add(cupModel);
+            }
+
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+
+            return View(cupModelList);
+        }
+
+        public ActionResult ReservationStates(int customerID, int customerUserID)
+        {
+            ViewBag.Role = "CustomerUser";
+            List<ReservationState> reservationStates = bl.GetReservationStates(new ReservationState());
+            List<ReservationStateModel> ReservationStateModelList = new List<ReservationStateModel>();
+            foreach (var reservationState in reservationStates)
+            {
+                ReservationStateModel reservationStateModel = new ReservationStateModel();
+                reservationStateModel.MapFromReservationState(reservationState);
+                ReservationStateModelList.Add(reservationStateModel);
+            }
+
+
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            return View(ReservationStateModelList);
+        }
 
         // GET: CustomerController/Details/5
         public ActionResult Details(int id)

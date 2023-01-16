@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Karaokedigital.Models.ReservationStateModel>
+
+@{
+    ViewData["Title"] = "ReservationStates";
+}
+
+<div>
+    <partial name="NavBar" />
+</div>
+
+
+<h1>Reservation States</h1>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReservationStateID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservationStateID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
