@@ -664,7 +664,7 @@ namespace Karaokedigital.Controllers
         public ActionResult DeleteTrophy(int id, int customerID, int customerUserID, IFormCollection collection)
         {
             ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
-            ViewBag.CustomerID = bl.GetTrophies(new Trophy { TrophyID = id }).Single().CustomerID;
+           
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
@@ -1034,6 +1034,7 @@ namespace Karaokedigital.Controllers
                 ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
 
             }
+          
 
             try
             {
@@ -1044,6 +1045,32 @@ namespace Karaokedigital.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult UsersCustomers(int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            List<UserCustomer> userCustomers = bl.GetUserCustomers(new UserCustomer { CustomerID = customerID });
+            List<UserCustomerModel> userCustomerModelList = new List<UserCustomerModel>();
+            foreach (var userCustomer in userCustomers)
+            {
+                UserCustomerModel userCustomerModel = new UserCustomerModel();
+                userCustomerModel.MapFromUserCustomer(userCustomer);
+                userCustomerModelList.Add(userCustomerModel);
+            }
+
+            return View(userCustomerModelList);
         }
 
 
