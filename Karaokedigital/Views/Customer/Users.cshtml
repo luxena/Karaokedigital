@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Karaokedigital.Models.UserModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div>
+    <partial name="NavBar" />
+</div>
+
+<h1>Users</h1>
+
+<p class="mt-4">
+    <a class="btn btn-glow" title="Add New" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateUser" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="fas fa-plus"></i></a>
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="customer-result pt-2 cursor-pointer">
+                    <td><img class="rounded-circle" alt="@Html.DisplayFor(modelItem => item.Username)" width="60" height="60" src="~/Images/Users/@item.Username/@Html.DisplayFor(modelItem => item.Img)"></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <i class="h2 text-success fas fa-check"></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

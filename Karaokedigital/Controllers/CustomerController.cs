@@ -1073,9 +1073,35 @@ namespace Karaokedigital.Controllers
             return View(userCustomerModelList);
         }
 
+		public ActionResult Users(int customerID, int customerUserID)
+		{
+			ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+			if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+			{
+				var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
 
-        // GET: CustomerController/Details/5
-        public ActionResult Details(int id)
+				CustomerUserModel customerUsermodel = new CustomerUserModel();
+				customerUsermodel.MapFromCustomerUser(customerUser);
+				ViewBag.Model = customerUsermodel;
+				ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+			}
+
+			List<User> users = bl.GetUsers(new User());
+			List<UserModel> userModelList = new List<UserModel>();
+			foreach (var user in users)
+			{
+				UserModel userModel = new UserModel();
+				userModel.MapFromUser(user);
+				userModelList.Add(userModel);
+			}
+
+			return View(userModelList);
+		}
+
+         
+		// GET: CustomerController/Details/5
+		public ActionResult Details(int id)
         {
             return View();
         }

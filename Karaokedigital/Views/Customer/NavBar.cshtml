@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand navbar-toggleable navbar-light bg-white border-bottom box-shadow mb-0">
 	<div class="container-fluid">
 		<form asp-action="Index" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
-			@*<input name="id" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />*@
+			<input name="customerUserID" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />
 			<button class="border-0 bg-none mr-3" type="submit" title="home" data-bs-toggle="tooltip" data-bs-placement="left"><img class="cursor-pointer logo" src="~/Img/Logo/mic.jpg" alt="microphone" width="50" height="50"></button>
 		</form>
 
@@ -24,6 +24,7 @@
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Cups" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Cups" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-pink fas fa-trophy"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="ReservationStates" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="ReservationStates" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-dark-sea fas fa-tasks"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="UserLocations" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="UsersCustomers" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-beetlejuice fas fa-cocktail"></i></a></li>
+				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Users" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Users" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="fas fa-user-friends"></i></a></li>
 				@if (@ViewBag.Model.Role == "Customer")
 				{
 					<li class="nav-item"><a class="btn btn-glow btn-menu" title="CustomerUsers" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CustomerUsers" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-orange fas fa-users-cog"></i></a></li>

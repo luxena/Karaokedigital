@@ -2341,7 +2341,7 @@ namespace DAL
                 try
                 {
                     con.Open();
-                    string query = @"SELECT uc.UserCustomerID,uc.UserID,uc.CustomerID,u.Username,c.Society,c.[Address],c.City,c.Province,uc.[Date]
+                    string query = @"SELECT uc.UserCustomerID,uc.UserID,uc.CustomerID,u.Username,u.Img,c.Society,c.[Address],c.City,c.Province,uc.[Date]
                                      FROM UserCustomers uc
                                      INNER JOIN Customers c ON c.CustomerID = uc.CustomerID
                                      INNER JOIN Users u ON u.UserID = uc.UserID
@@ -2364,6 +2364,7 @@ namespace DAL
                         _userCustomer.UserID = Convert.ToInt32(reader["UserID"].ToString());
                         _userCustomer.CustomerID = Convert.ToInt32(reader["CustomerID"].ToString());
                         _userCustomer.Username = reader["Username"].ToString();
+                        _userCustomer.Img = reader["Img"].ToString();
                         _userCustomer.Society = reader["Society"].ToString();
                         _userCustomer.Address = reader["Address"].ToString();
                         _userCustomer.City = reader["City"].ToString();
