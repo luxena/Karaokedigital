@@ -1112,7 +1112,6 @@ namespace Karaokedigital.Controllers
             return View();
         }
 
-        // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -1133,7 +1132,6 @@ namespace Karaokedigital.Controllers
             return View();
         }
 
-        // POST: CustomerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -1154,16 +1152,6 @@ namespace Karaokedigital.Controllers
             return View();
         }
 
-        // POST: CustomerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
             {
                 return View();
             }
