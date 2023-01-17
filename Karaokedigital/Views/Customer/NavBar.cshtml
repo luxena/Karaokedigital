@@ -1,5 +1,5 @@
 ﻿
-<nav class="navbar navbar-expand navbar-toggleable navbar-light bg-white border-bottom box-shadow mb-0">
+<nav class="navbar navbar-expand-sm navbar-toggleable navbar-light bg-white border-bottom box-shadow mb-0">
 	<div class="container-fluid">
 		<form asp-action="Index" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
 			<input name="customerUserID" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />
@@ -18,7 +18,7 @@
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Reservations" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Reservations" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-lilla fas fa-microphone-alt"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Chart" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Chart" asp-route-customerID="@ViewBag.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-info fas fa-chart-line"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Trophies" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Trophies" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-gold fas fa-medal"></i></a></li>
-				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Qr" data-bs-toggle="tooltip" data-bs-placement="top" href=""><i class="bg-beetlejuice fas fa-qrcode"></i></a></li>
+				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Qr" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="CreateCustomerQR" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-beetlejuice fas fa-qrcode"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Plans" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Plans" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-orangered fas fa-gas-pump"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Roles" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Roles" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-purple fas fa-graduation-cap"></i></a></li>
 				<li class="nav-item"><a class="btn btn-glow btn-menu" title="Cups" data-bs-toggle="tooltip" data-bs-placement="top" asp-action="Cups" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID"><i class="bg-pink fas fa-trophy"></i></a></li>
@@ -33,14 +33,37 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<div class="top-container">
-						<form asp-action="Edit" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
+							<form method="get" asp-controller="Customer" asp-action="Edit">
+							<input name="customerUserID" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />
+							<input name="customerID" value="@ViewBag.CustomerModel.CustomerID" class="form-control" hidden />
 							<button class="border-0 bg-none" type="submit" title="@ViewBag.Model.Username" data-bs-toggle="tooltip" data-bs-placement="left">
 								<img alt="@ViewBag.Model.Username" class="rounded-circle cursor-pointer img-profile" width="60" height="60" src="~/Images/CustomerUsers/@ViewBag.Model.Username/@ViewBag.Model.Img" class="img-fluid profile-image">
-								</button>
-						</form>
+							</button>
+							<button class="border-0 bg-none ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1"><i class="fas fa-chevron-down"></i></button>
+							</form>
+							
+							
+							<div class="row">
+								<div class="col">
+									<div class="collapse multi-collapse" id="multiCollapseExample1">
+										<div class="top-container mt-2">
+											<form asp-action="EditCustomer" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
+											<input name="customerUserID" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />
+											<input name="customerID" value="@ViewBag.CustomerModel.CustomerID" class="form-control" hidden />
+												<button class="border-0 bg-none border-top" type="submit" title="@ViewBag.CustomerModel.Society" data-bs-toggle="tooltip" data-bs-placement="left">
+													<img alt="@ViewBag.CustomerModel.Society" class="rounded-circle cursor-pointer img-profile mt-2" width="60" height="60" src="~/Images/Customers/@ViewBag.CustomerModel.Society/@ViewBag.CustomerModel.Logo" class="img-fluid profile-image">
+												</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+					
 					</div>
 				</li>
 			</ul>
 		</div>
 	</div>
 </nav>
+

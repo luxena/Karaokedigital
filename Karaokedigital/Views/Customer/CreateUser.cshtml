@@ -1,0 +1,84 @@
+﻿@model Karaokedigital.Models.UserModel
+
+@{
+    ViewData["Title"] = "CreateUser";
+}
+
+
+<div>
+    <partial name="NavBar" />
+</div>
+
+<h1>Create User</h1>
+
+@if (!string.IsNullOrEmpty(@ViewBag.Response))
+{
+    @if (@ViewBag.Response == "User already exists")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            @ViewBag.Response
+        </div>
+    }
+
+}
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Customer" asp-action="CreateUser" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImgFile" class="control-label">Foto</label>
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" name="ImgFile" class="form-control d-none" id="ImgFile">
+                <label class="input-group-text" for="ImgFile">Sfoglia</label>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-glow" title="Save" data-bs-toggle="tooltip" data-bs-placement="top"><i class="far fa-save"></i></button>
+                <a class="btn btn-glow ml-2" asp-action="Users" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
