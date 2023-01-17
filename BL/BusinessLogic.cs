@@ -805,12 +805,15 @@ namespace BL
             customerUser.DateOfBirth = Convert.ToDateTime(customerUser.DateOfBirth).ToShortDateString();
         
             string response = "";
-            bool customerExists = GetCustomerUsers(new CustomerUser()).Where(c => c.Username == customerUser.Username
+            bool customerUserExists = GetCustomerUsers(new CustomerUser()).Where(c => c.Username == customerUser.Username
             && c.CustomerUserID != customerUser.CustomerUserID || c.Email == customerUser.Email && c.CustomerUserID != customerUser.CustomerUserID).Any();
-            if (!customerExists)
+            if (!customerUserExists)
             {
                 UpdateCustomerUser(customerUser);
-                if (GetCustomerUsers(customerUser).Any())
+
+                customerUserExists = GetCustomerUsers(customerUser).Any();
+
+                if (customerUserExists)
                 {
                     response = "CustomerUser updated correctly";
                 }
@@ -846,7 +849,9 @@ namespace BL
                     }
                 }
 
-                if (dal.UpdateCustomerUser(customerUser))
+                bool customerUserUpdate = dal.UpdateCustomerUser(customerUser);
+
+                if (customerUserUpdate)
                 {
                     if (!Directory.Exists(Path.GetDirectoryName(tmpFilePath)))
                     {
@@ -863,6 +868,7 @@ namespace BL
             else
             {
                 customerUser.Img = GetCustomerUsers(new CustomerUser { CustomerUserID = customerUser.CustomerUserID }).Single().Img;
+                
                 dal.UpdateCustomerUser(customerUser);
             }
 

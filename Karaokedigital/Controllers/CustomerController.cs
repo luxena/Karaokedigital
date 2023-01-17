@@ -66,13 +66,13 @@ namespace Karaokedigital.Controllers
 		}
 
 		// GET: CustomerController
-		public ActionResult Index(int id)
+		public ActionResult Index(int customerUserID)
         {
-            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single().Role;
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
-            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Any())
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
-				var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single();
+				var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
 
 				CustomerUserModel model = new CustomerUserModel();
 				model.MapFromCustomerUser(customerUser);
@@ -797,6 +797,257 @@ namespace Karaokedigital.Controllers
 
             return View(ReservationStateModelList);
         }
+
+        public ActionResult CustomerUsers(int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = customerID }).Single().Society });
+            List<CustomerUserModel> modelList = new List<CustomerUserModel>();
+            foreach (var customerUser in customerUsers)
+            {
+                CustomerUserModel model = new CustomerUserModel();
+                model.MapFromCustomerUser(customerUser);
+                modelList.Add(model);
+            }
+
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            return View(modelList);
+        }
+
+        public ActionResult CreateCustomerUser(int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCustomerUser(CustomerUserModel model, int customerID, int customerUserID)
+        {
+            model.CustomerID = customerID;
+            model.ImgPath = _iweb.WebRootPath;
+            model.IsActive = true;
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            try
+            {
+                ViewBag.Response = bl.CreateCustomerUser(model.MapIntoCustomerUser());
+
+                return View(model);
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult DetailsCustomerUser(int id, int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            return View(model);
+        }
+
+        public ActionResult EditCustomerUser(int id, string message, int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            ViewBag.Response = message;
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCustomerUser(CustomerUserModel model,int id, int customerID, int customerUserID)
+        {
+            model.CustomerUserID = id;
+
+
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            if (model.ImgFile != null)
+            {
+                model.ImgPath = _iweb.WebRootPath;
+            }
+            else
+            {
+                model.Img = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = model.CustomerUserID }).Single().Img;
+            }
+
+            ViewBag.Response = bl.EditCustomerUser(model.MapIntoCustomerUser());
+            model.Img = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = model.CustomerUserID }).Single().Img;
+
+            return View(model);
+        }
+
+        public ActionResult DeactivateCustomerUser(int id, int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            
+            bl.DeactivateCustomerUser(new CustomerUser { CustomerUserID = id, IsActive = false });
+
+            ViewBag.CustomerID = customerID;
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = customerID }).Single().Society });
+            List<CustomerUserModel> modelList = new List<CustomerUserModel>();
+            foreach (var customerUser in customerUsers)
+            {
+                CustomerUserModel model = new CustomerUserModel();
+                model.MapFromCustomerUser(customerUser);
+                modelList.Add(model);
+            }
+
+            return View("CustomerUsers", modelList);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeactivateCustomerUser(int id, int customerID, int customerUserID, IFormCollection collection)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+
+            ViewBag.Response = bl.DeactivateCustomerUser(new CustomerUser { CustomerUserID = id, IsActive = false });
+
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+
+            return RedirectToAction("EditCustomerUser", new { id = id, message = ViewBag.Response, customerID = customerID, customerUserID = customerUserID });
+
+        }
+
+        public ActionResult DeleteCustomerUser(int id, int customerID, int customerUserID)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            var model = new CustomerUserModel();
+            model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCustomerUser(int id, int customerID, int customerUserID, IFormCollection collection)
+        {
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
+            {
+                var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
+
+                CustomerUserModel customerUsermodel = new CustomerUserModel();
+                customerUsermodel.MapFromCustomerUser(customerUser);
+                ViewBag.Model = customerUsermodel;
+                ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
+
+            }
+            ViewBag.CustomerID = customerID;
+
+            try
+            {
+                ViewBag.Response = bl.DeleteCustomerUser(new CustomerUser { CustomerUserID = id, ImgPath = _iweb.WebRootPath });
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
 
         // GET: CustomerController/Details/5
         public ActionResult Details(int id)

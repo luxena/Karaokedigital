@@ -51,9 +51,16 @@ footer {
     background-color: #DF73FF!important;
 }
 
+.bg-pink {
+    background-color: #DE5D83 !important;
+}
 
 .bg-purple {
-    background-color: #1b1a2a;
+    background-color: #9c27b0 !important;
+}
+
+.bg-dark-purple {
+    background-color: #1b1a2a !important;
 }
 
 .bg-peach-gradient {
@@ -63,6 +70,11 @@ footer {
 .bg-melma {
     background-color: rgba(19,38,48,0.6);
 }
+
+.bg-dark-sea {
+    background-color: #007C80 !important;
+}
+
 
 .bg-rainbow {
     background: linear-gradient(to right, #7b4397 20%, #dc2430 30%, #dc2430 20%, #7b4397 80%);
@@ -711,11 +723,17 @@ footer {
         background-color: orangered !important;
     }
 
+.bg-orange {
+    background-color: orange !important;
+}
 
+.bg-orangered {
+    background-color: #FC4C02!important;
+}
 
-    .bg-blue {
-        background-color: #052c65!important;
-    }
+.bg-blue {
+    background-color: #052c65 !important;
+}
 
     .bg-none {
         background: transparent !important;

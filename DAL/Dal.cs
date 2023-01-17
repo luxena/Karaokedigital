@@ -1560,7 +1560,8 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"CustomerUserID", customerUser.CustomerUserID);
-                    _ = !string.IsNullOrEmpty(customerUser.Customer) ? cmd.Parameters.AddWithValue(@"CustomerID", GetCustomers(new Customer { Society = customerUser.Customer }).Single().CustomerID) : cmd.Parameters.AddWithValue(@"CustomerID", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"CustomerID", customerUser.CustomerID);
+                    
                     _ = !string.IsNullOrEmpty(customerUser.Name) ? cmd.Parameters.AddWithValue(@"Name", customerUser.Name.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Name", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Surname) ? cmd.Parameters.AddWithValue(@"Surname", customerUser.Surname.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Surname", DBNull.Value);
                     _ = !string.IsNullOrEmpty(customerUser.Username) ? cmd.Parameters.AddWithValue(@"Username", customerUser.Username.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Username", DBNull.Value);

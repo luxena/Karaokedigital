@@ -1,0 +1,152 @@
+﻿@model Karaokedigital.Models.CustomerUserModel
+
+@{
+    ViewData["Title"] = "DetailsCustomerUser";
+}
+
+<div>
+    <partial name="NavBar" />
+</div>
+
+
+<h1>Details CustomerUser</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerUserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerUserID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BornCountry)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BornCountry)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BornProvince)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BornProvince)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BornCity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BornCity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FiscalCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FiscalCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Province)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Province)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ZipCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ZipCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Img)
+        </dt>
+        <dd class="col-sm-10">
+            <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => Model.Username)" width="60" height="60" src="~/Images/CustomerUsers/@Model.Username/@Html.DisplayFor(modelItem => Model.Img)">
+            <p>@Html.DisplayFor(model => model.Img)</p>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @if (@Model.IsActive)
+            {
+                <i class="h2 text-success fas fa-check"></i>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="mb-4">
+    <a class="btn btn-glow" asp-action="EditCustomerUser" asp-route-id="@Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-info fa-solid fas fa-pencil-alt"></i></a>
+    <a class="btn btn-glow ml-2" asp-action="CustomerUsers" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" title="List" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-sky far fa-list-alt"></i></a>
+</div>
