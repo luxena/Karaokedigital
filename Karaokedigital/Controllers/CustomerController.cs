@@ -573,7 +573,6 @@ namespace Karaokedigital.Controllers
             return View(trophyModelList);
         }
 
-
         public ActionResult DetailsTrophy(int id, int customerID, int customerUserID)
         {
             ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
@@ -1035,7 +1034,6 @@ namespace Karaokedigital.Controllers
                 ViewBag.CustomerModel = bl.GetCustomers(new Customer { CustomerID = customerUser.CustomerID }).Single();
 
             }
-            ViewBag.CustomerID = customerID;
 
             try
             {
