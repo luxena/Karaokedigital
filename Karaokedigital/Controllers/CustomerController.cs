@@ -8,6 +8,7 @@ using NuGet.DependencyResolver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Karaokedigital.Controllers
@@ -32,7 +33,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(CustomerUserModel model)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password }).Single().Role;
             ViewBag.Response = bl.LoginCustomerUser(model.MapIntoCustomerUser());
 			return RedirectToAction("Index", new { id = model.CustomerUserID});
 		}
@@ -41,8 +42,9 @@ namespace Karaokedigital.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Index(CustomerUserModel model)
         {
-			ViewBag.Role = "CustomerUser";
-			ViewBag.Response = bl.LoginCustomerUser(model.MapIntoCustomerUser());
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password }).Single().Role;
+
+            ViewBag.Response = bl.LoginCustomerUser(model.MapIntoCustomerUser());
 
 
 			if (bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password }).Any())
@@ -66,10 +68,10 @@ namespace Karaokedigital.Controllers
 		// GET: CustomerController
 		public ActionResult Index(int id)
         {
-			ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single().Role;
 
-			if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Any())
-			{
+            if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Any())
+            {
 				var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single();
 
 				CustomerUserModel model = new CustomerUserModel();
@@ -88,7 +90,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Tracks(int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             List<Track> list = bl.GetTracks(new Track());
             List<TrackModel> modelList = new List<TrackModel>();
@@ -116,7 +118,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Tracks4Reservation(int customerUserID, int customerID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             List<Track> list = bl.GetTracks4Reservation(new Track(), new Customer { CustomerID = customerID });
             List<TrackModel> modelList = new List<TrackModel>();
@@ -144,7 +146,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DetailsTrack(int id, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             var model = new TrackModel();
             model.MapFromTrack(bl.GetTracks(new Track { TrackID = id }).Single());
 
@@ -164,8 +166,8 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Awards(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
-           
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+
             List<Awards> awards = bl.GetAwards(new Awards { CustomerID = customerID });
             List<AwardModel> awardModelList = new List<AwardModel>();
             foreach (var award in awards)
@@ -191,7 +193,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult CreateAward(int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
                 var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
@@ -211,7 +213,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateAward(AwardModel model, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Cups = bl.GetCups(new Cups());
             ViewBag.Response = bl.InsertAward(model.MapIntoAward());
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
@@ -229,7 +231,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DetailsAward(int id, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
@@ -250,7 +252,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult EditAward(int id, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Cups = bl.GetCups(new Cups());
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
@@ -273,7 +275,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditAward(AwardModel model, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Response = bl.UpdateAward(model.MapIntoAward());
             ViewBag.Cups = bl.GetCups(new Cups());
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
@@ -292,7 +294,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DeactivateAward(int id, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Cups = bl.GetCups(new Cups());
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
@@ -313,7 +315,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeactivateAward(int id, IFormCollection collection,int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             ViewBag.Response = bl.DeactivateAward(new Awards { AwardID = id, IsActive = false });
 
@@ -337,7 +339,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DeleteAward(int id, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             var model = new AwardModel();
             model.MapFromAward(bl.GetAwards(new Awards { AwardID = id }).Single());
@@ -359,7 +361,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAward(int id, IFormCollection collection,int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
                 var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
@@ -383,7 +385,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Reservations(int customerID, int customerUserID, int id, int play, int pause, int stop)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
@@ -472,7 +474,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult ReservationUsers(int id, int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
@@ -499,7 +501,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Chart(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
             {
@@ -528,7 +530,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult AssignTrophies(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Response = bl.AssignTrophy(new Customer { CustomerID = customerID });
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
@@ -547,7 +549,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Trophies(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             List<Trophy> trophies = bl.GetTrophies(new Trophy { CustomerID = customerID });
             List<TrophyModel> trophyModelList = new List<TrophyModel>();
             foreach (var trophy in trophies)
@@ -574,7 +576,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DetailsTrophy(int id, int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             var model = new TrophyModel();
             model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
@@ -593,7 +595,7 @@ namespace Karaokedigital.Controllers
         }
         public ActionResult EditTrophy(int id, int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Cups = bl.GetCups(new Cups());
             var model = new TrophyModel();
             model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
@@ -617,7 +619,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditTrophy(TrophyModel model, int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.Cups = bl.GetCups(new Cups());
             ViewBag.Response = bl.UpdateTrophy(model.MapIntoTrophy());
             model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = model.TrophyID }).Single());
@@ -639,7 +641,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult DeleteTrophy(int id, int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
             var model = new TrophyModel();
             model.MapFromTrophy(bl.GetTrophies(new Trophy { TrophyID = id }).Single());
@@ -662,7 +664,7 @@ namespace Karaokedigital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteTrophy(int id, int customerID, int customerUserID, IFormCollection collection)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             ViewBag.CustomerID = bl.GetTrophies(new Trophy { TrophyID = id }).Single().CustomerID;
 
             if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
@@ -691,7 +693,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Plans(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             List<Plans> plans = bl.GetPlans(new Plans());
             List<PlanModel> planModelList = new List<PlanModel>();
             foreach (var plan in plans)
@@ -717,7 +719,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Roles(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             List<Roles> roles = bl.GetRoles(new Roles());
             List<RoleModel> roleModelList = new List<RoleModel>();
             foreach (var role in roles)
@@ -744,7 +746,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult Cups(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             List<Cups> cups = bl.GetCups(new Cups());
             List<CupModel> cupModelList = new List<CupModel>();
             foreach (var cup in cups)
@@ -771,7 +773,7 @@ namespace Karaokedigital.Controllers
 
         public ActionResult ReservationStates(int customerID, int customerUserID)
         {
-            ViewBag.Role = "CustomerUser";
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
             List<ReservationState> reservationStates = bl.GetReservationStates(new ReservationState());
             List<ReservationStateModel> ReservationStateModelList = new List<ReservationStateModel>();
             foreach (var reservationState in reservationStates)

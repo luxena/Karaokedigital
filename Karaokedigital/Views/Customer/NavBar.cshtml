@@ -1,8 +1,8 @@
 ﻿
 <nav class="navbar navbar-expand navbar-toggleable navbar-light bg-white border-bottom box-shadow mb-0">
 	<div class="container-fluid">
-		<form asp-action="Index" method="get">
-			<input name="id" value="@ViewBag.CustomerModel.CustomerID" class="form-control" hidden />
+		<form asp-action="Index" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
+			@*<input name="id" value="@ViewBag.Model.CustomerUserID" class="form-control" hidden />*@
 			<button class="border-0 bg-none mr-3" type="submit" title="home" data-bs-toggle="tooltip" data-bs-placement="left"><img class="cursor-pointer logo" src="~/Img/Logo/mic.jpg" alt="microphone" width="50" height="50"></button>
 		</form>
 
@@ -29,7 +29,9 @@
 				<li class="nav-item">
 					<div class="top-container">
 						<form asp-action="Edit" method="get" asp-route-customerUserID="@ViewBag.Model.CustomerUserID" asp-route-customerID="@ViewBag.CustomerModel.CustomerID">
-							<button class="border-0 bg-none" type="submit" title="@ViewBag.Model.Username" data-bs-toggle="tooltip" data-bs-placement="left"><img alt="@ViewBag.Model.Username" class="rounded-circle cursor-pointer img-profile" width="60" height="60" src="~/Images/CustomerUsers/@ViewBag.Model.Username/@ViewBag.Model.Img)" class="img-fluid profile-image"></button>
+							<button class="border-0 bg-none" type="submit" title="@ViewBag.Model.Username" data-bs-toggle="tooltip" data-bs-placement="left">
+								<img alt="@ViewBag.Model.Username" class="rounded-circle cursor-pointer img-profile" width="60" height="60" src="~/Images/CustomerUsers/@ViewBag.Model.Username/@ViewBag.Model.Img" class="img-fluid profile-image">
+								</button>
 						</form>
 					</div>
 				</li>
