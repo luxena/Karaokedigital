@@ -1198,7 +1198,6 @@ namespace DAL
                               INNER JOIN Customers cm on cm.CustomerID = c.CustomerID
                               WHERE (c.CustomerUserID = @CustomerUserID or @CustomerUserID = 0) AND 
                                     (c.CustomerID = @CustomerID or @CustomerID  = 0 ) AND 
-                                    (cm.Society = @Customer or @Customer  is null ) AND 
                                     (c.Name = @Name or @Name  is null ) AND 
                                     (c.Surname = @Surname or @Surname is null) AND 
                                     (c.Username = @Username or @Username is null) AND 
