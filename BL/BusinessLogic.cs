@@ -630,7 +630,6 @@ namespace BL
                     if (Directory.Exists(customerFolderImgPath))
                     {
                         DeleteDirectory(customerFolderImgPath);
-                        DeleteCustomerUsers(new CustomerUser { CustomerID = customer.CustomerID});
                     }
 
                     response = "Customer has been deleted";
@@ -923,11 +922,6 @@ namespace BL
             }
 
             return response;
-        }
-
-        public bool DeleteCustomerUsers(CustomerUser customerUser)
-        {
-            return dal.DeleteCustomerUsers(customerUser);
         }
 
         public bool CustomerUserExists(CustomerUser customerUser)

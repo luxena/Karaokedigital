@@ -1535,53 +1535,6 @@ namespace DAL
             return response;
         }
 
-        public bool DeleteCustomerUsers(CustomerUser customerUser)   
-        {
-            bool response = false;
-            int result = 0;
-
-            string connectionString = GetConfiguration().DBConnection;
-
-            SqlConnection con = new SqlConnection(connectionString);
-            using (con)
-            {
-                try
-                {
-                    con.Open();
-
-                    string query = @"DELETE CustomerUsers WHERE CustomerID = @CustomerID";
-                    SqlCommand cmd = new SqlCommand(query, con);
-
-                    cmd.Parameters.AddWithValue(@"CustomerID", customerUser.CustomerID);
-
-                    result = cmd.ExecuteNonQuery();
-                    bool customerUserExists = GetCustomerUsers(customerUser).Any();
-
-                    if (!customerUserExists && result > 0)
-                    {
-                        response = true;
-                    }
-                    else
-                    {
-
-                        response = false;
-
-                    }
-
-
-                }
-                catch (SqlException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
-                con.Close();
-            }
-
-
-
-            return response;
-        }
         /* CUSTOMER USER*/
         /* SUBCUSTOMER */
         public List<SubCustomers> GetSubCustomers(SubCustomers subCustomer)

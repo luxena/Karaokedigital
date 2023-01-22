@@ -1366,7 +1366,6 @@ namespace Karaokedigital.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteCustomer(int customerID, int customerUserID)
 		{
-
 			ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 			if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
 			{
