@@ -1364,7 +1364,7 @@ namespace DAL
             return response;
         }
 
-        public bool UpdateCustomerUser(CustomerUser customerUser)
+        public bool UpdateCustomerUser(CustomerUser customerUser) 
         {
             bool response = false;
             int result = 0;

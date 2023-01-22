@@ -1366,7 +1366,7 @@ namespace Karaokedigital.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteCustomer(int customerID, int customerUserID)
 		{
-			ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
+            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 			if (bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Any())
 			{
 				var customerUser = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single();
@@ -1381,12 +1381,12 @@ namespace Karaokedigital.Controllers
 			try
 			{
 				ViewBag.Response = bl.DeleteCustomer(new Customer { CustomerID = customerID, LogoPath = _iweb.WebRootPath });
-				return View();
-			}
+                return RedirectToAction("Login", new { message = ViewBag.Response });
+            }
 			catch
 			{
-				return View();
-			}
+                return RedirectToAction("Login", new { message = ViewBag.Response });
+            }
 		}
 
 	}

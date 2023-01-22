@@ -622,9 +622,17 @@ namespace BL
             bool customerExists = GetCustomers(new Customer { CustomerID = customer.CustomerID }).Any();
             if (customerExists)
             {
+                List<CustomerUser> customerUsers = GetCustomerUsers(new CustomerUser { CustomerID = customer.CustomerID }).ToList();
+               
+                foreach (var cu in customerUsers)
+                {
+                    cu.ImgPath = customer.LogoPath;
+                    var res = DeleteCustomerUser(cu);
+                }
                 var result = dal.DeleteCustomer(customer);
                 if (result)
                 {
+
                     string customerFolderImgPath = Path.Combine(customer.LogoPath, @"Images\Customers\", customer.Society);
 
                     if (Directory.Exists(customerFolderImgPath))
