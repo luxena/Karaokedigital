@@ -630,7 +630,7 @@ namespace BL
                     if (Directory.Exists(customerFolderImgPath))
                     {
                         DeleteDirectory(customerFolderImgPath);
-
+                        DeleteCustomerUsers(new CustomerUser { CustomerID = customer.CustomerID});
                     }
 
                     response = "Customer has been deleted";
@@ -925,11 +925,21 @@ namespace BL
             return response;
         }
 
+        public bool DeleteCustomerUsers(CustomerUser customerUser)
+        {
+            return dal.DeleteCustomerUsers(customerUser);
+        }
+
+        public bool CustomerUserExists(CustomerUser customerUser)
+        {
+            return GetCustomerUsers(new CustomerUser { Username = customerUser.Username, Password = customerUser.Password , IsActive = customerUser.IsActive }).Any();
+        }
+
         public string LoginCustomerUser(CustomerUser customerUser)
         {
             customerUser.Username = customerUser.Username.ToCapitalize();
             string response = "";
-            if (GetCustomerUsers(customerUser).Any())
+            if (GetCustomerUsers(new CustomerUser { Username = customerUser.Username, Password = customerUser.Password ,IsActive = customerUser.IsActive}).Any())
             {
                 response = "Login Success";
             }

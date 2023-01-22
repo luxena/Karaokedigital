@@ -1215,7 +1215,7 @@ namespace DAL
                                     (c.Address = @Address or @Address is null) AND 
                                     (c.ZipCode = @ZipCode or @ZipCode is null) AND 
                                     (c.Img = @Img or @Img is null) AND 
-                                    (r.Role = @Role or @Role is null) AND 
+                                    (c.RoleID = @RoleID or @RoleID = 0) AND 
                                     (c.IsActive = @IsActive or @IsActive = 0)";
 
                     SqlCommand cmd = new SqlCommand(query, con);
@@ -1223,180 +1223,24 @@ namespace DAL
                     cmd.Parameters.AddWithValue(@"CustomerUserID",customerUser.CustomerUserID);
                     cmd.Parameters.AddWithValue(@"CustomerID",customerUser.CustomerID);
 
-                    if (!string.IsNullOrEmpty(customerUser.Customer))
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", customerUser.Customer);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Customer", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Name))
-                    {
-                        cmd.Parameters.AddWithValue(@"Name", customerUser.Name);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Name", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Surname))
-                    {
-                        cmd.Parameters.AddWithValue(@"Surname", customerUser.Surname);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Surname", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Username))
-                    {
-                        cmd.Parameters.AddWithValue(@"Username", customerUser.Username);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Username", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Password))
-                    {
-                        cmd.Parameters.AddWithValue(@"Password", customerUser.Password);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Password", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Phone))
-                    {
-                        cmd.Parameters.AddWithValue(@"Phone", customerUser.Phone);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Phone", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Email))
-                    {
-                        cmd.Parameters.AddWithValue(@"Email", customerUser.Email);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Email", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.DateOfBirth))
-                    {
-                        cmd.Parameters.AddWithValue(@"DateOfBirth", customerUser.DateOfBirth);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"DateOfBirth", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.BornCountry))
-                    {
-                        cmd.Parameters.AddWithValue(@"BornCountry", customerUser.BornCountry);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"BornCountry", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.BornProvince))
-                    {
-                        cmd.Parameters.AddWithValue(@"BornProvince", customerUser.BornProvince);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"BornProvince", DBNull.Value);
-                    }
-
-
-                    if (!string.IsNullOrEmpty(customerUser.BornCity))
-                    {
-                        cmd.Parameters.AddWithValue(@"BornCity", customerUser.BornCity);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"BornCity", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.FiscalCode))
-                    {
-                        cmd.Parameters.AddWithValue(@"FiscalCode", customerUser.FiscalCode);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"FiscalCode", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Country))
-                    {
-                        cmd.Parameters.AddWithValue(@"Country", customerUser.Country);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Country", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Province))
-                    {
-                        cmd.Parameters.AddWithValue(@"Province", customerUser.Province);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Province", DBNull.Value);
-                    }
-
-
-                    if (!string.IsNullOrEmpty(customerUser.City))
-                    {
-                        cmd.Parameters.AddWithValue(@"City", customerUser.City);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"City", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Address))
-                    {
-                        cmd.Parameters.AddWithValue(@"Address", customerUser.Address);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Address", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.ZipCode))
-                    {
-                        cmd.Parameters.AddWithValue(@"ZipCode", customerUser.ZipCode);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"ZipCode", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Img))
-                    {
-                        cmd.Parameters.AddWithValue(@"Img", customerUser.Img);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Img", DBNull.Value);
-                    }
-
-                    if (!string.IsNullOrEmpty(customerUser.Role))
-                    {
-                        cmd.Parameters.AddWithValue(@"Role", customerUser.Role);
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue(@"Role", DBNull.Value);
-                    }
-
-
+                    _ = !string.IsNullOrEmpty(customerUser.Name) ? cmd.Parameters.AddWithValue(@"Name", customerUser.Name.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Name", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Surname) ? cmd.Parameters.AddWithValue(@"Surname", customerUser.Surname.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Surname", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Username) ? cmd.Parameters.AddWithValue(@"Username", customerUser.Username.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Username", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Password) ? cmd.Parameters.AddWithValue(@"Password", customerUser.Password) : cmd.Parameters.AddWithValue(@"Password", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Phone) ? cmd.Parameters.AddWithValue(@"Phone", customerUser.Phone) : cmd.Parameters.AddWithValue(@"Phone", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Email) ? cmd.Parameters.AddWithValue(@"Email", customerUser.Email) : cmd.Parameters.AddWithValue(@"Email", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.DateOfBirth) ? cmd.Parameters.AddWithValue(@"DateOfBirth", customerUser.DateOfBirth) : cmd.Parameters.AddWithValue(@"DateOfBirth", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.BornCountry) ? cmd.Parameters.AddWithValue(@"BornCountry", customerUser.BornCountry.ToCapitalize()) : cmd.Parameters.AddWithValue(@"BornCountry", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.BornProvince) ? cmd.Parameters.AddWithValue(@"BornProvince", customerUser.BornProvince.ToCapitalize()) : cmd.Parameters.AddWithValue(@"BornProvince", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.BornCity) ? cmd.Parameters.AddWithValue(@"BornCity", customerUser.BornCity.ToCapitalize()) : cmd.Parameters.AddWithValue(@"BornCity", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.FiscalCode) ? cmd.Parameters.AddWithValue(@"FiscalCode", customerUser.FiscalCode.ToUpper()) : cmd.Parameters.AddWithValue(@"FiscalCode", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Country) ? cmd.Parameters.AddWithValue(@"Country", customerUser.Country.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Country", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Province) ? cmd.Parameters.AddWithValue(@"Province", customerUser.Province.ToCapitalize()) : cmd.Parameters.AddWithValue(@"Province", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.City) ? cmd.Parameters.AddWithValue(@"City", customerUser.City.ToCapitalize()) : cmd.Parameters.AddWithValue(@"City", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Address) ? cmd.Parameters.AddWithValue(@"Address", customerUser.Address) : cmd.Parameters.AddWithValue(@"Address", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.ZipCode) ? cmd.Parameters.AddWithValue(@"ZipCode", customerUser.ZipCode) : cmd.Parameters.AddWithValue(@"ZipCode", DBNull.Value);
+                    _ = !string.IsNullOrEmpty(customerUser.Img) ? cmd.Parameters.AddWithValue(@"Img", customerUser.Img) : cmd.Parameters.AddWithValue(@"Img", DBNull.Value);
+                    cmd.Parameters.AddWithValue(@"RoleID", _ = !string.IsNullOrEmpty(customerUser.Role) ? GetRoles(new Roles { Role = customerUser.Role }).Single().RoleID: 0);
                     cmd.Parameters.AddWithValue(@"IsActive", customerUser.IsActive);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -1661,6 +1505,54 @@ namespace DAL
                     SqlCommand cmd = new SqlCommand(query, con);
 
                     cmd.Parameters.AddWithValue(@"CustomerUserID", customerUser.CustomerUserID);
+
+                    result = cmd.ExecuteNonQuery();
+                    bool customerUserExists = GetCustomerUsers(customerUser).Any();
+
+                    if (!customerUserExists && result > 0)
+                    {
+                        response = true;
+                    }
+                    else
+                    {
+
+                        response = false;
+
+                    }
+
+
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                con.Close();
+            }
+
+
+
+            return response;
+        }
+
+        public bool DeleteCustomerUsers(CustomerUser customerUser)   
+        {
+            bool response = false;
+            int result = 0;
+
+            string connectionString = GetConfiguration().DBConnection;
+
+            SqlConnection con = new SqlConnection(connectionString);
+            using (con)
+            {
+                try
+                {
+                    con.Open();
+
+                    string query = @"DELETE CustomerUsers WHERE CustomerID = @CustomerID";
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue(@"CustomerID", customerUser.CustomerID);
 
                     result = cmd.ExecuteNonQuery();
                     bool customerUserExists = GetCustomerUsers(customerUser).Any();

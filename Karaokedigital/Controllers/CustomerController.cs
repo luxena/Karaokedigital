@@ -28,7 +28,7 @@ namespace Karaokedigital.Controllers
         {
             return View();
         }
-
+ 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,8 +42,22 @@ namespace Karaokedigital.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Index(CustomerUserModel model)
-        {
-            ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password }).Single().Role;
+         {
+            model.IsActive = true;
+
+            var customerUserExists = bl.CustomerUserExists(model.MapIntoCustomerUser());
+
+            if (customerUserExists)
+            {
+                ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password ,IsActive = model.IsActive}).Single().Role;
+                model.Role = bl.GetCustomerUsers(new CustomerUser { Username = model.Username, Password = model.Password, IsActive = model.IsActive }).Single().Role;
+            }
+            else
+            {
+                ViewBag.Role = "CustomerUser";
+               
+            }
+            
 
             ViewBag.Response = bl.LoginCustomerUser(model.MapIntoCustomerUser());
 
@@ -802,7 +816,7 @@ namespace Karaokedigital.Controllers
         {
             ViewBag.Role = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = customerUserID }).Single().Role;
 
-            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { Customer = bl.GetCustomers(new Customer { CustomerID = customerID }).Single().Society });
+            List<CustomerUser> customerUsers = bl.GetCustomerUsers(new CustomerUser { CustomerID = customerID});
             List<CustomerUserModel> modelList = new List<CustomerUserModel>();
             foreach (var customerUser in customerUsers)
             {
@@ -908,6 +922,7 @@ namespace Karaokedigital.Controllers
             var model = new CustomerUserModel();
             model.MapFromCustomerUser(bl.GetCustomerUsers(new CustomerUser { CustomerUserID = id }).Single());
             model.DateOfBirth = Convert.ToDateTime(model.DateOfBirth).ToString("yyyy-MM-dd");
+            ViewBag.Roles = bl.GetRoles(new Roles());
 
             return View(model);
         }
@@ -942,7 +957,7 @@ namespace Karaokedigital.Controllers
 
             ViewBag.Response = bl.EditCustomerUser(model.MapIntoCustomerUser());
             model.Img = bl.GetCustomerUsers(new CustomerUser { CustomerUserID = model.CustomerUserID }).Single().Img;
-
+            ViewBag.Roles = bl.GetRoles(new Roles());
             return View(model);
         }
 

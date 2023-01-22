@@ -157,7 +157,7 @@
         <form method="post" asp-controller="Customer" asp-action="DeleteCustomer" asp-route-customerID="@ViewBag.CustomerModel.CustomerID" asp-route-customerUserID="@ViewBag.Model.CustomerUserID">
             <div class="form-group mt-2 float-left d-block" style="float:left; display:block;">
                 @* <input asp-for="CustomerID" class="form-control" hidden />*@
-                <button type="submit" class="btn btn-glow ml-2" title="Deactivate" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-danger fas fa-trash"></i></button>
+                <button type="submit" class="btn btn-glow ml-2" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bg-danger fas fa-trash"></i></button>
             </div>
         </form>
     </div>

@@ -39,7 +39,10 @@
 							<button class="border-0 bg-none" type="submit" title="@ViewBag.Model.Username" data-bs-toggle="tooltip" data-bs-placement="left">
 								<img alt="@ViewBag.Model.Username" class="rounded-circle cursor-pointer img-profile" width="60" height="60" src="~/Images/CustomerUsers/@ViewBag.Model.Username/@ViewBag.Model.Img" class="img-fluid profile-image">
 							</button>
-							<button class="border-0 bg-none ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1"><i class="fas fa-chevron-down"></i></button>
+							@if (@ViewBag.Model.Role == "Customer")
+							{
+								<button class="border-0 bg-none ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1"><i class="fas fa-chevron-down"></i></button>
+							}
 							</form>
 							
 							

@@ -117,11 +117,28 @@
                 <input asp-for="ZipCode" class="form-control" />
                 <span asp-validation-for="ZipCode" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           @* <div class="form-group">
                 <label asp-for="Role" class="control-label"></label>
                 <input asp-for="Role" class="form-control" readonly />
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
+*@
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select name="Role" class="form-select" aria-label="Default select example">
+                    <option selected>@Model.Role</option>
+                    @foreach (var item in @ViewBag.Roles)
+                    {
+                        @if (@item.RoleID > 2 && @item.RoleID < 5)
+                        {
+                            <option value="@item.Role">@item.Role</option>
+                        }
+                    }
+                </select>
+            </div>
+
+
+
             <div class="form-group">
                 <label asp-for="Img" class="control-label"></label>
                 <img class="rounded-circle" alt="@Html.DisplayFor(modelItem => Model.Username)" width="60" height="60" src="~/Images/CustomerUsers/@Model.Username/@Html.DisplayFor(modelItem => Model.Img)">
